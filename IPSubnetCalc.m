@@ -135,7 +135,7 @@
     return ('d');
 }
 
-- (int)setClassInfo:(char)class:(const int)setDefaults
+- (int)setClassInfo:(char)class defaults:(const int)setDefaults
 {	
 	if (networkClass)
 		[networkClass release];
@@ -177,17 +177,17 @@
     class = [self getClass:address];
     subnetBits = 0;
     hostAddr = address;
-    [self setClassInfo:class:0];
+    [self setClassInfo:class defaults:0];
     [self initNetwork];
 }
 
-- (void)initByAddrAndMask:(unsigned int)address:(unsigned int)addressMask
+- (void)initByAddrAndMask:(unsigned int)address mask:(unsigned int)addressMask
 {
     char	class;
     
     class = [self getClass:address];
     hostAddr = address;
-    [self setClassInfo:class:0];
+    [self setClassInfo:class defaults:0];
     if (mask > addressMask)
     {
         mask = addressMask;
@@ -208,15 +208,15 @@
     
 }
 
-- (void)initAddressAndMask:(const char *)address:(unsigned int)addressMask
+- (void)initAddressAndMask:(const char *)address mask:(unsigned int)addressMask
 {
-    [self initByAddrAndMask:[IPSubnetCalc numberize:address]:addressMask];
+    [self initByAddrAndMask:[IPSubnetCalc numberize:address] mask:addressMask];
     
 }
 
-- (void)initAddressAndMaskWithUnsignedInt:(unsigned int)address:(unsigned int)addressMask
+- (void)initAddressAndMaskWithUnsignedInt:(unsigned int)address mask:(unsigned int)addressMask
 {
-    [self initByAddrAndMask:address:addressMask];
+    [self initByAddrAndMask:address mask:addressMask];
     
 }
 - (NSString *)subnetHostAddrRange

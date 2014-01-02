@@ -7,10 +7,14 @@
 //
 
 #import "SubnetCalcAppDelegate.h"
+#import "PrintView.h"
 #import <sys/types.h>
 #import <sys/socket.h>
 #import <netinet/in.h>
 #import <arpa/inet.h>
+
+#define BUFFER_LINES        10000
+#define NETWORK_BITS_MIN    8
 
 @implementation SubnetCalcAppDelegate
 
@@ -60,6 +64,8 @@
 	else if ([c isEqualToString: @"D"])
 	{
         [classType selectItemAtIndex: 3];
+		if (tab_tabView)
+			[tab_tabView release];
 		tab_tabView = [tabView tabViewItems];
 		[tab_tabView retain];
 		[tabView removeTabViewItem: [tab_tabView objectAtIndex: 1]];
@@ -98,6 +104,8 @@
 	NSRange						range;
 	NSMutableAttributedString   *astr;
 	
+	if([[addrField stringValue] length] == 0)
+		[addrField setStringValue: @"10.0.0.0"];
 	if ([self checkAddr: [addrField stringValue]])
 		return;
 	if ([tabView numberOfTabViewItems] != 4)
@@ -122,7 +130,7 @@
 		[addrField setStringValue: [[addrField stringValue] substringToIndex: range.location]];
 	}
 	if (mask)
-		[ipsc initAddressAndMask: [[addrField stringValue] cStringUsingEncoding: NSASCIIStringEncoding]: mask];
+		[ipsc initAddressAndMask: [[addrField stringValue] cStringUsingEncoding: NSASCIIStringEncoding] mask: mask];
 	else
 		[ipsc initAddress: [[addrField stringValue] cStringUsingEncoding: NSASCIIStringEncoding]];
 	[self initClassInfos: [ipsc networkClass]];
@@ -149,6 +157,10 @@
     [subnetId setStringValue: [ipsc subnetId]];
 	[subnetHostAddrRange setStringValue: [ipsc subnetHostAddrRange]];
     [subnetBroadcast setStringValue: [ipsc subnetBroadcast]];
+	[bitsOnSlide setStringValue: [[ipsc maskBits] stringValue]];
+	[subnetBitsSlide setFloatValue: [[ipsc maskBits] floatValue]];
+	[self bitsOnSlidePos];
+	[subnetsHostsView reloadData];
 }
 
 
@@ -208,6 +220,9 @@
     }
 	else if ([sender indexOfSelectedItem] == 3)
 	{
+		//NEW Release
+		if (tab_tabView)
+			[tab_tabView release];
 		tab_tabView = [tabView tabViewItems];
 		[tab_tabView retain];
 		[tabView removeTabViewItem: [tab_tabView objectAtIndex: 1]];
@@ -227,14 +242,20 @@
 {
 	unsigned int	mask = -1;
     
-	[self doIPSubnetCalc: (mask << (32 - ([sender indexOfSelectedItem] + [ipsc netBits])))];
+	if (ipsc)
+		[self doIPSubnetCalc: (mask << (32 - ([sender indexOfSelectedItem] + [ipsc netBits])))];
+	else
+		[self doIPSubnetCalc: (mask << (32 - ([sender indexOfSelectedItem] + 8)))];
 }
 
 - (IBAction)changeSubnetBits:(id)sender
 {
 	unsigned int	mask = -1;
 	
-	[self doIPSubnetCalc: (mask << (32 - ([[sender objectValueOfSelectedItem] intValue] + [ipsc netBits])))];
+	if (ipsc)
+		[self doIPSubnetCalc: (mask << (32 - ([[sender objectValueOfSelectedItem] intValue] + [ipsc netBits])))];
+	else
+		[self doIPSubnetCalc: (mask << (32 - ([[sender objectValueOfSelectedItem] intValue] + 8)))];
 }
 
 - (IBAction)changeSubnetMask:(id)sender
@@ -302,8 +323,11 @@
 }
 
 - (int)numberOfRowsInTableView:(NSTableView *)aTableView
-{
-	return ([[ipsc subnetMax] intValue]);
+{	
+	if ([tabViewClassLess state] == NSOnState)
+		return (pow(2, ([[ipsc maskBits] intValue] - NETWORK_BITS_MIN)));
+	else
+		return ([[ipsc subnetMax] intValue]);
 }
 
 - (id)tableView:(NSTableView *)aTableView 
@@ -316,15 +340,17 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 	mask = rowIndex;
 	mask <<= (32 - [ipsc maskBitsIntValue]);
     ipsc_tmp = [[IPSubnetCalc alloc] init];
-	[ipsc_tmp initAddressAndMaskWithUnsignedInt:([ipsc netIdIntValue] | mask): [ipsc subnetMaskIntValue]];
+	[ipsc_tmp initAddressAndMaskWithUnsignedInt:([ipsc netIdIntValue] | mask) mask: [ipsc subnetMaskIntValue]];
 	[ipsc_tmp autorelease];
 	if ([[aTableColumn identifier] isEqualToString: @"numCol"])
 		return ([NSNumber numberWithInt: rowIndex + 1]);
-	if ([[aTableColumn identifier] isEqualToString: @"rangeCol"])
-		return ([[ipsc_tmp subnetHostAddrRange] retain]);
-	if ([[aTableColumn identifier] isEqualToString: @"subnetCol"])
+	else if ([[aTableColumn identifier] isEqualToString: @"rangeCol"])
+		//return ([[ipsc_tmp subnetHostAddrRange] retain]);
+		//NEW no retain
+		return ([ipsc_tmp subnetHostAddrRange]);
+	else if ([[aTableColumn identifier] isEqualToString: @"subnetCol"])
 		return ([ipsc_tmp subnetId]);
-	if ([[aTableColumn identifier] isEqualToString: @"broadcastCol"])
+	else if ([[aTableColumn identifier] isEqualToString: @"broadcastCol"])
 		return ([ipsc_tmp subnetBroadcast]);
 	return (nil);
 }
@@ -334,6 +360,157 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
    forTableColumn:(NSTableColumn *)aTableColumn
 			  row:(int)rowIndex
 {
+}
+
+- (void)bitsOnSlidePos
+{
+	NSRect			coordLabel, coordSlider;
+	
+	coordLabel = [bitsOnSlide frame];
+	coordSlider = [subnetBitsSlide frame];
+	coordLabel.origin.x = coordSlider.origin.x - (coordLabel.size.width / 2) + ([subnetBitsSlide knobThickness] / 2) + ((coordSlider.size.width / [subnetBitsSlide numberOfTickMarks]) * ([subnetBitsSlide floatValue] - 8));
+	[bitsOnSlide setFrame: coordLabel];
+	
+}
+
+- (IBAction)subnetBitsSlide:(id)sender
+{
+	unsigned int	mask = -1;
+    
+	[self doIPSubnetCalc:(mask << (32 - [sender intValue]))];
+	[subnetsHostsView reloadData];
+}
+
+- (IBAction)changeTableViewClass:(id)sender
+{
+    if ([tabViewClassLess state] == NSOnState)
+    {
+        classless = YES;
+    }
+    else
+    {
+        classless = NO;
+    }
+	[subnetsHostsView reloadData];
+}
+
+- (IBAction)exportPrint:(id)sender
+{
+	NSPrintInfo			*printInfo;
+	NSPrintOperation	*printOp;
+	PrintView			*view;
+	
+	printInfo = [NSPrintInfo sharedPrintInfo];
+	view = [[PrintView alloc] initWithSubnet:subnetsHostsView printInfo:printInfo];
+	printOp = [NSPrintOperation printOperationWithView:view printInfo: printInfo];
+	[printOp setShowsPrintPanel:YES];
+	[printOp runOperation];
+	[view release];
+}
+
+- (IBAction)exportCSV:(id)sender
+{
+	NSSavePanel	*panel;
+	
+    NSLog(@"EXPORT CSV\n");
+	panel = [NSSavePanel savePanel];
+	[panel setAllowedFileTypes:[NSArray arrayWithObject: @"csv"]];
+    [panel beginWithCompletionHandler: ^(NSInteger result){
+        if (result == NSFileHandlingPanelOKButton)
+        {
+            NSString				*str_csv;
+            unsigned int			i;
+            NSData					*data_cvs;
+            NSFileHandle			*file_cvs;
+            NSAutoreleasePool		*pool;
+            NSFileManager			*file_mgt;
+
+            NSLog(@"OK BUTTON\n");
+            file_mgt = [[NSFileManager alloc] init];
+            [file_mgt createFileAtPath:[[panel URL] path] contents:nil attributes:nil];
+            [file_mgt release];
+            pool = [[NSAutoreleasePool alloc] init];
+            file_cvs = [NSFileHandle fileHandleForWritingAtPath: [[panel URL] path]];
+            if (file_cvs)
+            {
+                NSLog(@"FILE CVS OK\n");
+                [file_cvs retain];
+                str_csv = [[NSString alloc] initWithString: @"#;Subnet ID;Range;Broadcast\n"];
+                data_cvs = [NSData dataWithData: [str_csv dataUsingEncoding: NSASCIIStringEncoding]];
+                [file_cvs writeData: data_cvs];
+                [str_csv release];
+                for (i = 0; i < [subnetsHostsView numberOfRows]; i++)
+                {
+                    str_csv = [NSString stringWithFormat: @"%@;%@;%@;%@\n",
+                               [self tableView: subnetsHostsView objectValueForTableColumn:[subnetsHostsView tableColumnWithIdentifier: @"numCol"] row:i],
+                               [self tableView: subnetsHostsView objectValueForTableColumn:[subnetsHostsView tableColumnWithIdentifier: @"subnetCol"] row:i],
+                               [self tableView: subnetsHostsView objectValueForTableColumn:[subnetsHostsView tableColumnWithIdentifier: @"rangeCol"] row:i],
+                               [self tableView: subnetsHostsView objectValueForTableColumn:[subnetsHostsView tableColumnWithIdentifier: @"broadcastCol"] row:i]
+                               ];
+                    data_cvs = [NSData dataWithData: [str_csv dataUsingEncoding: NSASCIIStringEncoding]];
+                    [file_cvs writeData: data_cvs];
+                    if ((i % BUFFER_LINES) == 0)
+                    {
+                        //NSLog(@"%d %@\n", i, str_csv);
+                        [file_cvs synchronizeFile];
+                        [pool release];
+                        pool = [[NSAutoreleasePool alloc] init];
+                    }
+                }
+                [file_cvs synchronizeFile];
+                [file_cvs closeFile];
+                [file_cvs release];
+            }
+            [pool release];
+        }
+    }];
+}
+
+-(NSString *)URLEncode:(NSString *)url
+{
+	NSString	*url_encoded;
+	
+	url_encoded = [[[NSString alloc] initWithString: url] autorelease];
+	url_encoded = [[url_encoded stringByReplacingOccurrencesOfString: @" " withString: @"%20"] autorelease];
+	url_encoded = [[url_encoded stringByReplacingOccurrencesOfString: @"\n" withString: @"%0D"] autorelease];
+	url_encoded = [[url_encoded stringByReplacingOccurrencesOfString: @"/" withString: @"%2F"] autorelease];
+	return (url_encoded);
+}
+
+// Create a mail message in the user's preferred mail client
+// by opening a mailto URL.  The extended mailto URL format
+// is documented by RFC 2368
+- (IBAction)exportEmail:(id)sender
+{
+	/*
+    NSURL		*url;
+	NSString	*str_email, *str;
+	int			i;
+	
+	
+	str_email = [[[NSString alloc] initWithFormat: @"mailto:?subject=SubnetCal: %@/%@&body=Subnets for: %@/%@\n\n", 
+				  [subnetId stringValue], [maskBitsCombo stringValue], [subnetId stringValue], [maskBitsCombo stringValue]] autorelease];
+	for (i = 0; i < [subnetsHostsView numberOfRows]; i++)
+	{
+		str = [str_email stringByAppendingFormat: @"%@ %@ %@ %@\n",
+			   [self tableView: subnetsHostsView objectValueForTableColumn:[subnetsHostsView tableColumnWithIdentifier: @"numCol"] row:i],
+			   [self tableView: subnetsHostsView objectValueForTableColumn:[subnetsHostsView tableColumnWithIdentifier: @"subnetCol"] row:i],
+			   [self tableView: subnetsHostsView objectValueForTableColumn:[subnetsHostsView tableColumnWithIdentifier: @"rangeCol"] row:i],
+			   [self tableView: subnetsHostsView objectValueForTableColumn:[subnetsHostsView tableColumnWithIdentifier: @"broadcastCol"] row:i]
+			   ];
+		str_email = [str autorelease];
+	}
+	str_email = [self URLEncode: str_email];
+   	url = [NSURL URLWithString: str_email];
+    assert(url != nil);
+	[[NSWorkspace sharedWorkspace] openURL:url];
+	[url release];
+	 */
+}
+
+- (void)windowDidResize:(NSNotification *)notification
+{
+	[self bitsOnSlidePos];
 }
 
 - (void)windowWillClose:(NSNotification *)notif
@@ -376,6 +553,7 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
     [subnetMaskCombo selectItemWithObjectValue: @"255.0.0.0"];
     [maskBitsCombo selectItemWithObjectValue: @"8"];
     [subnetBitsCombo selectItemWithObjectValue: @"0"];	
+	classless =	FALSE;
 }
 
 @end

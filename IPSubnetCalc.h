@@ -36,15 +36,15 @@
     unsigned int	hostSubnetUbound;
     
     unsigned int	ciscoWildcard;
-    char		bitMap[36];
+    char			bitMap[36];
 }
 
 + (NSString *)denumberize:(unsigned int)address;
 + (unsigned int)numberize:(const char *)address;
 + (int)countOnBits:(unsigned int)number;
 - (void)initAddress:(const char *)address;
-- (void)initAddressAndMask:(const char *)address:(unsigned int)addressMask;
-- (void)initAddressAndMaskWithUnsignedInt:(unsigned int)address:(unsigned int)addressMask;
+- (void)initAddressAndMask:(const char *)address mask:(unsigned int)addressMask;
+- (void)initAddressAndMaskWithUnsignedInt:(unsigned int)address mask:(unsigned int)addressMask;
 - (NSString *)subnetHostAddrRange;
 - (NSString *)networkClass;
 - (unsigned int)netBits;

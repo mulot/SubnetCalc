@@ -14,7 +14,8 @@
     IBOutlet NSTextField *classBinaryMap;
     IBOutlet NSTextField *classBitMap;
     IBOutlet NSTextField *classHexaMap;
-    IBOutlet NSPopUpButton *classType;
+    IBOutlet NSPopUpButton *exportButton;
+	IBOutlet NSPopUpButton *classType;
     IBOutlet NSComboBox *maskBitsCombo;
     IBOutlet NSComboBox *maxHostsBySubnetCombo;
     IBOutlet NSComboBox *maxSubnetsCombo;
@@ -30,8 +31,11 @@
 	IBOutlet NSComboBox *supernetMaxAddr;
 	IBOutlet NSTextField *supernetRoute;
 	IBOutlet NSTextField *supernetAddrRange;
-	IBOutlet NSTabView *tabView;	
-    NSWindow *window;
+	IBOutlet NSTabView *tabView;
+	IBOutlet NSSlider *subnetBitsSlide;
+	IBOutlet NSTextField *bitsOnSlide;
+	IBOutlet NSButton *tabViewClassLess;
+    IBOutlet NSWindow *window;
 }
 
 @property (assign) IBOutlet NSWindow *window;
@@ -40,6 +44,8 @@
 - (void)doSupernetCalc:(int)maskBits;
 - (void)initClassInfos:(NSString *)c;
 - (int)checkAddr:(NSString *)address;
+- (void)bitsOnSlidePos;
+- (NSString *)URLEncode:(NSString *)url;
 - (IBAction)calc:(id)sender;
 - (IBAction)ipAddrEdit:(id)sender;
 - (IBAction)changeAddrClassType:(id)sender;
@@ -52,6 +58,11 @@
 - (IBAction)changeSupernetMask:(id)sender;
 - (IBAction)changeSupernetMax:(id)sender;
 - (IBAction)changeSupernetMaxAddr:(id)sender;
+- (IBAction)subnetBitsSlide:(id)sender;
+- (IBAction)changeTableViewClass:(id)sender;
+- (IBAction)exportEmail:(id)sender;
+- (IBAction)exportPrint:(id)sender;
+- (IBAction)exportCSV:(id)sender;
 - (int)numberOfRowsInTableView:(NSTableView *)aTableView;
 - (id)tableView:(NSTableView *)aTableView 
 objectValueForTableColumn:(NSTableColumn *)aTableColumn
@@ -61,7 +72,8 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
    forTableColumn:(NSTableColumn *)aTableColumn
 			  row:(int)rowIndex;
 
+@end
+
 IPSubnetCalc	*ipsc;
 NSArray			*tab_tabView;
-
-@end
+Boolean			classless;

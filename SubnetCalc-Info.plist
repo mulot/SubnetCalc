@@ -19,11 +19,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2</string>
+	<string>2.0</string>
 	<key>CFBundleSignature</key>
 	<string>JMUL</string>
 	<key>CFBundleVersion</key>
-	<string>1.2</string>
+	<string>2.0</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>NSMainNibFile</key>
@@ -31,6 +31,6 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright 2010 Julien Mulot</string>
+	<string>Copyright 2013 Julien Mulot</string>
 </dict>
 </plist>
