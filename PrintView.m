@@ -16,8 +16,7 @@
 	NSRect				frame;
 	NSSize				paperSize;
 	
-	entryPerPage = 30;
-	subnetsTable = [table retain];
+    entryPerPage = 30;
 	pages = [subnetsTable numberOfRows] / entryPerPage;
 	if (([subnetsTable numberOfRows] % entryPerPage) != 0)
 	{
@@ -88,12 +87,11 @@
 			[printString drawInRect:aRect withAttributes:attributes];
 		}
 	}
-	[attributes release];
 }
 
 -(void)dealloc
 {
-	[super dealloc];
+	
 }
 
 @end

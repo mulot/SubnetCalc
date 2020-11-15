@@ -29,13 +29,15 @@
 	IBOutlet NSComboBox *supernetMaskCombo;
 	IBOutlet NSComboBox *supernetMaxCombo;
 	IBOutlet NSComboBox *supernetMaxAddr;
+    IBOutlet NSComboBox *supernetMaxSubnetsCombo;
 	IBOutlet NSTextField *supernetRoute;
 	IBOutlet NSTextField *supernetAddrRange;
 	IBOutlet NSTabView *tabView;
 	IBOutlet NSSlider *subnetBitsSlide;
 	IBOutlet NSTextField *bitsOnSlide;
 	IBOutlet NSButton *tabViewClassLess;
-    IBOutlet NSWindow *window;
+    IBOutlet NSButton *wildcard;
+    //IBOutlet NSWindow *window;
 }
 
 @property (assign) IBOutlet NSWindow *window;
@@ -43,6 +45,7 @@
 - (void)doIPSubnetCalc:(unsigned int)mask;
 - (void)doSupernetCalc:(int)maskBits;
 - (void)initClassInfos:(NSString *)c;
+- (void)initCIDR;
 - (int)checkAddr:(NSString *)address;
 - (void)bitsOnSlidePos;
 - (NSString *)URLEncode:(NSString *)url;
@@ -58,11 +61,12 @@
 - (IBAction)changeSupernetMask:(id)sender;
 - (IBAction)changeSupernetMax:(id)sender;
 - (IBAction)changeSupernetMaxAddr:(id)sender;
+- (IBAction)changeSupernetMaxSubnets:(id)sender;
 - (IBAction)subnetBitsSlide:(id)sender;
 - (IBAction)changeTableViewClass:(id)sender;
-- (IBAction)exportEmail:(id)sender;
-- (IBAction)exportPrint:(id)sender;
+- (IBAction)changeWildcard:(id)sender;
 - (IBAction)exportCSV:(id)sender;
+- (void)printAllSubnets;
 - (int)numberOfRowsInTableView:(NSTableView *)aTableView;
 - (id)tableView:(NSTableView *)aTableView 
 objectValueForTableColumn:(NSTableColumn *)aTableColumn
@@ -76,4 +80,4 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 
 IPSubnetCalc	*ipsc;
 NSArray			*tab_tabView;
-Boolean			classless;
+

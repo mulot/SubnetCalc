@@ -37,7 +37,10 @@
     
     unsigned int	ciscoWildcard;
     char			bitMap[36];
+    Boolean         classless;
 }
+
+@property Boolean   classless;
 
 + (NSString *)denumberize:(unsigned int)address;
 + (unsigned int)numberize:(const char *)address;

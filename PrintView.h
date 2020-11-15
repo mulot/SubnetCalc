@@ -11,8 +11,8 @@
 
 @interface PrintView : NSView {
 	NSTableView	*subnetsTable;
-	int			entryPerPage; // how many entry per pages
-	int			pages; //how many pages
+	long			entryPerPage; // how many entry per pages
+	long			pages; //how many pages
 	float		rectHeight; //how much vertical space
 }
 
