@@ -11,34 +11,28 @@
 
 @implementation IPSubnetCalc
 
-@synthesize classless;
-
 + (unsigned int)numberize:(const char *)address
 {
     unsigned int	sin_addr;
     
-    if (address != NULL)
-    {
-        if ((inet_pton(AF_INET, address, &sin_addr)) <= 0)
-            return (-1);
-        return (ntohl(sin_addr));
-    }
-    return (0);
+    if ((inet_pton(AF_INET, address, &sin_addr)) <= 0)
+        return (-1);
+    return (ntohl(sin_addr));
 }
 
 + (NSString *)denumberize:(unsigned int)address
 {
     char			*buffer;
     unsigned int	addr_nl;
-    NSString		*nstr;
-    
+	NSString		*nstr;
+  
     addr_nl = htonl(address);
     if (!(buffer = malloc(INET_ADDRSTRLEN * sizeof (char))))
         return (NULL);
     if (!inet_ntop(AF_INET, &addr_nl, buffer, INET_ADDRSTRLEN * sizeof (char)))
         return (NULL);
-    nstr = [NSString stringWithCString: buffer encoding: NSASCIIStringEncoding];
-    free(buffer);
+	nstr = [NSString stringWithCString: buffer encoding: NSASCIIStringEncoding];
+	free(buffer);
     return (nstr);
 }
 
@@ -79,7 +73,7 @@
     bitMap[DOT(2)] = '.';
     bitMap[DOT(3)] = '.';
     bitMap[35] = 0;
-    
+	
     for (i = 0; i < 35; i++)
     {
         if (i == DOT(1) || i == DOT(2) || i == DOT(3))
@@ -141,35 +135,37 @@
     return ('d');
 }
 
-- (int)setClassInfo:(char)class defaults:(const int)setDefaults
-{
+- (int)setClassInfo:(char)class:(const int)setDefaults
+{	
+	if (networkClass)
+		[networkClass release];
     switch (class)
     {
         case 'a' :
-            networkClass = @"A";
+            networkClass = [[NSString alloc] initWithString: @"A"];
             netBits = 8;
             netId = 0x01000000; 
             mask = 0xff000000;
             break;
         case 'b' :
-            networkClass = @"B";
+            networkClass = [[NSString alloc] initWithString: @"B"];
             netBits = 16;
             netId = 0x80000000; 
             mask = 0xffff0000;
             break;
         case 'c' :
-            networkClass = @"C";
+            networkClass = [[NSString alloc] initWithString: @"C"];
             netBits = 24;
             netId = 0xc0000000; 
             mask = 0xffffff00;
             break;
-        case 'd' :
-            networkClass = @"D";
-            break;
+		case 'd' :
+			 networkClass = [[NSString alloc] initWithString: @"D"];
+			 break;
         default :
             return (-1);
     }
-    if (setDefaults)
+	if (setDefaults)
         hostAddr = netId + 1;
     return (0);
 }
@@ -181,17 +177,17 @@
     class = [self getClass:address];
     subnetBits = 0;
     hostAddr = address;
-    [self setClassInfo:class defaults:0];
+    [self setClassInfo:class:0];
     [self initNetwork];
 }
 
-- (void)initByAddrAndMask:(unsigned int)address mask:(unsigned int)addressMask
+- (void)initByAddrAndMask:(unsigned int)address:(unsigned int)addressMask
 {
     char	class;
     
     class = [self getClass:address];
     hostAddr = address;
-    [self setClassInfo:class defaults:0];
+    [self setClassInfo:class:0];
     if (mask > addressMask)
     {
         mask = addressMask;
@@ -208,25 +204,19 @@
 
 - (void)initAddress:(const char *)address
 {
-    if (address)
-    {
-        [self initByAddr:[IPSubnetCalc numberize:address]];
-    }
+    [self initByAddr:[IPSubnetCalc numberize:address]];
     
 }
 
-- (void)initAddressAndMask:(const char *)address mask:(unsigned int)addressMask
+- (void)initAddressAndMask:(const char *)address:(unsigned int)addressMask
 {
-    if (address)
-    {
-        [self initByAddrAndMask:[IPSubnetCalc numberize:address] mask:addressMask];
-    }
+    [self initByAddrAndMask:[IPSubnetCalc numberize:address]:addressMask];
     
 }
 
-- (void)initAddressAndMaskWithUnsignedInt:(unsigned int)address mask:(unsigned int)addressMask
+- (void)initAddressAndMaskWithUnsignedInt:(unsigned int)address:(unsigned int)addressMask
 {
-    [self initByAddrAndMask:address mask:addressMask];
+    [self initByAddrAndMask:address:addressMask];
     
 }
 - (NSString *)subnetHostAddrRange
@@ -234,7 +224,7 @@
     NSString		*strRange;
     unsigned int	tmpmask;
     
-    strRange = [[NSString alloc] initWithString: [IPSubnetCalc denumberize: ((hostAddr & (mask | subnetMask)) + 1)]];
+    strRange = [[[NSString alloc] initWithString: [IPSubnetCalc denumberize: ((hostAddr & (mask | subnetMask)) + 1)]] autorelease];
     tmpmask = -1;
     tmpmask >>= maskBits;
     return ([strRange stringByAppendingFormat: @" - %@", [IPSubnetCalc denumberize: ((hostAddr | tmpmask) - 1)]]);
@@ -242,7 +232,7 @@
 
 - (NSString *)bitMap
 {
-    return ([NSString stringWithCString: bitMap encoding: NSASCIIStringEncoding]);
+	return ([NSString stringWithCString: bitMap encoding: NSASCIIStringEncoding]);
 }
 
 - (NSString *)binMap
@@ -251,8 +241,8 @@
     unsigned int	address;
     unsigned int	mask_tmp = 1;
     int				i;
-    
-    str_binmap = [[NSString alloc] init];
+
+    str_binmap = [[[NSString alloc] init] autorelease];
     address = hostAddr;
     mask_tmp <<= 31;
     for (i = 0; i < 32; i++)
@@ -261,7 +251,7 @@
             str_binmap = [str_binmap stringByAppendingString: @"1"];
         else
             str_binmap = [str_binmap stringByAppendingString: @"0"];
-        address <<= 1;
+		address <<= 1;
         if (i != 31 && ((i + 1) % 8 == 0))
             str_binmap = [str_binmap stringByAppendingString: @"."];
     }
@@ -273,14 +263,14 @@
     NSString		*str_hexmap;
     unsigned int	address;
     int				i;
-    
-    str_hexmap = [[NSString alloc] init];
+        
+    str_hexmap = [[[NSString alloc] init] autorelease];
     address = hostAddr;
     for (i = 0; i < 4; i++)
     {
         str_hexmap = [str_hexmap stringByAppendingFormat: @"%.2X", ((address << (8 * i)) >> 24)];
         if (i != 3)
-            str_hexmap = [str_hexmap stringByAppendingString: @"."];
+			str_hexmap = [str_hexmap stringByAppendingString: @"."];
     }
     return (str_hexmap);
 }
@@ -322,7 +312,7 @@
 
 - (unsigned int)netIdIntValue
 {
-    return (netId);
+	return (netId);
 }
 
 - (NSString *)subnetMask
@@ -332,7 +322,7 @@
 
 - (unsigned int)subnetMaskIntValue
 {
-    return (mask | subnetMask);
+	return (mask | subnetMask);
 }
 
 - (NSString *)subnetBroadcast
@@ -357,36 +347,27 @@
 
 - (unsigned int)netBits
 {
-    return (netBits);
+	return (netBits);
 }
 
 - (NSString *)supernetRoute:(int)supernetMaskBits
 {
-    unsigned int	tmpmask = -1;
+	unsigned int	tmpmask = -1;
     
-    tmpmask <<= (32 - supernetMaskBits);
+	tmpmask <<= (32 - supernetMaskBits);
     return ([IPSubnetCalc denumberize: (hostAddr & tmpmask)]);
 }
 
 - (NSString *)supernetAddrRange:(int)supernetMaskBits
 {
-    NSString		*strRange;
+	NSString		*strRange;
     unsigned int	tmpmask = -1;
     
-    tmpmask <<= (32 - supernetMaskBits);
-    strRange = [[NSString alloc] initWithString: [IPSubnetCalc denumberize: (hostAddr & tmpmask)]];
+	tmpmask <<= (32 - supernetMaskBits);
+    strRange = [[[NSString alloc] initWithString: [IPSubnetCalc denumberize: (hostAddr & tmpmask)]] autorelease];
     tmpmask = -1;
     tmpmask >>= supernetMaskBits;
     return ([strRange stringByAppendingFormat: @" - %@", [IPSubnetCalc denumberize: (hostAddr | tmpmask)]]);
-}
-
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        [self setClassless: NO];
-    }
-    return self;
 }
 
 @end
