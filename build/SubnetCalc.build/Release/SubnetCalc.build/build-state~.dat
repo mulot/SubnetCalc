@@ -1,580 +1,0 @@
-TSubnetCalc
-v7
-r0
-t316050102.126523
-cCheck dependencies
-cProcessInfoPlistFile /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/Info.plist SubnetCalc-Info.plist
-cCopyStringsFile /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/Resources/English.lproj/InfoPlist.strings English.lproj/InfoPlist.strings
-cCompileXIB /Users/mulot/Desktop/SubnetCalc/English.lproj/MainMenu.xib
-cCpResource build/Release/SubnetCalc.app/Contents/Resources/SubnetCalc.icns SubnetCalc.icns
-cCpResource build/Release/SubnetCalc.app/Contents/Resources/License.txt License.txt
-cProcessPCH /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-hgsezebbpnctluakkprkhhjhayri/SubnetCalc_Prefix.pch.gch SubnetCalc_Prefix.pch normal x86_64 objective-c com.apple.compilers.gcc.4_2
-cProcessPCH /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-egxejijkomkzlebfmmffxwynpeea/SubnetCalc_Prefix.pch.gch SubnetCalc_Prefix.pch normal i386 objective-c com.apple.compilers.gcc.4_2
-cProcessPCH /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-amubjezqiayhkyacbjqydwjmriaq/SubnetCalc_Prefix.pch.pth SubnetCalc_Prefix.pch normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.analyzer
-cProcessPCH /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-aidcpomxdurlyearldppciiubleb/SubnetCalc_Prefix.pch.pth SubnetCalc_Prefix.pch normal i386 objective-c com.apple.compilers.llvm.clang.1_0.analyzer
-cCompileC build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/main.o /Users/mulot/Desktop/SubnetCalc/main.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/SubnetCalcAppDelegate.o /Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/IPSubnetCalc.o /Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/main.o /Users/mulot/Desktop/SubnetCalc/main.m normal i386 objective-c com.apple.compilers.gcc.4_2
-cLd /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/SubnetCalc normal x86_64
-cCompileC build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/SubnetCalcAppDelegate.o /Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m normal i386 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/IPSubnetCalc.o /Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m normal i386 objective-c com.apple.compilers.gcc.4_2
-cAnalyze /Users/mulot/Desktop/SubnetCalc/main.m
-cLd /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/SubnetCalc normal i386
-cAnalyze /Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m
-cAnalyze /Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m
-cCreateUniversalBinary /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/MacOS/SubnetCalc normal "x86_64 i386"
-cAnalyze /Users/mulot/Desktop/SubnetCalc/main.m
-cAnalyze /Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m
-cAnalyze /Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m
-cGenerateDSYMFile /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app.dSYM /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/MacOS/SubnetCalc
-cTouch /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app
-cCodeSign /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app
-
-N/Developer/SDKs/MacOSX10.6.sdk
-c000000004CAA740B00000000000000EE
-t1286239243
-s238
-
-N/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Cocoa.framework/Headers/Cocoa.h
-c0000000040C4AA6800000000000001E5
-t1086630504
-s485
-
-N/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h
-c000000004C23AA0400000000000013E6
-t1277405700
-s5094
-
-N/Developer/SDKs/MacOSX10.6.sdk/usr/include/arpa/inet.h
-c000000004BBD2CC60000000000001533
-t1270688966
-s5427
-
-N/Developer/SDKs/MacOSX10.6.sdk/usr/include/netinet/in.h
-c000000004C2399440000000000005414
-t1277401412
-s21524
-
-N/Developer/SDKs/MacOSX10.6.sdk/usr/include/sys/socket.h
-c000000004C23994800000000000059BC
-t1277401416
-s22972
-
-N/Developer/SDKs/MacOSX10.6.sdk/usr/include/sys/types.h
-c000000004C2399480000000000002905
-t1277401416
-s10501
-
-N/System/Library/Frameworks/Cocoa.framework/Cocoa
-c000000004A1F2D63000000000000A5E0
-t1243557219
-s42464
-
-N/Users/mulot/Desktop/SubnetCalc/English.lproj/InfoPlist.strings
-c000000004D23752D000000000000002D
-t1294169389
-s45
-
-N/Users/mulot/Desktop/SubnetCalc/English.lproj/MainMenu.xib
-c000000004D2652BC00000000000355D8
-t1294357180
-s218584
-
-N/Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.h
-c000000004AA563480000000000000739
-t1252352840
-s1849
-i<Cocoa/Cocoa.h>
-i<Foundation/Foundation.h>
-i<sys/types.h>
-i<sys/socket.h>
-i<netinet/in.h>
-i<arpa/inet.h>
-
-N/Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m
-c000000004AA563390000000000002006
-t1252352825
-s8198
-i"IPSubnetCalc.h"
-
-N/Users/mulot/Desktop/SubnetCalc/License.txt
-c00000000402AC9C60000000000003B01
-t1076545990
-s15105
-
-N/Users/mulot/Desktop/SubnetCalc/SubnetCalc.h
-c000000004D23A2540000000000000071
-t1294180948
-s113
-i"IPSubnetCalc.h"
-i<Cocoa/Cocoa.h>
-
-N/Users/mulot/Desktop/SubnetCalc/SubnetCalc.icns
-c000000004A9EE7A8000000000001EE90
-t1251927976
-s126608
-
-N/Users/mulot/Desktop/SubnetCalc/SubnetCalc.m
-c000000004D23A1DC0000000000000094
-t1294180828
-s148
-i"SubnetCalc.h"
-i<sys/types.h>
-i<sys/socket.h>
-i<netinet/in.h>
-i<arpa/inet.h>
-
-N/Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.h
-c000000004D23A26B00000000000008A5
-t1294180971
-s2213
-i"IPSubnetCalc.h"
-i<Cocoa/Cocoa.h>
-
-N/Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m
-c000000004D2633080000000000003245
-t1294349064
-s12869
-i"SubnetCalcAppDelegate.h"
-i<sys/types.h>
-i<sys/socket.h>
-i<netinet/in.h>
-i<arpa/inet.h>
-
-N/Users/mulot/Desktop/SubnetCalc/SubnetCalc_Prefix.pch
-c000000004D23752E0000000000000097
-t1294169390
-s151
-i<Cocoa/Cocoa.h>
-
-N/Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app
-t1294357301
-s102
-
-N/Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app.dSYM
-t1294357301
-s102
-
-N/Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/Info.plist
-t1294357290
-s1124
-
-N/Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/MacOS/SubnetCalc
-t1294357301
-s95872
-
-N/Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/PkgInfo
-t1294357290
-s8
-
-N/Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/Resources/English.lproj/InfoPlist.strings
-t1294357290
-s92
-
-N/Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/Resources/English.lproj/MainMenu.nib
-t1294357291
-s42708
-
-N/Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/Resources/License.txt
-t1294357290
-s15105
-
-N/Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/Resources/SubnetCalc.icns
-t1294357290
-s126608
-
-N/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/IPSubnetCalc.o
-t1294357300
-s26172
-
-N/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/SubnetCalc
-t1294357301
-s38528
-
-N/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/SubnetCalc.LinkFileList
-c000000004D26532A000000000000015A
-t1294357290
-s346
-
-N/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/SubnetCalc.o
-t1294181047
-s4760
-
-N/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/SubnetCalcAppDelegate.o
-t1294357300
-s50944
-
-N/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/main.o
-t1294357300
-s4828
-
-N/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/IPSubnetCalc.o
-t1294357300
-s43868
-
-N/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/SubnetCalc
-t1294357300
-s49312
-
-N/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/SubnetCalc.LinkFileList
-c000000004D26532A0000000000000160
-t1294357290
-s352
-
-N/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/SubnetCalc.o
-t1294181046
-s5436
-
-N/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/SubnetCalcAppDelegate.o
-t1294357299
-s71656
-
-N/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/main.o
-t1294357299
-s5032
-
-N/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/StaticAnalyzer/normal/i386/IPSubnetCalc.plist
-t1294357301
-s276
-
-N/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/StaticAnalyzer/normal/i386/SubnetCalcAppDelegate.plist
-t2
-s0
-
-N/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/StaticAnalyzer/normal/i386/main.plist
-t1294357301
-s276
-
-N/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/StaticAnalyzer/normal/x86_64/IPSubnetCalc.plist
-t1294357301
-s276
-
-N/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/StaticAnalyzer/normal/x86_64/SubnetCalcAppDelegate.plist
-t2
-s0
-
-N/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/StaticAnalyzer/normal/x86_64/main.plist
-t1294357300
-s276
-
-N/Users/mulot/Desktop/SubnetCalc/main.m
-c000000004D23752E00000000000000F9
-t1294169390
-s249
-i<Cocoa/Cocoa.h>
-
-N/var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-aidcpomxdurlyearldppciiubleb/SubnetCalc_Prefix.pch.pth
-t1294357299
-s9816348
-
-N/var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-amubjezqiayhkyacbjqydwjmriaq/SubnetCalc_Prefix.pch.pth
-t1294357299
-s9005432
-
-N/var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-egxejijkomkzlebfmmffxwynpeea/SubnetCalc_Prefix.pch.gch
-t1294357297
-s55592752
-
-N/var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-hgsezebbpnctluakkprkhhjhayri/SubnetCalc_Prefix.pch.gch
-t1294357297
-s52958992
-
-NSubnetCalc-Info.plist
-c000000004D24BBD40000000000000488
-t1294253012
-s1160
-
-CAnalyze /Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m
-s316050101.365127
-e316050101.570556
-r1
-xAnalyze
-x/Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m
-lSLF07#2@54"Analyze /Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m316050101#316050101#0(0"0(0#0#46"/Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m8625496992#1533"    cd /Users/mulot/Desktop/SubnetCalc    setenv LANG en_US.US-ASCII    /Developer/usr/bin/clang -x objective-c -arch i386 -fmessage-length=0 -pipe -fdiagnostics-print-source-range-info -std=gnu99 -Wno-trigraphs -fpascal-strings -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mmacosx-version-min=10.6 -gdwarf-2 -fvisibility=hidden -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-generated-files.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-own-target-headers.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-all-target-headers.hmap -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-project-headers.hmap -F/Users/mulot/Desktop/SubnetCalc/build/Release -I/Users/mulot/Desktop/SubnetCalc/build/Release/include -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources/i386 -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources -include /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-aidcpomxdurlyearldppciiubleb/SubnetCalc_Prefix.pch --analyze /Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m -o /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/StaticAnalyzer/normal/i386/IPSubnetCalc.plist0#
-
-CAnalyze /Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m
-s316050101.323498
-e316050101.507536
-r1
-xAnalyze
-x/Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m
-oIn file included from /Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m:9:
-o/Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.h:64:15: error: cannot declare variable inside @interface or @protocol
-o IPSubnetCalc    *ipsc;
-o                  ^
-o/Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.h:65:12: error: cannot declare variable inside @interface or @protocol
-o NSArray                 *tab_tabView;
-o                          ^
-o2 errors generated.
-lSLF07#2@63"Analyze /Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m316050101#316050101#0(462"In file included from /Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m:9:/Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.h:64:15: error: cannot declare variable inside @interface or @protocol IPSubnetCalc    *ipsc;                  ^/Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.h:65:12: error: cannot declare variable inside @interface or @protocol NSArray                 *tab_tabView;                          ^2 errors generated.1(25@46"Analyzer skipped this file due to parse errors316050101#18446744073709551615#0#2(25@54"cannot declare variable inside @interface or @protocol316050101#18446744073709551615#0#0(6@55"/Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.h315873771#64#0#64#0#0"0(25@54"cannot declare variable inside @interface or @protocol316050101#18446744073709551615#0#0(6@55"/Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.h315873771#65#0#65#0#0"0(6@55"/Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.h315873771#0#0#0#0#0"0(0#0#55"/Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m8642476448#1551"    cd /Users/mulot/Desktop/SubnetCalc    setenv LANG en_US.US-ASCII    /Developer/usr/bin/clang -x objective-c -arch i386 -fmessage-length=0 -pipe -fdiagnostics-print-source-range-info -std=gnu99 -Wno-trigraphs -fpascal-strings -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mmacosx-version-min=10.6 -gdwarf-2 -fvisibility=hidden -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-generated-files.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-own-target-headers.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-all-target-headers.hmap -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-project-headers.hmap -F/Users/mulot/Desktop/SubnetCalc/build/Release -I/Users/mulot/Desktop/SubnetCalc/build/Release/include -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources/i386 -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources -include /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-aidcpomxdurlyearldppciiubleb/SubnetCalc_Prefix.pch --analyze /Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m -o /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/StaticAnalyzer/normal/i386/SubnetCalcAppDelegate.plist0#
-
-CAnalyze /Users/mulot/Desktop/SubnetCalc/main.m
-s316050101.179967
-e316050101.365038
-r1
-xAnalyze
-x/Users/mulot/Desktop/SubnetCalc/main.m
-lSLF07#2@46"Analyze /Users/mulot/Desktop/SubnetCalc/main.m316050101#316050101#0(0"0(0#0#38"/Users/mulot/Desktop/SubnetCalc/main.m8625196544#1517"    cd /Users/mulot/Desktop/SubnetCalc    setenv LANG en_US.US-ASCII    /Developer/usr/bin/clang -x objective-c -arch i386 -fmessage-length=0 -pipe -fdiagnostics-print-source-range-info -std=gnu99 -Wno-trigraphs -fpascal-strings -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mmacosx-version-min=10.6 -gdwarf-2 -fvisibility=hidden -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-generated-files.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-own-target-headers.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-all-target-headers.hmap -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-project-headers.hmap -F/Users/mulot/Desktop/SubnetCalc/build/Release -I/Users/mulot/Desktop/SubnetCalc/build/Release/include -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources/i386 -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources -include /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-aidcpomxdurlyearldppciiubleb/SubnetCalc_Prefix.pch --analyze /Users/mulot/Desktop/SubnetCalc/main.m -o /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/StaticAnalyzer/normal/i386/main.plist0#
-
-CCheck dependencies
-r0
-lSLF07#2@18"Check dependencies316050089#316050090#0(0"0(0#1#0"8643988768#0"0#
-
-CCodeSign /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app
-s316050101.608306
-e316050102.126478
-r1
-xCodeSign
-x/Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app
-lSLF07#2@37"CodeSign build/Release/SubnetCalc.app316050101#316050102#0(0"0(0#0#60"/Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app8617032384#180"    cd /Users/mulot/Desktop/SubnetCalc    /usr/bin/codesign -f -s "3rd Party Mac Developer Application: Julien Mulot" /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app0#
-
-CCompileC build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/IPSubnetCalc.o /Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m normal i386 objective-c com.apple.compilers.gcc.4_2
-s316050100.213366
-e316050100.605374
-r1
-xCompileC
-xbuild/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/IPSubnetCalc.o
-x/Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@54"Compile /Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m316050100#316050100#0(0"0(0#0#46"/Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m8634854336#1479"    cd /Users/mulot/Desktop/SubnetCalc    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-generated-files.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-own-target-headers.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-all-target-headers.hmap -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-project-headers.hmap -F/Users/mulot/Desktop/SubnetCalc/build/Release -I/Users/mulot/Desktop/SubnetCalc/build/Release/include -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources/i386 -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources -include /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-egxejijkomkzlebfmmffxwynpeea/SubnetCalc_Prefix.pch -c /Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m -o /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/IPSubnetCalc.o0#
-
-CCompileC build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/SubnetCalc.o /Users/mulot/Desktop/SubnetCalc/SubnetCalc.m normal i386 objective-c com.apple.compilers.gcc.4_2
-s315873847.572026
-e315873847.921102
-r1
-xCompileC
-xbuild/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/SubnetCalc.o
-x/Users/mulot/Desktop/SubnetCalc/SubnetCalc.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@52"Compile /Users/mulot/Desktop/SubnetCalc/SubnetCalc.m315873847#315873847#0(0"0(0#0#44"/Users/mulot/Desktop/SubnetCalc/SubnetCalc.m8626458720#1475"    cd /Users/mulot/Desktop/SubnetCalc    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-generated-files.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-own-target-headers.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-all-target-headers.hmap -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-project-headers.hmap -F/Users/mulot/Desktop/SubnetCalc/build/Release -I/Users/mulot/Desktop/SubnetCalc/build/Release/include -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources/i386 -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources -include /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-egxejijkomkzlebfmmffxwynpeea/SubnetCalc_Prefix.pch -c /Users/mulot/Desktop/SubnetCalc/SubnetCalc.m -o /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/SubnetCalc.o0#
-
-CCompileC build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/SubnetCalcAppDelegate.o /Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m normal i386 objective-c com.apple.compilers.gcc.4_2
-s316050100.143299
-e316050100.784124
-r1
-xCompileC
-xbuild/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/SubnetCalcAppDelegate.o
-x/Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@63"Compile /Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m316050100#316050100#0(0"0(0#0#55"/Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m8647236544#1497"    cd /Users/mulot/Desktop/SubnetCalc    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-generated-files.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-own-target-headers.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-all-target-headers.hmap -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-project-headers.hmap -F/Users/mulot/Desktop/SubnetCalc/build/Release -I/Users/mulot/Desktop/SubnetCalc/build/Release/include -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources/i386 -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources -include /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-egxejijkomkzlebfmmffxwynpeea/SubnetCalc_Prefix.pch -c /Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m -o /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/SubnetCalcAppDelegate.o0#
-
-CCompileC build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/main.o /Users/mulot/Desktop/SubnetCalc/main.m normal i386 objective-c com.apple.compilers.gcc.4_2
-s316050099.980850
-e316050100.213256
-r1
-xCompileC
-xbuild/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/main.o
-x/Users/mulot/Desktop/SubnetCalc/main.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@46"Compile /Users/mulot/Desktop/SubnetCalc/main.m316050099#316050100#0(0"0(0#0#38"/Users/mulot/Desktop/SubnetCalc/main.m8630365120#1463"    cd /Users/mulot/Desktop/SubnetCalc    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-generated-files.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-own-target-headers.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-all-target-headers.hmap -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-project-headers.hmap -F/Users/mulot/Desktop/SubnetCalc/build/Release -I/Users/mulot/Desktop/SubnetCalc/build/Release/include -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources/i386 -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources -include /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-egxejijkomkzlebfmmffxwynpeea/SubnetCalc_Prefix.pch -c /Users/mulot/Desktop/SubnetCalc/main.m -o /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/main.o0#
-
-CCompileC build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/IPSubnetCalc.o /Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
-s316050099.599782
-e316050100.053887
-r1
-xCompileC
-xbuild/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/IPSubnetCalc.o
-x/Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@54"Compile /Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m316050099#316050100#0(0"0(0#0#46"/Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m8622199520#1485"    cd /Users/mulot/Desktop/SubnetCalc    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-generated-files.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-own-target-headers.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-all-target-headers.hmap -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-project-headers.hmap -F/Users/mulot/Desktop/SubnetCalc/build/Release -I/Users/mulot/Desktop/SubnetCalc/build/Release/include -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources/x86_64 -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources -include /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-hgsezebbpnctluakkprkhhjhayri/SubnetCalc_Prefix.pch -c /Users/mulot/Desktop/SubnetCalc/IPSubnetCalc.m -o /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/IPSubnetCalc.o0#
-
-CCompileC build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/SubnetCalc.o /Users/mulot/Desktop/SubnetCalc/SubnetCalc.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
-s315873846.019344
-e315873846.437727
-r1
-xCompileC
-xbuild/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/SubnetCalc.o
-x/Users/mulot/Desktop/SubnetCalc/SubnetCalc.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@52"Compile /Users/mulot/Desktop/SubnetCalc/SubnetCalc.m315873846#315873846#0(0"0(0#0#44"/Users/mulot/Desktop/SubnetCalc/SubnetCalc.m8633207328#1481"    cd /Users/mulot/Desktop/SubnetCalc    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-generated-files.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-own-target-headers.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-all-target-headers.hmap -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-project-headers.hmap -F/Users/mulot/Desktop/SubnetCalc/build/Release -I/Users/mulot/Desktop/SubnetCalc/build/Release/include -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources/x86_64 -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources -include /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-hgsezebbpnctluakkprkhhjhayri/SubnetCalc_Prefix.pch -c /Users/mulot/Desktop/SubnetCalc/SubnetCalc.m -o /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/SubnetCalc.o0#
-
-CCompileC build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/SubnetCalcAppDelegate.o /Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
-s316050099.396717
-e316050099.980735
-r1
-xCompileC
-xbuild/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/SubnetCalcAppDelegate.o
-x/Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@63"Compile /Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m316050099#316050099#0(0"0(0#0#55"/Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m8609817824#1503"    cd /Users/mulot/Desktop/SubnetCalc    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-generated-files.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-own-target-headers.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-all-target-headers.hmap -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-project-headers.hmap -F/Users/mulot/Desktop/SubnetCalc/build/Release -I/Users/mulot/Desktop/SubnetCalc/build/Release/include -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources/x86_64 -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources -include /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-hgsezebbpnctluakkprkhhjhayri/SubnetCalc_Prefix.pch -c /Users/mulot/Desktop/SubnetCalc/SubnetCalcAppDelegate.m -o /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/SubnetCalcAppDelegate.o0#
-
-CCompileC build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/main.o /Users/mulot/Desktop/SubnetCalc/main.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
-s316050099.395478
-e316050099.599666
-r1
-xCompileC
-xbuild/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/main.o
-x/Users/mulot/Desktop/SubnetCalc/main.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@46"Compile /Users/mulot/Desktop/SubnetCalc/main.m316050099#316050099#0(0"0(0#0#38"/Users/mulot/Desktop/SubnetCalc/main.m8617074464#1469"    cd /Users/mulot/Desktop/SubnetCalc    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-generated-files.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-own-target-headers.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-all-target-headers.hmap -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-project-headers.hmap -F/Users/mulot/Desktop/SubnetCalc/build/Release -I/Users/mulot/Desktop/SubnetCalc/build/Release/include -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources/x86_64 -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources -include /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-hgsezebbpnctluakkprkhhjhayri/SubnetCalc_Prefix.pch -c /Users/mulot/Desktop/SubnetCalc/main.m -o /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/main.o0#
-
-CCompileXIB /Users/mulot/Desktop/SubnetCalc/English.lproj/MainMenu.xib
-s316050090.501150
-e316050091.071333
-r1
-xCompileXIB
-x/Users/mulot/Desktop/SubnetCalc/English.lproj/MainMenu.xib
-o/* com.apple.ibtool.document.notices */
-o/Users/mulot/Desktop/SubnetCalc/English.lproj/MainMenu.xib:563: note: This view is clipping its content.
-lSLF07#2@37"CompileXIB English.lproj/MainMenu.xib316050090#316050091#0(145"/* com.apple.ibtool.document.notices *//Users/mulot/Desktop/SubnetCalc/English.lproj/MainMenu.xib:563: note: This view is clipping its content.1(13@34"This view is clipping its content.316050091#18446744073709551615#0#0(6@58"/Users/mulot/Desktop/SubnetCalc/English.lproj/MainMenu.xib316049980#563#0#563#0#0"0(0#0#58"/Users/mulot/Desktop/SubnetCalc/English.lproj/MainMenu.xib8642861280#348"    cd /Users/mulot/Desktop/SubnetCalc    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/Resources/English.lproj/MainMenu.nib /Users/mulot/Desktop/SubnetCalc/English.lproj/MainMenu.xib --sdk /Developer/SDKs/MacOSX10.6.sdk0#
-
-CCopyStringsFile /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/Resources/English.lproj/InfoPlist.strings English.lproj/InfoPlist.strings
-s316050090.500312
-e316050090.646954
-r1
-xCopyStringsFile
-x/Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/Resources/English.lproj/InfoPlist.strings
-xEnglish.lproj/InfoPlist.strings
-lSLF07#2@36"Copy English.lproj/InfoPlist.strings316050090#316050090#0(0"0(0#0#63"/Users/mulot/Desktop/SubnetCalc/English.lproj/InfoPlist.strings8643203488#356"    cd /Users/mulot/Desktop/SubnetCalc    setenv ICONV /usr/bin/iconv    /Developer/Library/Xcode/Plug-ins/CoreBuildTasks.xcplugin/Contents/Resources/copystrings --validate --inputencoding utf-8 --outputencoding UTF-16 English.lproj/InfoPlist.strings --outdir /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/Resources/English.lproj0#
-
-CCpResource build/Release/SubnetCalc.app/Contents/Resources/License.txt License.txt
-s316050090.648993
-e316050090.670645
-r1
-xCpResource
-xbuild/Release/SubnetCalc.app/Contents/Resources/License.txt
-xLicense.txt
-lSLF07#2@16"Copy License.txt316050090#316050090#0(0"0(0#0#43"/Users/mulot/Desktop/SubnetCalc/License.txt8648517440#346"    cd /Users/mulot/Desktop/SubnetCalc    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -strip-debug-symbols -resolve-src-symlinks /Users/mulot/Desktop/SubnetCalc/License.txt /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/Resources0#
-
-CCpResource build/Release/SubnetCalc.app/Contents/Resources/SubnetCalc.icns SubnetCalc.icns
-s316050090.647058
-e316050090.674544
-r1
-xCpResource
-xbuild/Release/SubnetCalc.app/Contents/Resources/SubnetCalc.icns
-xSubnetCalc.icns
-lSLF07#2@20"Copy SubnetCalc.icns316050090#316050090#0(0"0(0#0#47"/Users/mulot/Desktop/SubnetCalc/SubnetCalc.icns8619166464#350"    cd /Users/mulot/Desktop/SubnetCalc    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -strip-debug-symbols -resolve-src-symlinks /Users/mulot/Desktop/SubnetCalc/SubnetCalc.icns /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/Resources0#
-
-CCreateUniversalBinary /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/MacOS/SubnetCalc normal "x86_64 i386"
-s316050101.173570
-e316050101.179807
-r1
-xCreateUniversalBinary
-x/Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/MacOS/SubnetCalc
-xnormal
-xx86_64 i386
-lSLF07#2@97"CreateUniversalBinary build/Release/SubnetCalc.app/Contents/MacOS/SubnetCalc normal "x86_64 i386"316050101#316050101#0(0"0(0#0#43"/Users/mulot/Desktop/SubnetCalc/x86_64 i3868627288096#384"    cd /Users/mulot/Desktop/SubnetCalc    /usr/bin/lipo -create /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/SubnetCalc /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/SubnetCalc -output /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/MacOS/SubnetCalc0#
-
-CGenerateDSYMFile /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app.dSYM /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/MacOS/SubnetCalc
-s316050101.507946
-e316050101.565543
-r1
-xGenerateDSYMFile
-x/Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app.dSYM
-x/Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/MacOS/SubnetCalc
-lSLF07#2@105"GenerateDSYMFile build/Release/SubnetCalc.app.dSYM build/Release/SubnetCalc.app/Contents/MacOS/SubnetCalc316050101#316050101#0(0"0(0#0#86"/Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/MacOS/SubnetCalc8620197120#227"    cd /Users/mulot/Desktop/SubnetCalc    /Developer/usr/bin/dsymutil /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/MacOS/SubnetCalc -o /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app.dSYM0#
-
-CLd /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/SubnetCalc normal i386
-s316050100.784313
-e316050101.173325
-r1
-xLd
-x/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/SubnetCalc
-xnormal
-xi386
-lSLF07#2@115"Link /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/SubnetCalc316050100#316050101#0(0"0(0#0#0"8621766112#550"    cd /Users/mulot/Desktop/SubnetCalc    setenv MACOSX_DEPLOYMENT_TARGET 10.6    /Developer/usr/bin/gcc-4.2 -arch i386 -isysroot /Developer/SDKs/MacOSX10.6.sdk -L/Users/mulot/Desktop/SubnetCalc/build/Release -F/Users/mulot/Desktop/SubnetCalc/build/Release -filelist /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/SubnetCalc.LinkFileList -mmacosx-version-min=10.6 -framework Cocoa -o /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/i386/SubnetCalc0#
-
-CLd /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/SubnetCalc normal x86_64
-s316050100.054000
-e316050100.143171
-r1
-xLd
-x/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/SubnetCalc
-xnormal
-xx86_64
-lSLF07#2@117"Link /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/SubnetCalc316050100#316050100#0(0"0(0#0#0"8626989504#556"    cd /Users/mulot/Desktop/SubnetCalc    setenv MACOSX_DEPLOYMENT_TARGET 10.6    /Developer/usr/bin/gcc-4.2 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.6.sdk -L/Users/mulot/Desktop/SubnetCalc/build/Release -F/Users/mulot/Desktop/SubnetCalc/build/Release -filelist /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/SubnetCalc.LinkFileList -mmacosx-version-min=10.6 -framework Cocoa -o /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/Objects-normal/x86_64/SubnetCalc0#
-
-CProcessInfoPlistFile /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/Info.plist SubnetCalc-Info.plist
-s316050090.484616
-e316050090.500213
-r1
-xProcessInfoPlistFile
-x/Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/Info.plist
-xSubnetCalc-Info.plist
-lSLF07#2@29"Process SubnetCalc-Info.plist316050090#316050090#0(0"0(0#0#53"/Users/mulot/Desktop/SubnetCalc/SubnetCalc-Info.plist8644425632#302"    cd /Users/mulot/Desktop/SubnetCalc    builtin-infoPlistUtility SubnetCalc-Info.plist -genpkginfo /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/PkgInfo -expandbuildsettings -platform macosx -o /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app/Contents/Info.plist0#
-
-CProcessPCH /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-aidcpomxdurlyearldppciiubleb/SubnetCalc_Prefix.pch.pth SubnetCalc_Prefix.pch normal i386 objective-c com.apple.compilers.llvm.clang.1_0.analyzer
-s316050098.086721
-e316050099.395364
-r1
-xProcessPCH
-x/var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-aidcpomxdurlyearldppciiubleb/SubnetCalc_Prefix.pch.pth
-xSubnetCalc_Prefix.pch
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.analyzer
-lSLF07#2@32"Precompile SubnetCalc_Prefix.pch316050098#316050099#0(0"0(0#0#53"/Users/mulot/Desktop/SubnetCalc/SubnetCalc_Prefix.pch8647233024#1409"    cd /Users/mulot/Desktop/SubnetCalc    setenv LANG en_US.US-ASCII    /Developer/usr/bin/clang -x objective-c-header -arch i386 -fmessage-length=0 -pipe -fdiagnostics-print-source-range-info -std=gnu99 -Wno-trigraphs -fpascal-strings -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mmacosx-version-min=10.6 -gdwarf-2 -fvisibility=hidden -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-generated-files.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-own-target-headers.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-all-target-headers.hmap -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-project-headers.hmap -F/Users/mulot/Desktop/SubnetCalc/build/Release -I/Users/mulot/Desktop/SubnetCalc/build/Release/include -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources/i386 -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources -c /Users/mulot/Desktop/SubnetCalc/SubnetCalc_Prefix.pch -o /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-aidcpomxdurlyearldppciiubleb/SubnetCalc_Prefix.pch.pth0#
-
-CProcessPCH /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-amubjezqiayhkyacbjqydwjmriaq/SubnetCalc_Prefix.pch.pth SubnetCalc_Prefix.pch normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.analyzer
-s316050097.660180
-e316050099.208533
-r1
-xProcessPCH
-x/var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-amubjezqiayhkyacbjqydwjmriaq/SubnetCalc_Prefix.pch.pth
-xSubnetCalc_Prefix.pch
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.analyzer
-lSLF07#2@32"Precompile SubnetCalc_Prefix.pch316050097#316050099#0(0"0(0#0#53"/Users/mulot/Desktop/SubnetCalc/SubnetCalc_Prefix.pch8622356832#1413"    cd /Users/mulot/Desktop/SubnetCalc    setenv LANG en_US.US-ASCII    /Developer/usr/bin/clang -x objective-c-header -arch x86_64 -fmessage-length=0 -pipe -fdiagnostics-print-source-range-info -std=gnu99 -Wno-trigraphs -fpascal-strings -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mmacosx-version-min=10.6 -gdwarf-2 -fvisibility=hidden -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-generated-files.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-own-target-headers.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-all-target-headers.hmap -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-project-headers.hmap -F/Users/mulot/Desktop/SubnetCalc/build/Release -I/Users/mulot/Desktop/SubnetCalc/build/Release/include -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources/x86_64 -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources -c /Users/mulot/Desktop/SubnetCalc/SubnetCalc_Prefix.pch -o /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-amubjezqiayhkyacbjqydwjmriaq/SubnetCalc_Prefix.pch.pth0#
-
-CProcessPCH /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-egxejijkomkzlebfmmffxwynpeea/SubnetCalc_Prefix.pch.gch SubnetCalc_Prefix.pch normal i386 objective-c com.apple.compilers.gcc.4_2
-s316050091.072812
-e316050098.086591
-r1
-xProcessPCH
-x/var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-egxejijkomkzlebfmmffxwynpeea/SubnetCalc_Prefix.pch.gch
-xSubnetCalc_Prefix.pch
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@32"Precompile SubnetCalc_Prefix.pch316050091#316050098#0(0"0(0#0#53"/Users/mulot/Desktop/SubnetCalc/SubnetCalc_Prefix.pch8645813120#1373"    cd /Users/mulot/Desktop/SubnetCalc    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c-header -arch i386 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-generated-files.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-own-target-headers.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-all-target-headers.hmap -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-project-headers.hmap -F/Users/mulot/Desktop/SubnetCalc/build/Release -I/Users/mulot/Desktop/SubnetCalc/build/Release/include -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources/i386 -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources -c /Users/mulot/Desktop/SubnetCalc/SubnetCalc_Prefix.pch -o /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-egxejijkomkzlebfmmffxwynpeea/SubnetCalc_Prefix.pch.gch0#
-
-CProcessPCH /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-hgsezebbpnctluakkprkhhjhayri/SubnetCalc_Prefix.pch.gch SubnetCalc_Prefix.pch normal x86_64 objective-c com.apple.compilers.gcc.4_2
-s316050091.071546
-e316050097.659960
-r1
-xProcessPCH
-x/var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-hgsezebbpnctluakkprkhhjhayri/SubnetCalc_Prefix.pch.gch
-xSubnetCalc_Prefix.pch
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@32"Precompile SubnetCalc_Prefix.pch316050091#316050097#0(0"0(0#0#53"/Users/mulot/Desktop/SubnetCalc/SubnetCalc_Prefix.pch8646113632#1377"    cd /Users/mulot/Desktop/SubnetCalc    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c-header -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-generated-files.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-own-target-headers.hmap -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-all-target-headers.hmap -iquote /Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/SubnetCalc-project-headers.hmap -F/Users/mulot/Desktop/SubnetCalc/build/Release -I/Users/mulot/Desktop/SubnetCalc/build/Release/include -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources/x86_64 -I/Users/mulot/Desktop/SubnetCalc/build/SubnetCalc.build/Release/SubnetCalc.build/DerivedSources -c /Users/mulot/Desktop/SubnetCalc/SubnetCalc_Prefix.pch -o /var/folders/wQ/wQtT7UNU2RWMmk+1YxikiU+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/SubnetCalc_Prefix-hgsezebbpnctluakkprkhhjhayri/SubnetCalc_Prefix.pch.gch0#
-
-CTouch /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app
-s316050101.570664
-e316050101.608218
-r1
-xTouch
-x/Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app
-lSLF07#2@66"Touch /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app316050101#316050101#0(0"0(0#0#0"8616360320#122"    cd /Users/mulot/Desktop/SubnetCalc    /usr/bin/touch -c /Users/mulot/Desktop/SubnetCalc/build/Release/SubnetCalc.app0#
-
