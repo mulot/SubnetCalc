@@ -625,6 +625,22 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
     }
 }
 
+- (IBAction)darkMode:(id)sender
+{
+    if (@available(macOS 10.14, *)) {
+        if ([darkModeMenu state] == NSControlStateValueOff)
+        {
+            NSApp.appearance = [NSAppearance appearanceNamed: NSAppearanceNameDarkAqua];
+            [darkModeMenu setState: NSControlStateValueOn];
+        }
+        else if ([darkModeMenu state] == NSControlStateValueOn)
+        {
+            NSApp.appearance = nil;
+            [darkModeMenu setState: NSControlStateValueOff];
+        }
+    }
+}
+
 -(NSString *)URLEncode:(NSString *)url
 {
     NSString	*url_encoded;
@@ -690,6 +706,7 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
     [subnetMaskCombo selectItemWithObjectValue: @"255.0.0.0"];
     [maskBitsCombo selectItemWithObjectValue: @"8"];
     [subnetBitsCombo selectItemWithObjectValue: @"0"];
+    //NSApp.appearance = [NSAppearance appearanceNamed: NSAppearanceNameAqua];
     [self initCIDR];
 }
 

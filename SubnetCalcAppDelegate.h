@@ -37,7 +37,10 @@
 	IBOutlet NSTextField *bitsOnSlide;
 	IBOutlet NSButton *tabViewClassLess;
     IBOutlet NSButton *wildcard;
+    //IBOutlet NSView *mainWindow;
     //IBOutlet NSWindow *window;
+    IBOutlet NSMenuItem *darkModeMenu;
+    IBOutlet NSApplication *NSApp;
 }
 
 @property (assign) IBOutlet NSWindow *window;
@@ -67,6 +70,7 @@
 - (IBAction)changeWildcard:(id)sender;
 - (IBAction)exportCSV:(id)sender;
 - (void)printAllSubnets;
+- (void)darkMode:(id)sender;
 - (int)numberOfRowsInTableView:(NSTableView *)aTableView;
 - (id)tableView:(NSTableView *)aTableView 
 objectValueForTableColumn:(NSTableColumn *)aTableColumn

@@ -119,12 +119,17 @@
                                     <action selector="performMiniaturize:" target="-1" id="37"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="92">
-                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
-                            </menuItem>
                             <menuItem title="Bring All to Front" id="5">
                                 <connections>
                                     <action selector="arrangeInFront:" target="-1" id="39"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="AXg-VX-MGW">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Dark Mode" keyEquivalent="d" id="yys-xA-LTX">
+                                <connections>
+                                    <action selector="darkMode:" target="494" id="2cZ-bG-Umh"/>
                                 </connections>
                             </menuItem>
                         </items>
@@ -812,12 +817,14 @@
         <customObject id="420" customClass="NSFontManager"/>
         <customObject id="494" customClass="SubnetCalcAppDelegate">
             <connections>
+                <outlet property="NSApp" destination="-2" id="wDX-zz-QZ9"/>
                 <outlet property="addrField" destination="614" id="633"/>
                 <outlet property="bitsOnSlide" destination="710" id="716"/>
                 <outlet property="classBinaryMap" destination="552" id="634"/>
                 <outlet property="classBitMap" destination="550" id="635"/>
                 <outlet property="classHexaMap" destination="554" id="636"/>
                 <outlet property="classType" destination="543" id="746"/>
+                <outlet property="darkModeMenu" destination="yys-xA-LTX" id="F3e-M8-dLG"/>
                 <outlet property="exportButton" destination="737" id="744"/>
                 <outlet property="maskBitsCombo" destination="569" id="638"/>
                 <outlet property="maxHostsBySubnetCombo" destination="573" id="639"/>
