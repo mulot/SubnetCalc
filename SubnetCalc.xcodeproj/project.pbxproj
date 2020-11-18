@@ -12,11 +12,22 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		945E62F825658DBF00CDC9C7 /* SubnetCalcUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 945E62F725658DBF00CDC9C7 /* SubnetCalcUITests.m */; };
 		949420B812D3C62A00E2F57D /* License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 949420B712D3C62A00E2F57D /* License.txt */; };
 		949420BD12D3C64500E2F57D /* IPSubnetCalc.m in Sources */ = {isa = PBXBuildFile; fileRef = 949420BA12D3C64500E2F57D /* IPSubnetCalc.m */; };
 		9494DD211F7BEAE80032DB19 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9494DD201F7BEAE80032DB19 /* Images.xcassets */; };
 		94B6031212F74DC7005AA5EB /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94B6031112F74DC7005AA5EB /* CoreFoundation.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		945E62FA25658DBF00CDC9C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D1107260486CEB800E47090;
+			remoteInfo = SubnetCalc;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
@@ -29,6 +40,10 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* SubnetCalc-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "SubnetCalc-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* SubnetCalc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SubnetCalc.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		945E62EF25658A9500CDC9C7 /* SubnetCalc.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = SubnetCalc.xctestplan; sourceTree = "<group>"; };
+		945E62F525658DBF00CDC9C7 /* SubnetCalcUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SubnetCalcUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		945E62F725658DBF00CDC9C7 /* SubnetCalcUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SubnetCalcUITests.m; sourceTree = "<group>"; };
+		945E62F925658DBF00CDC9C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		949420B712D3C62A00E2F57D /* License.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
 		949420B912D3C64500E2F57D /* IPSubnetCalc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPSubnetCalc.h; sourceTree = "<group>"; };
 		949420BA12D3C64500E2F57D /* IPSubnetCalc.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = IPSubnetCalc.m; sourceTree = "<group>"; };
@@ -49,6 +64,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		945E62F225658DBF00CDC9C7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -58,6 +80,7 @@
 				949420B912D3C64500E2F57D /* IPSubnetCalc.h */,
 				949420BA12D3C64500E2F57D /* IPSubnetCalc.m */,
 				256AC3D80F4B6AC300CF3369 /* SubnetCalcAppDelegate.h */,
+				945E62EF25658A9500CDC9C7 /* SubnetCalc.xctestplan */,
 				256AC3D90F4B6AC300CF3369 /* SubnetCalcAppDelegate.m */,
 			);
 			name = Classes;
@@ -86,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				8D1107320486CEB800E47090 /* SubnetCalc.app */,
+				945E62F525658DBF00CDC9C7 /* SubnetCalcUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -97,6 +121,7 @@
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
+				945E62F625658DBF00CDC9C7 /* SubnetCalcUITests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -133,6 +158,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		945E62F625658DBF00CDC9C7 /* SubnetCalcUITests */ = {
+			isa = PBXGroup;
+			children = (
+				945E62F725658DBF00CDC9C7 /* SubnetCalcUITests.m */,
+				945E62F925658DBF00CDC9C7 /* Info.plist */,
+			);
+			path = SubnetCalcUITests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -154,6 +188,24 @@
 			productReference = 8D1107320486CEB800E47090 /* SubnetCalc.app */;
 			productType = "com.apple.product-type.application";
 		};
+		945E62F425658DBF00CDC9C7 /* SubnetCalcUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 945E62FC25658DBF00CDC9C7 /* Build configuration list for PBXNativeTarget "SubnetCalcUITests" */;
+			buildPhases = (
+				945E62F125658DBF00CDC9C7 /* Sources */,
+				945E62F225658DBF00CDC9C7 /* Frameworks */,
+				945E62F325658DBF00CDC9C7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				945E62FB25658DBF00CDC9C7 /* PBXTargetDependency */,
+			);
+			name = SubnetCalcUITests;
+			productName = SubnetCalcUITests;
+			productReference = 945E62F525658DBF00CDC9C7 /* SubnetCalcUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -171,6 +223,11 @@
 							};
 						};
 					};
+					945E62F425658DBF00CDC9C7 = {
+						CreatedOnToolsVersion = 12.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 8D1107260486CEB800E47090;
+					};
 				};
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "SubnetCalc" */;
@@ -186,6 +243,7 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* SubnetCalc */,
+				945E62F425658DBF00CDC9C7 /* SubnetCalcUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -202,6 +260,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		945E62F325658DBF00CDC9C7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -215,7 +280,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		945E62F125658DBF00CDC9C7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				945E62F825658DBF00CDC9C7 /* SubnetCalcUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		945E62FB25658DBF00CDC9C7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8D1107260486CEB800E47090 /* SubnetCalc */;
+			targetProxy = 945E62FA25658DBF00CDC9C7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
@@ -237,6 +318,83 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		945E62FD25658DBF00CDC9C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = VNLK894MAE;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = SubnetCalcUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = mulot.org.SubnetCalcUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = SubnetCalc;
+			};
+			name = Debug;
+		};
+		945E62FE25658DBF00CDC9C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = VNLK894MAE;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = SubnetCalcUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = mulot.org.SubnetCalcUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = SubnetCalc;
+			};
+			name = Release;
+		};
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -381,6 +539,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		945E62FC25658DBF00CDC9C7 /* Build configuration list for PBXNativeTarget "SubnetCalcUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				945E62FD25658DBF00CDC9C7 /* Debug */,
+				945E62FE25658DBF00CDC9C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "SubnetCalc" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

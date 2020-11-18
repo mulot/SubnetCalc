@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "CF14950C-2190-40EE-AA0F-76C4608AFC55",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:SubnetCalc.xcodeproj",
+      "identifier" : "8D1107260486CEB800E47090",
+      "name" : "SubnetCalc"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:SubnetCalc.xcodeproj",
+        "identifier" : "945E62F425658DBF00CDC9C7",
+        "name" : "SubnetCalcUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
