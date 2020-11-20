@@ -116,7 +116,7 @@
     NSMutableAttributedString   *astr;
     
     if([[addrField stringValue] length] == 0)
-        [addrField setStringValue: @"10.0.0.0"];
+        [addrField setStringValue: NSLocalizedString(@"10.0.0.0", nil)];
     if ([self checkAddr: [addrField stringValue]])
     {
         NSAlert *alert = [[NSAlert alloc] init];
@@ -230,33 +230,33 @@
     }
     if ([sender indexOfSelectedItem] == 0)
     {
-        astr = [[NSMutableAttributedString alloc] initWithString : @"nnnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh"];
+        astr = [[NSMutableAttributedString alloc] initWithString : NSLocalizedString(@"nnnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh", nil)];
         /*
          [astr addAttribute:NSForegroundColorAttributeName value:[NSColor blueColor] range:NSMakeRange(0, 9)];
          [astr addAttribute:NSForegroundColorAttributeName value:[NSColor redColor] range:NSMakeRange(9, 26)];
          */
         [classBitMap setAttributedStringValue: astr];
-        [classBinaryMap setStringValue: @"00000001000000000000000000000000"];
+        [classBinaryMap setStringValue: NSLocalizedString(@"00000001000000000000000000000000", nil)];
     }
     else if ([sender indexOfSelectedItem] == 1)
     {
-        astr = [[NSMutableAttributedString alloc] initWithString : @"nnnnnnnn.nnnnnnnn.hhhhhhhh.hhhhhhhh"];
+        astr = [[NSMutableAttributedString alloc] initWithString : NSLocalizedString(@"nnnnnnnn.nnnnnnnn.hhhhhhhh.hhhhhhhh", nil)];
         /*
          [astr addAttribute:NSForegroundColorAttributeName value:[NSColor blueColor] range:NSMakeRange(0, 18)];
          [astr addAttribute:NSForegroundColorAttributeName value:[NSColor redColor] range:NSMakeRange(18, 17)];
          */
         [classBitMap setAttributedStringValue: astr];
-        [classBinaryMap setStringValue: @"10000000000000000000000000000000"];
+        [classBinaryMap setStringValue: NSLocalizedString(@"10000000000000000000000000000000", nil)];
     }
     else if ([sender indexOfSelectedItem] == 2)
     {
-        astr = [[NSMutableAttributedString alloc] initWithString : @"nnnnnnnn.nnnnnnnn.nnnnnnnn.hhhhhhhh"];
+        astr = [[NSMutableAttributedString alloc] initWithString : NSLocalizedString(@"nnnnnnnn.nnnnnnnn.nnnnnnnn.hhhhhhhh", nil)];
         /*
          [astr addAttribute:NSForegroundColorAttributeName value:[NSColor blueColor] range:NSMakeRange(0, 27)];
          [astr addAttribute:NSForegroundColorAttributeName value:[NSColor redColor] range:NSMakeRange(27, 8)];
          */
         [classBitMap setAttributedStringValue: astr];
-        [classBinaryMap setStringValue: @"11000000000000000000000000000000"];
+        [classBinaryMap setStringValue: NSLocalizedString(@"11000000000000000000000000000000", nil)];
     }
     else if ([sender indexOfSelectedItem] == 3)
     {

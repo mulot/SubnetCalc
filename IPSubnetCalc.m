@@ -36,7 +36,10 @@
     if (!(buffer = malloc(INET_ADDRSTRLEN * sizeof (char))))
         return (NULL);
     if (!inet_ntop(AF_INET, &addr_nl, buffer, INET_ADDRSTRLEN * sizeof (char)))
+    {
+        free(buffer);
         return (NULL);
+    }
     nstr = [NSString stringWithCString: buffer encoding: NSASCIIStringEncoding];
     free(buffer);
     return (nstr);
