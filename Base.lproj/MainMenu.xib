@@ -154,7 +154,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="326" width="482" height="424"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
             <value key="minSize" type="size" width="482" height="424"/>
             <view key="contentView" id="372">
                 <rect key="frame" x="0.0" y="0.0" width="482" height="424"/>
@@ -177,10 +177,10 @@
                                                 <rect key="frame" x="3" y="3" width="418" height="48"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="543">
+                                                    <popUpButton identifier="addrclasstype" verticalHuggingPriority="750" fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="543">
                                                         <rect key="frame" x="14" y="10" width="390" height="26"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                                        <popUpButtonCell key="cell" type="push" title="Class A : 1.0.0.0 - 126.255.255.255" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="548" id="544">
+                                                        <popUpButtonCell key="cell" type="push" title="Class A : 1.0.0.0 - 126.255.255.255" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" identifier="addrclasstypecell" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="548" id="544">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="menu"/>
                                                             <menu key="menu" title="OtherViews" id="545">
@@ -207,7 +207,7 @@
                                                 <rect key="frame" x="3" y="3" width="418" height="50"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="550">
+                                                    <textField identifier="classbitmap" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="550">
                                                         <rect key="frame" x="17" y="14" width="384" height="22"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="551">
@@ -227,7 +227,7 @@
                                                 <rect key="frame" x="3" y="3" width="418" height="50"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="552">
+                                                    <textField identifier="binarymap" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="552">
                                                         <rect key="frame" x="17" y="14" width="384" height="22"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="553">
@@ -247,7 +247,7 @@
                                                 <rect key="frame" x="3" y="3" width="418" height="50"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="554">
+                                                    <textField identifier="hexamap" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="554">
                                                         <rect key="frame" x="17" y="13" width="384" height="22"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="555">
@@ -462,12 +462,12 @@
                                     <rect key="frame" x="10" y="33" width="436" height="324"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <scrollView fixedFrame="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="582">
+                                        <scrollView identifier="subnetsscroll" fixedFrame="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="582">
                                             <rect key="frame" x="20" y="17" width="396" height="224"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <clipView key="contentView" id="L0l-HJ-flz">
                                                 <rect key="frame" x="1" y="1" width="379" height="207"/>
-                                                <autoresizingMask key="autoresizingMask"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="583" id="586">
                                                         <rect key="frame" x="0.0" y="0.0" width="379" height="184"/>
@@ -598,7 +598,7 @@
                                                 <rect key="frame" x="3" y="3" width="81" height="48"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <comboBox verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="602">
+                                                    <comboBox identifier="cidrmaskbits" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="602">
                                                         <rect key="frame" x="14" y="10" width="58" height="26"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                         <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="603">
@@ -621,7 +621,7 @@
                                                 <rect key="frame" x="3" y="3" width="176" height="48"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <comboBox verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="604">
+                                                    <comboBox identifier="cidrmask" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="604">
                                                         <rect key="frame" x="20" y="10" width="139" height="26"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                         <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="605">
@@ -644,7 +644,7 @@
                                                 <rect key="frame" x="3" y="3" width="176" height="48"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <comboBox verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="606">
+                                                    <comboBox identifier="cidrmaxaddr" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="606">
                                                         <rect key="frame" x="20" y="10" width="139" height="26"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                         <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="607">
@@ -667,7 +667,7 @@
                                                 <rect key="frame" x="3" y="3" width="394" height="50"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="612">
+                                                    <textField identifier="cidrrange" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="612">
                                                         <rect key="frame" x="17" y="14" width="360" height="22"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="613">
@@ -687,7 +687,7 @@
                                                 <rect key="frame" x="3" y="3" width="176" height="48"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <comboBox verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EVx-dV-vmg">
+                                                    <comboBox identifier="cidrmaxsubnets" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EVx-dV-vmg">
                                                         <rect key="frame" x="20" y="10" width="141" height="26"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                         <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="Nn4-iJ-ggP">
@@ -710,7 +710,7 @@
                                                 <rect key="frame" x="3" y="3" width="176" height="48"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="610">
+                                                    <textField identifier="cidrnetwork" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="610">
                                                         <rect key="frame" x="20" y="13" width="144" height="22"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="611">
@@ -730,7 +730,7 @@
                                                 <rect key="frame" x="3" y="3" width="176" height="48"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <comboBox verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="608">
+                                                    <comboBox identifier="cidrmaxsupernets" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="608">
                                                         <rect key="frame" x="20" y="10" width="141" height="26"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                         <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="609">
@@ -751,10 +751,10 @@
                             </tabViewItem>
                         </tabViewItems>
                     </tabView>
-                    <textField identifier="iptextfield" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="614">
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="614">
                         <rect key="frame" x="169" y="382" width="144" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" alignment="left" identifier="iptextfieldcell" drawsBackground="YES" id="619">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" alignment="left" identifier="ipaddrfield" drawsBackground="YES" id="619">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

@@ -80,7 +80,6 @@
 				949420B912D3C64500E2F57D /* IPSubnetCalc.h */,
 				949420BA12D3C64500E2F57D /* IPSubnetCalc.m */,
 				256AC3D80F4B6AC300CF3369 /* SubnetCalcAppDelegate.h */,
-				945E62EF25658A9500CDC9C7 /* SubnetCalc.xctestplan */,
 				256AC3D90F4B6AC300CF3369 /* SubnetCalcAppDelegate.m */,
 			);
 			name = Classes;
@@ -145,6 +144,7 @@
 				8D1107310486CEB800E47090 /* SubnetCalc-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
+				945E62EF25658A9500CDC9C7 /* SubnetCalc.xctestplan */,
 			);
 			name = Resources;
 			sourceTree = "<group>";

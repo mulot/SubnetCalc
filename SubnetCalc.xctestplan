@@ -18,6 +18,9 @@
   },
   "testTargets" : [
     {
+      "skippedTests" : [
+        "SubnetCalcUITests\/testLaunchPerformance"
+      ],
       "target" : {
         "containerPath" : "container:SubnetCalc.xcodeproj",
         "identifier" : "945E62F425658DBF00CDC9C7",
