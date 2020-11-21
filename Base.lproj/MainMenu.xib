@@ -1,0 +1,853 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17506"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
+            <connections>
+                <outlet property="delegate" destination="494" id="495"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <menu title="AMainMenu" systemMenu="main" id="29">
+            <items>
+                <menuItem title="SubnetCalc" id="56">
+                    <menu key="submenu" title="SubnetCalc" systemMenu="apple" id="57">
+                        <items>
+                            <menuItem title="About SubnetCalc" id="58">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="orderFrontStandardAboutPanel:" target="-2" id="142"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="236">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Preferences…" keyEquivalent="," id="129"/>
+                            <menuItem isSeparatorItem="YES" id="143">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Services" id="131">
+                                <menu key="submenu" title="Services" systemMenu="services" id="130"/>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="144">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Hide SubnetCalc" keyEquivalent="h" id="134">
+                                <connections>
+                                    <action selector="hide:" target="-1" id="367"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Hide Others" keyEquivalent="h" id="145">
+                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <connections>
+                                    <action selector="hideOtherApplications:" target="-1" id="368"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Show All" id="150">
+                                <connections>
+                                    <action selector="unhideAllApplications:" target="-1" id="370"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="149">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Quit SubnetCalc" keyEquivalent="q" id="136">
+                                <connections>
+                                    <action selector="terminate:" target="-3" id="449"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="File" id="656">
+                    <menu key="submenu" title="File" id="657">
+                        <items>
+                            <menuItem title="Export CSV" keyEquivalent="e" id="668">
+                                <connections>
+                                    <action selector="exportCSV:" target="494" id="S3P-sg-Xzy"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Export Clipboard" keyEquivalent="b" id="ceZ-iQ-E9j">
+                                <connections>
+                                    <action selector="exportClipboard:" target="494" id="0Or-T5-sBX"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Edit" id="XuK-jI-4Db">
+                    <menu key="submenu" title="Edit" id="BCy-LU-fJY">
+                        <items>
+                            <menuItem title="Cut" keyEquivalent="x" id="gjv-cO-Vcs">
+                                <connections>
+                                    <action selector="cut:" target="-1" id="QvZ-f5-Bnd"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Copy" keyEquivalent="c" id="jsl-4k-uDC">
+                                <connections>
+                                    <action selector="copy:" target="-1" id="NHb-B9-aPL"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Paste" keyEquivalent="v" id="Uey-dH-Hij">
+                                <connections>
+                                    <action selector="paste:" target="-1" id="t6H-kX-RjX"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Delete" id="quF-IE-E0m">
+                                <connections>
+                                    <action selector="delete:" target="-1" id="cjt-bv-HR6"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Select All" keyEquivalent="a" id="Nes-Ka-OJQ">
+                                <connections>
+                                    <action selector="selectAll:" target="-1" id="R7F-vq-j6K"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Window" id="19">
+                    <menu key="submenu" title="Window" systemMenu="window" id="24">
+                        <items>
+                            <menuItem title="Minimize" keyEquivalent="m" id="23">
+                                <connections>
+                                    <action selector="performMiniaturize:" target="-1" id="37"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Bring All to Front" id="5">
+                                <connections>
+                                    <action selector="arrangeInFront:" target="-1" id="39"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="AXg-VX-MGW">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Dark Mode" keyEquivalent="d" id="yys-xA-LTX">
+                                <connections>
+                                    <action selector="darkMode:" target="494" id="2cZ-bG-Umh"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Help" id="490">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Help" systemMenu="help" id="491">
+                        <items>
+                            <menuItem title="SubnetCalc Help" keyEquivalent="?" id="492">
+                                <connections>
+                                    <action selector="showHelp:" target="-1" id="493"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+            </items>
+            <point key="canvasLocation" x="-49" y="-225"/>
+        </menu>
+        <window title="SubnetCalc" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="371">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="335" y="326" width="482" height="424"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
+            <value key="minSize" type="size" width="482" height="424"/>
+            <view key="contentView" id="372">
+                <rect key="frame" x="0.0" y="0.0" width="482" height="424"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <tabView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="533">
+                        <rect key="frame" x="13" y="10" width="456" height="370"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <font key="font" metaFont="system"/>
+                        <tabViewItems>
+                            <tabViewItem label="Address" identifier="1" id="537">
+                                <view key="view" id="538">
+                                    <rect key="frame" x="10" y="33" width="436" height="324"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <box fixedFrame="YES" title="Address Class Type" translatesAutoresizingMaskIntoConstraints="NO" id="542">
+                                            <rect key="frame" x="6" y="241" width="424" height="68"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="Vxa-qI-oY1">
+                                                <rect key="frame" x="3" y="3" width="418" height="48"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <popUpButton identifier="addrclasstype" verticalHuggingPriority="750" fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="543">
+                                                        <rect key="frame" x="14" y="10" width="390" height="26"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <popUpButtonCell key="cell" type="push" title="Class A : 1.0.0.0 - 126.255.255.255" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" identifier="addrclasstypecell" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="548" id="544">
+                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                            <font key="font" metaFont="menu"/>
+                                                            <menu key="menu" title="OtherViews" id="545">
+                                                                <items>
+                                                                    <menuItem title="Class A : 1.0.0.0 - 126.255.255.255" state="on" id="548"/>
+                                                                    <menuItem title="Class B : 128.0.0.0 - 191.255.255.255" id="549"/>
+                                                                    <menuItem title="Class C : 192.0.0.0 - 223.255.255.255" id="547"/>
+                                                                    <menuItem title="Class D/Multicast : 224.0.0.0 - 239.255.255.255" id="546"/>
+                                                                </items>
+                                                            </menu>
+                                                        </popUpButtonCell>
+                                                        <connections>
+                                                            <action selector="changeAddrClassType:" target="494" id="623"/>
+                                                        </connections>
+                                                    </popUpButton>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                        <box fixedFrame="YES" title="Class Bit Map (n=network; s=subnet; h=host)" translatesAutoresizingMaskIntoConstraints="NO" id="541">
+                                            <rect key="frame" x="6" y="167" width="424" height="70"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="KHZ-Os-P1o">
+                                                <rect key="frame" x="3" y="3" width="418" height="50"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <textField identifier="classbitmap" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="550">
+                                                        <rect key="frame" x="17" y="14" width="384" height="22"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="551">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                        <box fixedFrame="YES" title="Binary" translatesAutoresizingMaskIntoConstraints="NO" id="540">
+                                            <rect key="frame" x="6" y="93" width="424" height="70"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="3aT-lm-9v4">
+                                                <rect key="frame" x="3" y="3" width="418" height="50"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <textField identifier="binarymap" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="552">
+                                                        <rect key="frame" x="17" y="14" width="384" height="22"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="553">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                        <box fixedFrame="YES" title="Hexadecimal" translatesAutoresizingMaskIntoConstraints="NO" id="539">
+                                            <rect key="frame" x="6" y="19" width="424" height="70"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="qBa-sy-f1o">
+                                                <rect key="frame" x="3" y="3" width="418" height="50"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <textField identifier="hexamap" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="554">
+                                                        <rect key="frame" x="17" y="13" width="384" height="22"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="555">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                    </subviews>
+                                </view>
+                            </tabViewItem>
+                            <tabViewItem label="Subnets" identifier="2" id="536">
+                                <view key="view" id="556">
+                                    <rect key="frame" x="10" y="33" width="436" height="324"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <box fixedFrame="YES" title="Subnet Mask" translatesAutoresizingMaskIntoConstraints="NO" id="564">
+                                            <rect key="frame" x="234" y="253" width="185" height="68"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="QE7-yQ-bhS">
+                                                <rect key="frame" x="3" y="3" width="179" height="48"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <comboBox identifier="subnetmaskcombo" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="565">
+                                                        <rect key="frame" x="20" y="10" width="142" height="26"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="566">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </comboBoxCell>
+                                                        <connections>
+                                                            <action selector="changeSubnetMask:" target="494" id="628"/>
+                                                        </connections>
+                                                    </comboBox>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                        <box fixedFrame="YES" title="Subnet Bits" translatesAutoresizingMaskIntoConstraints="NO" id="563">
+                                            <rect key="frame" x="17" y="253" width="87" height="68"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="nQl-tK-L6b">
+                                                <rect key="frame" x="3" y="3" width="81" height="48"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <comboBox identifier="subnetbitscombo" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="567">
+                                                        <rect key="frame" x="14" y="10" width="58" height="26"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="568">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </comboBoxCell>
+                                                        <connections>
+                                                            <action selector="changeSubnetBits:" target="494" id="627"/>
+                                                        </connections>
+                                                    </comboBox>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                        <box fixedFrame="YES" title="Mask Bits" translatesAutoresizingMaskIntoConstraints="NO" id="562">
+                                            <rect key="frame" x="124" y="253" width="87" height="68"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="sLt-Yk-16J">
+                                                <rect key="frame" x="3" y="3" width="81" height="48"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <comboBox identifier="maskbitscombo" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="569">
+                                                        <rect key="frame" x="14" y="10" width="58" height="26"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="570">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </comboBoxCell>
+                                                        <connections>
+                                                            <action selector="changeMaskBits:" target="494" id="624"/>
+                                                        </connections>
+                                                    </comboBox>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                        <box fixedFrame="YES" title="Max Subnets" translatesAutoresizingMaskIntoConstraints="NO" id="561">
+                                            <rect key="frame" x="17" y="174" width="194" height="68"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="yyr-FQ-6wO">
+                                                <rect key="frame" x="3" y="3" width="188" height="48"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <comboBox identifier="maxsubnetcombo" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="571">
+                                                        <rect key="frame" x="20" y="10" width="153" height="26"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="572">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </comboBoxCell>
+                                                        <connections>
+                                                            <action selector="changeMaxSubnets:" target="494" id="626"/>
+                                                        </connections>
+                                                    </comboBox>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                        <box fixedFrame="YES" title="Max Hosts / Subnet" translatesAutoresizingMaskIntoConstraints="NO" id="560">
+                                            <rect key="frame" x="234" y="174" width="185" height="68"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="Y9X-m1-WaB">
+                                                <rect key="frame" x="3" y="3" width="179" height="48"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <comboBox identifier="maxhostscombo" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="573">
+                                                        <rect key="frame" x="20" y="10" width="142" height="26"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="574">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </comboBoxCell>
+                                                        <connections>
+                                                            <action selector="changeMaxHosts:" target="494" id="625"/>
+                                                        </connections>
+                                                    </comboBox>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                        <box fixedFrame="YES" title="Subnet Host Address Range" translatesAutoresizingMaskIntoConstraints="NO" id="559">
+                                            <rect key="frame" x="17" y="97" width="402" height="70"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="xBL-3N-6vV">
+                                                <rect key="frame" x="3" y="3" width="396" height="50"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <textField identifier="subnetrangetext" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="575">
+                                                        <rect key="frame" x="20" y="14" width="359" height="22"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="576">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                        <box fixedFrame="YES" title="Subnet ID" translatesAutoresizingMaskIntoConstraints="NO" id="558">
+                                            <rect key="frame" x="17" y="20" width="194" height="70"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="rDU-RM-HuT">
+                                                <rect key="frame" x="3" y="3" width="188" height="50"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <textField identifier="subnetidtext" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="577">
+                                                        <rect key="frame" x="17" y="14" width="156" height="22"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="578">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                        <box fixedFrame="YES" title="Subnet Broadcast" translatesAutoresizingMaskIntoConstraints="NO" id="557">
+                                            <rect key="frame" x="234" y="20" width="185" height="70"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="zfp-EF-xQ3">
+                                                <rect key="frame" x="3" y="3" width="179" height="50"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <textField identifier="subnetbroadcasttext" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="579">
+                                                        <rect key="frame" x="17" y="14" width="145" height="22"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="580">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                        <button fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QkZ-rA-ck3">
+                                            <rect key="frame" x="341" y="297" width="80" height="32"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="check" title="Wildcard" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="x4T-jO-RhV">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="changeWildcard:" target="494" id="bwR-pG-sFh"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </view>
+                            </tabViewItem>
+                            <tabViewItem label="Subnets/Hosts" identifier="" id="535">
+                                <view key="view" id="581">
+                                    <rect key="frame" x="10" y="33" width="436" height="324"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <scrollView identifier="subnetsscroll" fixedFrame="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="582">
+                                            <rect key="frame" x="20" y="17" width="396" height="224"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <clipView key="contentView" id="L0l-HJ-flz">
+                                                <rect key="frame" x="1" y="1" width="379" height="207"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="583" id="586">
+                                                        <rect key="frame" x="0.0" y="0.0" width="379" height="184"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        <size key="intercellSpacing" width="3" height="2"/>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                                        <tableColumns>
+                                                            <tableColumn identifier="numCol" editable="NO" width="40" minWidth="40" maxWidth="1000" id="590">
+                                                                <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="#">
+                                                                    <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
+                                                                </tableHeaderCell>
+                                                                <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" id="591">
+                                                                    <font key="font" metaFont="system"/>
+                                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                </textFieldCell>
+                                                                <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                            </tableColumn>
+                                                            <tableColumn identifier="subnetCol" editable="NO" width="75" minWidth="40" maxWidth="1000" id="589">
+                                                                <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Subnet ID">
+                                                                    <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
+                                                                </tableHeaderCell>
+                                                                <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" id="592">
+                                                                    <font key="font" metaFont="system"/>
+                                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                </textFieldCell>
+                                                                <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                            </tableColumn>
+                                                            <tableColumn identifier="rangeCol" editable="NO" width="118.843994140625" minWidth="36.844001770019531" maxWidth="1000" id="588">
+                                                                <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Range">
+                                                                    <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                                </tableHeaderCell>
+                                                                <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" id="593">
+                                                                    <font key="font" metaFont="system"/>
+                                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                </textFieldCell>
+                                                                <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                            </tableColumn>
+                                                            <tableColumn identifier="broadcastCol" editable="NO" width="95.01300048828125" minWidth="60.01300048828125" maxWidth="1000" id="587">
+                                                                <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Broadcast">
+                                                                    <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                                </tableHeaderCell>
+                                                                <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" id="594">
+                                                                    <font key="font" metaFont="system"/>
+                                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                </textFieldCell>
+                                                                <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                            </tableColumn>
+                                                        </tableColumns>
+                                                        <connections>
+                                                            <outlet property="dataSource" destination="494" id="654"/>
+                                                        </connections>
+                                                    </tableView>
+                                                </subviews>
+                                            </clipView>
+                                            <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="584">
+                                                <rect key="frame" x="1" y="208" width="379" height="15"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                            </scroller>
+                                            <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="585">
+                                                <rect key="frame" x="380" y="24" width="15" height="184"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                            </scroller>
+                                            <tableHeaderView key="headerView" wantsLayer="YES" id="583">
+                                                <rect key="frame" x="0.0" y="0.0" width="379" height="23"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                            </tableHeaderView>
+                                        </scrollView>
+                                        <box fixedFrame="YES" title="Mask Bits" translatesAutoresizingMaskIntoConstraints="NO" id="tjC-aU-TTn">
+                                            <rect key="frame" x="17" y="245" width="402" height="64"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="bri-ZS-oaN">
+                                                <rect key="frame" x="3" y="3" width="396" height="44"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <textField autoresizesSubviews="NO" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="710">
+                                                        <rect key="frame" x="18" y="22" width="44" height="22"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" id="711">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <slider verticalHuggingPriority="750" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="708">
+                                                        <rect key="frame" x="18" y="0.0" width="360" height="24"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                        <sliderCell key="cell" continuous="YES" state="on" baseWritingDirection="leftToRight" alignment="left" minValue="1" maxValue="30" doubleValue="1" tickMarkPosition="above" numberOfTickMarks="30" allowsTickMarkValuesOnly="YES" sliderType="linear" id="709"/>
+                                                        <connections>
+                                                            <action selector="subnetBitsSlide:" target="494" id="718"/>
+                                                        </connections>
+                                                    </slider>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                        <button fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="706">
+                                            <rect key="frame" x="357" y="291" width="61" height="32"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="check" title="CIDR" bezelStyle="regularSquare" imagePosition="leading" alignment="left" inset="2" id="707">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="changeTableViewClass:" target="494" id="720"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </view>
+                            </tabViewItem>
+                            <tabViewItem label="CIDR" identifier="" id="534">
+                                <view key="view" id="595">
+                                    <rect key="frame" x="10" y="33" width="436" height="324"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <box fixedFrame="YES" title="Mask Bits" translatesAutoresizingMaskIntoConstraints="NO" id="601">
+                                            <rect key="frame" x="17" y="253" width="87" height="68"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="CsV-hR-YhY">
+                                                <rect key="frame" x="3" y="3" width="81" height="48"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <comboBox identifier="cidrmaskbits" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="602">
+                                                        <rect key="frame" x="14" y="10" width="58" height="26"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="603">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </comboBoxCell>
+                                                        <connections>
+                                                            <action selector="changeSupernetMaskBits:" target="494" id="630"/>
+                                                        </connections>
+                                                    </comboBox>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                        <box fixedFrame="YES" title="Mask" translatesAutoresizingMaskIntoConstraints="NO" id="600">
+                                            <rect key="frame" x="235" y="253" width="182" height="68"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="jUI-d7-hfR">
+                                                <rect key="frame" x="3" y="3" width="176" height="48"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <comboBox identifier="cidrmask" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="604">
+                                                        <rect key="frame" x="20" y="10" width="139" height="26"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="605">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </comboBoxCell>
+                                                        <connections>
+                                                            <action selector="changeSupernetMask:" target="494" id="629"/>
+                                                        </connections>
+                                                    </comboBox>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                        <box fixedFrame="YES" title="Max Addresses" translatesAutoresizingMaskIntoConstraints="NO" id="599">
+                                            <rect key="frame" x="235" y="175" width="182" height="68"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="Lev-DN-PVd">
+                                                <rect key="frame" x="3" y="3" width="176" height="48"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <comboBox identifier="cidrmaxaddr" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="606">
+                                                        <rect key="frame" x="20" y="10" width="139" height="26"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="607">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </comboBoxCell>
+                                                        <connections>
+                                                            <action selector="changeSupernetMaxAddr:" target="494" id="632"/>
+                                                        </connections>
+                                                    </comboBox>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                        <box fixedFrame="YES" title="CIDR Address Range" translatesAutoresizingMaskIntoConstraints="NO" id="596">
+                                            <rect key="frame" x="17" y="10" width="400" height="70"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="3fX-fa-FXd">
+                                                <rect key="frame" x="3" y="3" width="394" height="50"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <textField identifier="cidrrange" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="612">
+                                                        <rect key="frame" x="17" y="14" width="360" height="22"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="613">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                        <box fixedFrame="YES" title="Max Subnets" translatesAutoresizingMaskIntoConstraints="NO" id="ybL-Jk-Ruv">
+                                            <rect key="frame" x="17" y="175" width="182" height="68"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="buo-Im-MFt">
+                                                <rect key="frame" x="3" y="3" width="176" height="48"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <comboBox identifier="cidrmaxsubnets" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EVx-dV-vmg">
+                                                        <rect key="frame" x="20" y="10" width="141" height="26"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="Nn4-iJ-ggP">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </comboBoxCell>
+                                                        <connections>
+                                                            <action selector="changeSupernetMaxSubnets:" target="494" id="ARo-qV-MeU"/>
+                                                        </connections>
+                                                    </comboBox>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                        <box fixedFrame="YES" title="CIDR Network (Route)" translatesAutoresizingMaskIntoConstraints="NO" id="NhO-vJ-V27">
+                                            <rect key="frame" x="235" y="92" width="182" height="68"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="kwI-QV-vil">
+                                                <rect key="frame" x="3" y="3" width="176" height="48"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <textField identifier="cidrnetwork" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="610">
+                                                        <rect key="frame" x="20" y="13" width="144" height="22"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="611">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                        <box fixedFrame="YES" title="Max Supernets" translatesAutoresizingMaskIntoConstraints="NO" id="598">
+                                            <rect key="frame" x="17" y="92" width="182" height="68"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="MbD-mc-IUF">
+                                                <rect key="frame" x="3" y="3" width="176" height="48"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <comboBox identifier="cidrmaxsupernets" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="608">
+                                                        <rect key="frame" x="20" y="10" width="141" height="26"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="609">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </comboBoxCell>
+                                                        <connections>
+                                                            <action selector="changeSupernetMax:" target="494" id="631"/>
+                                                        </connections>
+                                                    </comboBox>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                    </subviews>
+                                </view>
+                            </tabViewItem>
+                        </tabViewItems>
+                    </tabView>
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="614">
+                        <rect key="frame" x="169" y="382" width="144" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" alignment="left" identifier="ipaddrfield" drawsBackground="YES" id="619">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                        <connections>
+                            <action selector="ipAddrEdit:" target="494" id="655"/>
+                        </connections>
+                    </textField>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="615">
+                        <rect key="frame" x="86" y="387" width="77" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="IP Address" id="618">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="616">
+                        <rect key="frame" x="314" y="377" width="84" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Calc" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="617">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="calc:" target="494" id="622"/>
+                        </connections>
+                    </button>
+                    <popUpButton fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="737">
+                        <rect key="frame" x="416" y="382" width="46" height="25"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                        <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" inset="2" pullsDown="YES" arrowPosition="arrowAtCenter" id="738">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" title="OtherViews" id="739">
+                                <items>
+                                    <menuItem hidden="YES" id="740"/>
+                                    <menuItem title="Export CSV" id="742">
+                                        <connections>
+                                            <action selector="exportCSV:" target="494" id="751"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="Export Clipboard" id="mB2-aR-3r0">
+                                        <connections>
+                                            <action selector="exportClipboard:" target="494" id="CEc-fU-oku"/>
+                                        </connections>
+                                    </menuItem>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                    </popUpButton>
+                </subviews>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="494" id="621"/>
+                <outlet property="initialFirstResponder" destination="614" id="620"/>
+            </connections>
+            <point key="canvasLocation" x="139" y="144"/>
+        </window>
+        <customObject id="420" customClass="NSFontManager"/>
+        <customObject id="494" customClass="SubnetCalcAppDelegate">
+            <connections>
+                <outlet property="NSApp" destination="-2" id="wDX-zz-QZ9"/>
+                <outlet property="addrField" destination="614" id="633"/>
+                <outlet property="bitsOnSlide" destination="710" id="716"/>
+                <outlet property="classBinaryMap" destination="552" id="634"/>
+                <outlet property="classBitMap" destination="550" id="635"/>
+                <outlet property="classHexaMap" destination="554" id="636"/>
+                <outlet property="classType" destination="543" id="746"/>
+                <outlet property="darkModeMenu" destination="yys-xA-LTX" id="F3e-M8-dLG"/>
+                <outlet property="exportButton" destination="737" id="744"/>
+                <outlet property="maskBitsCombo" destination="569" id="638"/>
+                <outlet property="maxHostsBySubnetCombo" destination="573" id="639"/>
+                <outlet property="maxSubnetsCombo" destination="571" id="640"/>
+                <outlet property="subnetBitsCombo" destination="567" id="641"/>
+                <outlet property="subnetBitsSlide" destination="708" id="714"/>
+                <outlet property="subnetBroadcast" destination="579" id="642"/>
+                <outlet property="subnetHostAddrRange" destination="575" id="643"/>
+                <outlet property="subnetId" destination="577" id="644"/>
+                <outlet property="subnetMaskCombo" destination="565" id="645"/>
+                <outlet property="subnetsHostsView" destination="586" id="646"/>
+                <outlet property="supernetAddrRange" destination="612" id="647"/>
+                <outlet property="supernetMaskBitsCombo" destination="602" id="648"/>
+                <outlet property="supernetMaskCombo" destination="604" id="649"/>
+                <outlet property="supernetMaxAddr" destination="606" id="650"/>
+                <outlet property="supernetMaxCombo" destination="608" id="651"/>
+                <outlet property="supernetMaxSubnetsCombo" destination="EVx-dV-vmg" id="QcQ-MT-VMM"/>
+                <outlet property="supernetRoute" destination="610" id="652"/>
+                <outlet property="tabView" destination="533" id="653"/>
+                <outlet property="tabViewClassLess" destination="706" id="721"/>
+                <outlet property="wildcard" destination="QkZ-rA-ck3" id="DLt-3q-BjU"/>
+                <outlet property="window" destination="371" id="532"/>
+            </connections>
+        </customObject>
+    </objects>
+</document>

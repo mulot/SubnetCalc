@@ -14,7 +14,8 @@
     IBOutlet NSTextField *classBinaryMap;
     IBOutlet NSTextField *classBitMap;
     IBOutlet NSTextField *classHexaMap;
-    IBOutlet NSPopUpButton *classType;
+    IBOutlet NSPopUpButton *exportButton;
+	IBOutlet NSPopUpButton *classType;
     IBOutlet NSComboBox *maskBitsCombo;
     IBOutlet NSComboBox *maxHostsBySubnetCombo;
     IBOutlet NSComboBox *maxSubnetsCombo;
@@ -28,10 +29,18 @@
 	IBOutlet NSComboBox *supernetMaskCombo;
 	IBOutlet NSComboBox *supernetMaxCombo;
 	IBOutlet NSComboBox *supernetMaxAddr;
+    IBOutlet NSComboBox *supernetMaxSubnetsCombo;
 	IBOutlet NSTextField *supernetRoute;
 	IBOutlet NSTextField *supernetAddrRange;
-	IBOutlet NSTabView *tabView;	
-    NSWindow *window;
+	IBOutlet NSTabView *tabView;
+	IBOutlet NSSlider *subnetBitsSlide;
+	IBOutlet NSTextField *bitsOnSlide;
+	IBOutlet NSButton *tabViewClassLess;
+    IBOutlet NSButton *wildcard;
+    //IBOutlet NSView *mainWindow;
+    //IBOutlet NSWindow *window;
+    IBOutlet NSMenuItem *darkModeMenu;
+    IBOutlet NSApplication *NSApp;
 }
 
 @property (assign) IBOutlet NSWindow *window;
@@ -39,7 +48,10 @@
 - (void)doIPSubnetCalc:(unsigned int)mask;
 - (void)doSupernetCalc:(int)maskBits;
 - (void)initClassInfos:(NSString *)c;
+- (void)initCIDR;
 - (int)checkAddr:(NSString *)address;
+- (void)bitsOnSlidePos;
+- (NSString *)URLEncode:(NSString *)url;
 - (IBAction)calc:(id)sender;
 - (IBAction)ipAddrEdit:(id)sender;
 - (IBAction)changeAddrClassType:(id)sender;
@@ -52,6 +64,13 @@
 - (IBAction)changeSupernetMask:(id)sender;
 - (IBAction)changeSupernetMax:(id)sender;
 - (IBAction)changeSupernetMaxAddr:(id)sender;
+- (IBAction)changeSupernetMaxSubnets:(id)sender;
+- (IBAction)subnetBitsSlide:(id)sender;
+- (IBAction)changeTableViewClass:(id)sender;
+- (IBAction)changeWildcard:(id)sender;
+- (IBAction)exportCSV:(id)sender;
+- (void)printAllSubnets;
+- (void)darkMode:(id)sender;
 - (int)numberOfRowsInTableView:(NSTableView *)aTableView;
 - (id)tableView:(NSTableView *)aTableView 
 objectValueForTableColumn:(NSTableColumn *)aTableColumn
@@ -61,7 +80,8 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
    forTableColumn:(NSTableColumn *)aTableColumn
 			  row:(int)rowIndex;
 
+@end
+
 IPSubnetCalc	*ipsc;
 NSArray			*tab_tabView;
 
-@end

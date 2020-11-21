@@ -2,16 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>LSApplicationCategoryType</key>
-	<string>public.app-category.utilities</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
-	<key>CFBundleIconFile</key>
-	<string>SubnetCalc.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.mulot.subnetcalc</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -19,18 +15,20 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2</string>
+	<string>1.6</string>
 	<key>CFBundleSignature</key>
 	<string>JMUL</string>
 	<key>CFBundleVersion</key>
-	<string>1.2</string>
+	<string>3</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.utilities</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright 2020 Julien Mulot</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>NSHumanReadableCopyright</key>
-	<string>Copyright 2010 Julien Mulot</string>
 </dict>
 </plist>
