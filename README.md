@@ -1,5 +1,5 @@
 # SubnetCalc
-Subnet Calculator for MacOS X
+Subnet Calculator for MacOS
 
 What's New in version 1.6:
 - Dark Mode support
