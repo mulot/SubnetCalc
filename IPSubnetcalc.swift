@@ -35,7 +35,7 @@ let maskClassB: UInt32 = 0xFFFF0000
 let netIdClassC: UInt32 = 0xc0000000
 let maskClassC: UInt32 = 0xFFFFFF00
 
-
+class IPSubnetCalc: NSObject {
 //IPv4 SECTION
 func binarize(ipAddress: String) -> String
 {
@@ -682,4 +682,5 @@ func resIPv6Block(ipAddress: String, maskbits: Int) -> String?
         }
     }
     return nil
+}
 }
