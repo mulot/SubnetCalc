@@ -16,6 +16,7 @@
 		949420B812D3C62A00E2F57D /* License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 949420B712D3C62A00E2F57D /* License.txt */; };
 		949420BD12D3C64500E2F57D /* IPSubnetCalc.m in Sources */ = {isa = PBXBuildFile; fileRef = 949420BA12D3C64500E2F57D /* IPSubnetCalc.m */; };
 		9494DD211F7BEAE80032DB19 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9494DD201F7BEAE80032DB19 /* Images.xcassets */; };
+		94B1C507256ABC1B00F992A3 /* IPSubnetcalc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B1C506256ABC1B00F992A3 /* IPSubnetcalc.swift */; };
 		94B6031212F74DC7005AA5EB /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94B6031112F74DC7005AA5EB /* CoreFoundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +50,8 @@
 		949420BA12D3C64500E2F57D /* IPSubnetCalc.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = IPSubnetCalc.m; sourceTree = "<group>"; };
 		9494DD1F1F7BE7B40032DB19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		9494DD201F7BEAE80032DB19 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = SubnetCalc/Images.xcassets; sourceTree = "<group>"; };
+		94B1C505256ABC1A00F992A3 /* SubnetCalc-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SubnetCalc-Bridging-Header.h"; sourceTree = "<group>"; };
+		94B1C506256ABC1B00F992A3 /* IPSubnetcalc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPSubnetcalc.swift; sourceTree = "<group>"; };
 		94B6031112F74DC7005AA5EB /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		94CDB5F6255EE11D0010F1E4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		94D8C5731520F99500B27A3A /* SubnetCalc.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SubnetCalc.entitlements; sourceTree = "<group>"; };
@@ -79,8 +82,10 @@
 			children = (
 				949420B912D3C64500E2F57D /* IPSubnetCalc.h */,
 				949420BA12D3C64500E2F57D /* IPSubnetCalc.m */,
+				94B1C506256ABC1B00F992A3 /* IPSubnetcalc.swift */,
 				256AC3D80F4B6AC300CF3369 /* SubnetCalcAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* SubnetCalcAppDelegate.m */,
+				94B1C505256ABC1A00F992A3 /* SubnetCalc-Bridging-Header.h */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -215,7 +220,7 @@
 				LastUpgradeCheck = 1220;
 				TargetAttributes = {
 					8D1107260486CEB800E47090 = {
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 1220;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
@@ -276,6 +281,7 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				256AC3DA0F4B6AC300CF3369 /* SubnetCalcAppDelegate.m in Sources */,
+				94B1C507256ABC1B00F992A3 /* IPSubnetcalc.swift in Sources */,
 				949420BD12D3C64500E2F57D /* IPSubnetCalc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -321,6 +327,7 @@
 		945E62FD25658DBF00CDC9C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -362,6 +369,7 @@
 		945E62FE25658DBF00CDC9C7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -400,6 +408,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SubnetCalc.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -413,10 +422,13 @@
 				GCC_PREFIX_HEADER = SubnetCalc_Prefix.pch;
 				INFOPLIST_FILE = "SubnetCalc-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.mulot.subnetcalc;
 				PRODUCT_NAME = SubnetCalc;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 3.0;
+				SWIFT_OBJC_BRIDGING_HEADER = "SubnetCalc-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -425,6 +437,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SubnetCalc.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -436,10 +449,12 @@
 				GCC_PREFIX_HEADER = SubnetCalc_Prefix.pch;
 				INFOPLIST_FILE = "SubnetCalc-Info.plist";
 				INSTALL_PATH = /Applications;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.mulot.subnetcalc;
 				PRODUCT_NAME = SubnetCalc;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 3.0;
+				SWIFT_OBJC_BRIDGING_HEADER = "SubnetCalc-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
