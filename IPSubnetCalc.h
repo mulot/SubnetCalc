@@ -54,6 +54,7 @@
 - (NSString *)hexMap;
 - (NSString *)binMap;
 - (NSString *)bitMap;
+- (void)setBitMap;
 - (NSNumber *)hostAddr;
 - (unsigned int)hostAddrIntValue;
 - (NSNumber *)subnetBits;

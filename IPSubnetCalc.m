@@ -72,7 +72,7 @@
 }
 
 
-- (IBAction)setBitMap
+- (void)setBitMap
 {
     int		i;
     int		dots = 0;

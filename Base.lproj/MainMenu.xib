@@ -129,7 +129,7 @@
                             </menuItem>
                             <menuItem title="Dark Mode" keyEquivalent="d" id="yys-xA-LTX">
                                 <connections>
-                                    <action selector="darkMode:" target="494" id="2cZ-bG-Umh"/>
+                                    <action selector="darkModeWithSender:" target="b7w-M5-ti7" id="Tqn-ZO-cdB"/>
                                 </connections>
                             </menuItem>
                         </items>
@@ -817,14 +817,12 @@
         <customObject id="420" customClass="NSFontManager"/>
         <customObject id="494" customClass="SubnetCalcAppDelegate">
             <connections>
-                <outlet property="NSApp" destination="-2" id="wDX-zz-QZ9"/>
                 <outlet property="addrField" destination="614" id="633"/>
                 <outlet property="bitsOnSlide" destination="710" id="716"/>
                 <outlet property="classBinaryMap" destination="552" id="634"/>
                 <outlet property="classBitMap" destination="550" id="635"/>
                 <outlet property="classHexaMap" destination="554" id="636"/>
                 <outlet property="classType" destination="543" id="746"/>
-                <outlet property="darkModeMenu" destination="yys-xA-LTX" id="F3e-M8-dLG"/>
                 <outlet property="exportButton" destination="737" id="744"/>
                 <outlet property="maskBitsCombo" destination="569" id="638"/>
                 <outlet property="maxHostsBySubnetCombo" destination="573" id="639"/>
@@ -851,6 +849,8 @@
         </customObject>
         <customObject id="b7w-M5-ti7" userLabel="SubnetCalcAppDelegate" customClass="AppDelegate" customModule="SubnetCalc" customModuleProvider="target">
             <connections>
+                <outlet property="NSApp" destination="-2" id="wQ1-cQ-1kg"/>
+                <outlet property="darkModeMenu" destination="yys-xA-LTX" id="778-vc-QOQ"/>
                 <outlet property="window" destination="371" id="RZ0-ET-tAB"/>
             </connections>
         </customObject>
