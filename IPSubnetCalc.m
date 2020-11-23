@@ -100,7 +100,7 @@
 
 - (IBAction)initNetwork
 {
-    netId= mask & hostAddr;
+    netId = mask & hostAddr;
     maskBits = netBits + subnetBits;
     hostBits = 32 - maskBits;
     hostMax = pow(2, hostBits) - 2;

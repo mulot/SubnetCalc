@@ -23,8 +23,9 @@ class IPSubnetCalc: NSObject {
         static let addr16Hex2: UInt16 = 0x0F00
         static let addr16Hex3: UInt16 = 0x00F0
         static let addr16Hex4: UInt16 = 0x000F
-        
-        static let resIPv6Blocks: [String : String] = ["::1/128" : "Loopback Address", "::/128" : " Unspecified Address", "2001:db8::/32" : "Documentation"]
+        static let resIPv6Blocks: [String : String] = ["::1/128" : "Loopback Address",
+                                                       "::/128" : " Unspecified Address",
+                                                       "2001:db8::/32" : "Documentation"]
         
         //IPv4 constants
         static let addr32Full: UInt32 = 0xFFFFFFFF
@@ -47,14 +48,14 @@ class IPSubnetCalc: NSObject {
     var ipv4Address: String
     var networkClass: String
     var netId: UInt
-    var netBits: UInt
+    var netBits: Int
     var mask: UInt
     var subnetMax: UInt
-    var subnetBits: UInt
-    var maskBits: UInt
-    var subnetBitsMax: UInt
+    var subnetBits: Int
+    var maskBits: Int
+    var subnetBitsMax: Int
     var subnetMask: UInt
-    var hostBits: UInt
+    var hostBits: Int
     var hostMax: UInt
     var hostAddr: UInt
     var hostId: UInt
@@ -142,6 +143,7 @@ class IPSubnetCalc: NSObject {
     func splitAddrMask(address: String) -> (String, String) {
         let ipInfo = address.split(separator: "/")
         if ipInfo.count == 2 {
+            //CHECK if String convert is needed?
             return (String(ipInfo[0]), String(ipInfo[1]))
         }
         else if ipInfo.count > 2 {
@@ -151,7 +153,7 @@ class IPSubnetCalc: NSObject {
         return (address, "")
     }
     
-    func isValidIP(ipAddress: String, mask: String?) -> Bool {
+    static func isValidIP(ipAddress: String, mask: String?) -> Bool {
         var ip4Digits = [String]()
         
         ip4Digits = ipAddress.components(separatedBy: ".")
@@ -336,7 +338,7 @@ class IPSubnetCalc: NSObject {
     }
     
     func displayIPInfo(ipAddress: String, mask: String) {
-        if (isValidIP(ipAddress: ipAddress, mask: mask)) {
+        if (IPSubnetCalc.isValidIP(ipAddress: ipAddress, mask: mask)) {
             print("IP Host : " + ipAddress)
             print("Mask bits : " + mask)
             print("Mask : " + IPSubnetCalc.digitize(ipAddress: subnetMask(mask: mask)))
@@ -632,28 +634,33 @@ class IPSubnetCalc: NSObject {
         return nil
     }
     
-    init(ipAddress: String, maskbits: UInt) {
-        self.ipv4Address = ipAddress
-        self.networkClass = "A"
-        self.netId = 0
-        self.netBits = 0
-        self.mask = 0
-        self.subnetMax = 0
-        self.subnetBits = 0
-        self.maskBits = maskbits
-        self.subnetBitsMax = 0
-        self.subnetMask = 0
-        self.hostBits = 0
-        self.hostMax = 0
-        self.hostAddr = 0
-        self.hostId = 0
-        self.hostSubnetLbound = 0
-        self.hostSubnetUbound = 0
-        self.ciscoWildcard = 0
-        self.bitMap = ""
+    init?(ipAddress: String, maskbits: Int) {
+        if (IPSubnetCalc.isValidIP(ipAddress: ipAddress, mask: String(maskbits))) {
+            self.ipv4Address = ipAddress
+            self.networkClass = "A"
+            self.netId = 0
+            self.netBits = 0
+            self.mask = 0
+            self.subnetMax = 0
+            self.subnetBits = 0
+            self.maskBits = maskbits
+            self.subnetBitsMax = 0
+            self.subnetMask = 0
+            self.hostBits = 0
+            self.hostMax = 0
+            self.hostAddr = 0
+            self.hostId = 0
+            self.hostSubnetLbound = 0
+            self.hostSubnetUbound = 0
+            self.ciscoWildcard = 0
+            self.bitMap = ""
+        }
+        else {
+            return nil
+        }
     }
     
-    convenience init(_ ipAddress: String) {
+    convenience init?(_ ipAddress: String) {
         self.init(ipAddress: ipAddress, maskbits: 8)
     }
 }
