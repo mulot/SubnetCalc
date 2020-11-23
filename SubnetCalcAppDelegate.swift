@@ -10,7 +10,7 @@ import Cocoa
 
 
 class AppDelegate: NSObject, NSApplicationDelegate {
-    enum Constants {
+    private enum Constants {
         static let BUFFER_LINES:UInt = 1000
         static let NETWORK_BITS_MIN_CLASSLESS:UInt = 1
         static let NETWORK_BITS_MIN:UInt = 8
@@ -49,8 +49,52 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet var NSApp: NSApplication!
     var classless: Bool = false
     
+    private func initAddressTab() {
+        classBitMap.stringValue = "nnnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh"
+        classBinaryMap.stringValue = "00000001000000000000000000000000"
+    }
+    
+    private func initSubnetsTab() {
+        var addr: UInt32
+        
+        for index in (2...24).reversed() {
+            addr = (IPSubnetCalc.Constants.addr32Full << index)
+            if (wildcard.state == NSControl.StateValue.on) {
+                subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: ~addr))
+            }
+            else {
+                subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: addr))
+            }
+        }
+        /*
+        for (i = 8; i < 31; i++)
+            [maskBitsCombo addItemWithObjectValue: [NSString stringWithFormat: @"%d", i]];
+        for (i = 0; i < 23; i++)
+            [subnetBitsCombo addItemWithObjectValue: [NSString stringWithFormat: @"%d", i]];
+        for (i = 2; i < 25; i++)
+        {
+            mask = (pow(2, i) - 2);
+            [maxHostsBySubnetCombo addItemWithObjectValue: [NSString stringWithFormat: @"%u", mask]];
+        }
+        for (i = 0; i < 23; i++)
+        {
+            mask = (pow(2, i));
+            [maxSubnetsCombo addItemWithObjectValue: [NSString stringWithFormat: @"%u", mask]];
+        }
+         */
+    }
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
+        let ipsc = IPSubnetCalc("10.0.0.0")
+        if (ipsc != nil)
+        {
+            print("IP Address: \(ipsc!.ipv4Address)")
+            print("Mask Bits: \(ipsc!.maskBits)")
+            print("IP Network Class: \(ipsc!.networkClass)")
+        }
+        initAddressTab()
+        initSubnetsTab()
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {

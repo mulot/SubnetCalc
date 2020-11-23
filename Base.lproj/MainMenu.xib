@@ -69,12 +69,12 @@
                         <items>
                             <menuItem title="Export CSV" keyEquivalent="e" id="668">
                                 <connections>
-                                    <action selector="exportCSV:" target="494" id="S3P-sg-Xzy"/>
+                                    <action selector="exportCSV:" target="b7w-M5-ti7" id="Ks9-gQ-HYU"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Export Clipboard" keyEquivalent="b" id="ceZ-iQ-E9j">
                                 <connections>
-                                    <action selector="exportClipboard:" target="494" id="0Or-T5-sBX"/>
+                                    <action selector="exportClipboard:" target="b7w-M5-ti7" id="zLT-O3-hjU"/>
                                 </connections>
                             </menuItem>
                         </items>
@@ -129,7 +129,7 @@
                             </menuItem>
                             <menuItem title="Dark Mode" keyEquivalent="d" id="yys-xA-LTX">
                                 <connections>
-                                    <action selector="darkModeWithSender:" target="b7w-M5-ti7" id="Tqn-ZO-cdB"/>
+                                    <action selector="darkMode:" target="b7w-M5-ti7" id="Nhc-rM-HhP"/>
                                 </connections>
                             </menuItem>
                         </items>
@@ -154,7 +154,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="326" width="482" height="424"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
             <value key="minSize" type="size" width="482" height="424"/>
             <view key="contentView" id="372">
                 <rect key="frame" x="0.0" y="0.0" width="482" height="424"/>
@@ -193,7 +193,7 @@
                                                             </menu>
                                                         </popUpButtonCell>
                                                         <connections>
-                                                            <action selector="changeAddrClassType:" target="494" id="623"/>
+                                                            <action selector="changeAddrClassType:" target="b7w-M5-ti7" id="OGq-5Y-Yen"/>
                                                         </connections>
                                                     </popUpButton>
                                                 </subviews>
@@ -284,7 +284,7 @@
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </comboBoxCell>
                                                         <connections>
-                                                            <action selector="changeSubnetMask:" target="494" id="628"/>
+                                                            <action selector="changeSubnetMask:" target="b7w-M5-ti7" id="jlt-TC-sbP"/>
                                                         </connections>
                                                     </comboBox>
                                                 </subviews>
@@ -307,7 +307,7 @@
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </comboBoxCell>
                                                         <connections>
-                                                            <action selector="changeSubnetBits:" target="494" id="627"/>
+                                                            <action selector="changeSubnetBits:" target="b7w-M5-ti7" id="dre-wz-Q14"/>
                                                         </connections>
                                                     </comboBox>
                                                 </subviews>
@@ -330,7 +330,7 @@
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </comboBoxCell>
                                                         <connections>
-                                                            <action selector="changeMaskBitsWithSender:" target="b7w-M5-ti7" id="H3f-C2-GhW"/>
+                                                            <action selector="changeMaskBits:" target="b7w-M5-ti7" id="Our-Bb-Fwe"/>
                                                         </connections>
                                                     </comboBox>
                                                 </subviews>
@@ -353,7 +353,7 @@
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </comboBoxCell>
                                                         <connections>
-                                                            <action selector="changeMaxSubnets:" target="494" id="626"/>
+                                                            <action selector="changeMaxSubnets:" target="b7w-M5-ti7" id="6R4-kj-brg"/>
                                                         </connections>
                                                     </comboBox>
                                                 </subviews>
@@ -376,7 +376,7 @@
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </comboBoxCell>
                                                         <connections>
-                                                            <action selector="changeMaxHosts:" target="494" id="625"/>
+                                                            <action selector="changeMaxHosts:" target="b7w-M5-ti7" id="5KH-To-eGx"/>
                                                         </connections>
                                                     </comboBox>
                                                 </subviews>
@@ -451,7 +451,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <action selector="changeWildcard:" target="494" id="bwR-pG-sFh"/>
+                                                <action selector="changeWildcard:" target="b7w-M5-ti7" id="XOt-76-cUY"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -565,7 +565,7 @@
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <sliderCell key="cell" continuous="YES" state="on" baseWritingDirection="leftToRight" alignment="left" minValue="1" maxValue="30" doubleValue="1" tickMarkPosition="above" numberOfTickMarks="30" allowsTickMarkValuesOnly="YES" sliderType="linear" id="709"/>
                                                         <connections>
-                                                            <action selector="subnetBitsSlide:" target="494" id="718"/>
+                                                            <action selector="subnetBitsSlide:" target="b7w-M5-ti7" id="NME-GB-bJ8"/>
                                                         </connections>
                                                     </slider>
                                                 </subviews>
@@ -580,7 +580,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <action selector="changeTableViewClass:" target="494" id="720"/>
+                                                <action selector="changeTableViewClass:" target="b7w-M5-ti7" id="IfN-va-3jK"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -592,14 +592,14 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <box fixedFrame="YES" title="Mask Bits" translatesAutoresizingMaskIntoConstraints="NO" id="601">
-                                            <rect key="frame" x="17" y="253" width="87" height="68"/>
+                                            <rect key="frame" x="17" y="253" width="86" height="68"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <view key="contentView" id="CsV-hR-YhY">
-                                                <rect key="frame" x="3" y="3" width="81" height="48"/>
+                                                <rect key="frame" x="3" y="3" width="80" height="48"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <comboBox identifier="cidrmaskbits" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="602">
-                                                        <rect key="frame" x="14" y="10" width="58" height="26"/>
+                                                        <rect key="frame" x="14" y="10" width="57" height="26"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                         <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="603">
                                                             <font key="font" metaFont="system"/>
@@ -607,7 +607,7 @@
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </comboBoxCell>
                                                         <connections>
-                                                            <action selector="changeSupernetMaskBits:" target="494" id="630"/>
+                                                            <action selector="changeSupernetMaskBits:" target="b7w-M5-ti7" id="SDI-p9-vk9"/>
                                                         </connections>
                                                     </comboBox>
                                                 </subviews>
@@ -630,7 +630,7 @@
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </comboBoxCell>
                                                         <connections>
-                                                            <action selector="changeSupernetMask:" target="494" id="629"/>
+                                                            <action selector="changeSupernetMask:" target="b7w-M5-ti7" id="tDG-St-NoN"/>
                                                         </connections>
                                                     </comboBox>
                                                 </subviews>
@@ -653,7 +653,7 @@
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </comboBoxCell>
                                                         <connections>
-                                                            <action selector="changeSupernetMaxAddr:" target="494" id="632"/>
+                                                            <action selector="changeSupernetMaxAddr:" target="b7w-M5-ti7" id="fS1-Wq-KjX"/>
                                                         </connections>
                                                     </comboBox>
                                                 </subviews>
@@ -696,7 +696,7 @@
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </comboBoxCell>
                                                         <connections>
-                                                            <action selector="changeSupernetMaxSubnets:" target="494" id="ARo-qV-MeU"/>
+                                                            <action selector="changeSupernetMaxSubnets:" target="b7w-M5-ti7" id="DMQ-bX-cpp"/>
                                                         </connections>
                                                     </comboBox>
                                                 </subviews>
@@ -739,7 +739,7 @@
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </comboBoxCell>
                                                         <connections>
-                                                            <action selector="changeSupernetMax:" target="494" id="631"/>
+                                                            <action selector="changeSupernetMax:" target="b7w-M5-ti7" id="jgi-2U-D1L"/>
                                                         </connections>
                                                     </comboBox>
                                                 </subviews>
@@ -760,7 +760,7 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                         <connections>
-                            <action selector="ipAddrEdit:" target="494" id="655"/>
+                            <action selector="ipAddrEdit:" target="b7w-M5-ti7" id="FFd-Op-005"/>
                         </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="615">
@@ -780,7 +780,7 @@
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="calc:" target="494" id="622"/>
+                            <action selector="calc:" target="b7w-M5-ti7" id="gsi-fk-GkQ"/>
                         </connections>
                     </button>
                     <popUpButton fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="737">
@@ -794,12 +794,12 @@
                                     <menuItem hidden="YES" id="740"/>
                                     <menuItem title="Export CSV" id="742">
                                         <connections>
-                                            <action selector="exportCSV:" target="494" id="751"/>
+                                            <action selector="exportCSV:" target="b7w-M5-ti7" id="4Td-Nv-X6s"/>
                                         </connections>
                                     </menuItem>
                                     <menuItem title="Export Clipboard" id="mB2-aR-3r0">
                                         <connections>
-                                            <action selector="exportClipboard:" target="494" id="CEc-fU-oku"/>
+                                            <action selector="exportClipboard:" target="b7w-M5-ti7" id="HfN-Jm-07E"/>
                                         </connections>
                                     </menuItem>
                                 </items>
@@ -817,40 +817,40 @@
         <customObject id="420" customClass="NSFontManager"/>
         <customObject id="494" customClass="SubnetCalcAppDelegate">
             <connections>
-                <outlet property="addrField" destination="614" id="633"/>
-                <outlet property="bitsOnSlide" destination="710" id="716"/>
-                <outlet property="classBinaryMap" destination="552" id="634"/>
-                <outlet property="classBitMap" destination="550" id="635"/>
-                <outlet property="classHexaMap" destination="554" id="636"/>
-                <outlet property="classType" destination="543" id="746"/>
-                <outlet property="exportButton" destination="737" id="744"/>
-                <outlet property="maskBitsCombo" destination="569" id="638"/>
-                <outlet property="maxHostsBySubnetCombo" destination="573" id="639"/>
-                <outlet property="maxSubnetsCombo" destination="571" id="640"/>
-                <outlet property="subnetBitsCombo" destination="567" id="641"/>
-                <outlet property="subnetBitsSlide" destination="708" id="714"/>
-                <outlet property="subnetBroadcast" destination="579" id="642"/>
-                <outlet property="subnetHostAddrRange" destination="575" id="643"/>
-                <outlet property="subnetId" destination="577" id="644"/>
-                <outlet property="subnetMaskCombo" destination="565" id="645"/>
-                <outlet property="subnetsHostsView" destination="586" id="646"/>
-                <outlet property="supernetAddrRange" destination="612" id="647"/>
-                <outlet property="supernetMaskBitsCombo" destination="602" id="648"/>
-                <outlet property="supernetMaskCombo" destination="604" id="649"/>
-                <outlet property="supernetMaxAddr" destination="606" id="650"/>
-                <outlet property="supernetMaxCombo" destination="608" id="651"/>
-                <outlet property="supernetMaxSubnetsCombo" destination="EVx-dV-vmg" id="QcQ-MT-VMM"/>
-                <outlet property="supernetRoute" destination="610" id="652"/>
-                <outlet property="tabView" destination="533" id="653"/>
-                <outlet property="tabViewClassLess" destination="706" id="721"/>
-                <outlet property="wildcard" destination="QkZ-rA-ck3" id="DLt-3q-BjU"/>
                 <outlet property="window" destination="371" id="532"/>
             </connections>
         </customObject>
         <customObject id="b7w-M5-ti7" userLabel="SubnetCalcAppDelegate" customClass="AppDelegate" customModule="SubnetCalc" customModuleProvider="target">
             <connections>
                 <outlet property="NSApp" destination="-2" id="wQ1-cQ-1kg"/>
+                <outlet property="addrField" destination="614" id="TxW-DB-fIi"/>
+                <outlet property="bitsOnSlide" destination="710" id="N5K-tl-7ZU"/>
+                <outlet property="classBinaryMap" destination="552" id="sxq-QJ-ZLN"/>
+                <outlet property="classBitMap" destination="550" id="eAI-IS-bme"/>
+                <outlet property="classHexaMap" destination="554" id="k6S-jc-TNg"/>
+                <outlet property="classType" destination="543" id="iVf-If-lKp"/>
                 <outlet property="darkModeMenu" destination="yys-xA-LTX" id="778-vc-QOQ"/>
+                <outlet property="exportButton" destination="737" id="FRk-lP-Tdk"/>
+                <outlet property="maskBitsCombo" destination="569" id="QLr-to-MNE"/>
+                <outlet property="maxHostsBySubnetCombo" destination="573" id="gGc-XF-9uv"/>
+                <outlet property="maxSubnetsCombo" destination="571" id="gn7-9F-KtD"/>
+                <outlet property="subnetBitsCombo" destination="567" id="6OG-Je-O6u"/>
+                <outlet property="subnetBitsSlide" destination="708" id="sqB-Ih-CjP"/>
+                <outlet property="subnetBroadcast" destination="579" id="LUN-Gy-Me6"/>
+                <outlet property="subnetHostAddrRange" destination="575" id="zmE-hW-8Tq"/>
+                <outlet property="subnetId" destination="577" id="Ult-L5-U9a"/>
+                <outlet property="subnetMaskCombo" destination="565" id="fo8-IZ-74L"/>
+                <outlet property="subnetsHostsView" destination="586" id="t0i-M1-zXx"/>
+                <outlet property="supernetAddrRange" destination="612" id="oxM-Ko-MTW"/>
+                <outlet property="supernetMaskBitsCombo" destination="602" id="pgy-eF-NAM"/>
+                <outlet property="supernetMaskCombo" destination="604" id="XHV-NL-8kc"/>
+                <outlet property="supernetMaxAddr" destination="606" id="MJZ-X2-yN8"/>
+                <outlet property="supernetMaxCombo" destination="608" id="cQU-yh-ktN"/>
+                <outlet property="supernetMaxSubnetsCombo" destination="EVx-dV-vmg" id="8RC-fU-8J9"/>
+                <outlet property="supernetRoute" destination="610" id="dM3-ms-Vew"/>
+                <outlet property="tabView" destination="533" id="nCF-Ri-pad"/>
+                <outlet property="tabViewClassLess" destination="706" id="kgC-bS-1bz"/>
+                <outlet property="wildcard" destination="QkZ-rA-ck3" id="5k7-qX-sXw"/>
                 <outlet property="window" destination="371" id="RZ0-ET-tAB"/>
             </connections>
         </customObject>

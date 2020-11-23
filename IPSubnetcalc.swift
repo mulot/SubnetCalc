@@ -46,23 +46,25 @@ class IPSubnetCalc: NSObject {
     //Properties
     //*************
     var ipv4Address: String
+    var maskBits: Int
     var networkClass: String
+    /*
     var netId: UInt
     var netBits: Int
     var mask: UInt
     var subnetMax: UInt
     var subnetBits: Int
-    var maskBits: Int
     var subnetBitsMax: Int
     var subnetMask: UInt
     var hostBits: Int
     var hostMax: UInt
     var hostAddr: UInt
     var hostId: UInt
-    var hostSubnetLbound: UInt
-    var hostSubnetUbound: UInt
+    private var hostSubnetLbound: UInt
+    private var hostSubnetUbound: UInt
     var ciscoWildcard: UInt
     var bitMap: String
+ */
     
     //*************
     //IPv4 SECTION
@@ -188,7 +190,7 @@ class IPSubnetCalc: NSObject {
             }
         }
         else {
-            print("null mask")
+            //print("null mask")
         }
         return true
     }
@@ -261,7 +263,7 @@ class IPSubnetCalc: NSObject {
         return (range)
     }
     
-    func netClass(ipAddress: String) -> String {
+    static func netClass(ipAddress: String) -> String {
         let ipNum = IPSubnetCalc.numerize(ipAddress: ipAddress)
         let addr1stByte = (ipNum & Constants.maskClassA) >> 24
         
@@ -278,7 +280,7 @@ class IPSubnetCalc: NSObject {
     }
     
     func subnetBits(ipAddress: String, mask: String) -> String {
-        let classType = netClass(ipAddress: ipAddress)
+        let classType = IPSubnetCalc.netClass(ipAddress: ipAddress)
         var bits: Int = 0
         
         if (classType == "A") {
@@ -306,7 +308,7 @@ class IPSubnetCalc: NSObject {
     
     func bitMap(ipAddress: String, mask: String) -> String {
         let mask_num = IPSubnetCalc.numerize(mask: mask)
-        let classAddr = netClass(ipAddress: ipAddress)
+        let classAddr = IPSubnetCalc.netClass(ipAddress: ipAddress)
         var maskClass: UInt32 = 0
         var bitMap = String()
         
@@ -348,7 +350,7 @@ class IPSubnetCalc: NSObject {
             print("Max Host : " + maxHosts(mask: mask))
             print("Max Subnet : " + maxSubnets(ipAddress: ipAddress, mask: mask))
             print("Subnet Range : " + subnetRange(ipAddress: ipAddress, mask: mask))
-            print("IP Class Type : " + netClass(ipAddress: ipAddress))
+            print("IP Class Type : " + IPSubnetCalc.netClass(ipAddress: ipAddress))
             print("Hexa IP : " + IPSubnetCalc.hexarize(ipAddress: ipAddress))
             print("Binary IP : " + IPSubnetCalc.binarize(ipAddress: ipAddress))
             print("BitMap : " + bitMap(ipAddress: ipAddress, mask: mask))
@@ -637,7 +639,9 @@ class IPSubnetCalc: NSObject {
     init?(ipAddress: String, maskbits: Int) {
         if (IPSubnetCalc.isValidIP(ipAddress: ipAddress, mask: String(maskbits))) {
             self.ipv4Address = ipAddress
-            self.networkClass = "A"
+            self.maskBits = maskbits
+            self.networkClass = IPSubnetCalc.netClass(ipAddress: ipAddress)
+            /*
             self.netId = 0
             self.netBits = 0
             self.mask = 0
@@ -654,6 +658,7 @@ class IPSubnetCalc: NSObject {
             self.hostSubnetUbound = 0
             self.ciscoWildcard = 0
             self.bitMap = ""
+             */
         }
         else {
             return nil
@@ -661,6 +666,23 @@ class IPSubnetCalc: NSObject {
     }
     
     convenience init?(_ ipAddress: String) {
-        self.init(ipAddress: ipAddress, maskbits: 8)
+        var classbit: Int
+        
+        if (IPSubnetCalc.isValidIP(ipAddress: ipAddress, mask: nil)) {
+            switch (IPSubnetCalc.netClass(ipAddress: ipAddress)) {
+            case "A":
+                classbit = 8
+            case "B":
+                classbit = 16
+            case "C":
+                classbit = 24
+            default:
+                classbit = 8
+            }
+            self.init(ipAddress: ipAddress, maskbits: classbit)
+        }
+        else {
+            return nil
+        }
     }
 }
