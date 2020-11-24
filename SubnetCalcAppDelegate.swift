@@ -9,12 +9,12 @@ import Foundation
 import Cocoa
 
 
-class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableViewDataSource {
     private enum Constants {
-        static let BUFFER_LINES:UInt = 1000
-        static let NETWORK_BITS_MIN_CLASSLESS:UInt = 1
-        static let NETWORK_BITS_MIN:UInt = 8
-        static let NETWORK_BITS_MAX:UInt = 32
+        static let BUFFER_LINES:Int = 1000
+        static let NETWORK_BITS_MIN_CLASSLESS:Int = 1
+        static let NETWORK_BITS_MIN:Int = 8
+        static let NETWORK_BITS_MAX:Int = 32
     }
     
     @IBOutlet var window: NSWindow!
@@ -47,7 +47,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     @IBOutlet var wildcard: NSButton!
     @IBOutlet var darkModeMenu: NSMenuItem!
     @IBOutlet var NSApp: NSApplication!
+    
     var classless: Bool = false
+    var ipsc: IPSubnetCalc?
+    var tab_tabView: NSArray = []
     
     private func initAddressTab() {
         classBitMap.stringValue = "nnnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh"
@@ -102,33 +105,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         let coordSlider = subnetBitsSlide.frame
         
         //bitsOnSlide.stringValue = "24"
-        //print("bitsOnSlidePos")
         coordLabel.origin.x = coordSlider.origin.x - (coordLabel.size.width / 2) + (subnetBitsSlide.knobThickness / 2) + (((coordSlider.size.width - (subnetBitsSlide.knobThickness / 2)) / CGFloat(subnetBitsSlide.numberOfTickMarks)) * CGFloat(subnetBitsSlide.floatValue - 1.0))
         bitsOnSlide.frame = coordLabel
-         /*
-         coordLabel = [bitsOnSlide frame];
-         coordSlider = [subnetBitsSlide frame];
-         coordLabel.origin.x = coordSlider.origin.x - (coordLabel.size.width / 2) + ([subnetBitsSlide knobThickness] / 2) + (((coordSlider.size.width - ([subnetBitsSlide knobThickness] / 2)) / [subnetBitsSlide numberOfTickMarks]) * ([subnetBitsSlide floatValue] - 1.0));
-         //NSLog(@"slide x : %f label width : %f slide knob : %f slide width : %f n tick marks : %d slide value : %f x coord %f", coordSlider.origin.x, coordLabel.size.width, [subnetBitsSlide knobThickness], coordSlider.size.width, (int)[subnetBitsSlide numberOfTickMarks], [subnetBitsSlide floatValue], coordLabel.origin.x);
-         [bitsOnSlide setFrame: coordLabel];
-         */
-        
-        
     }
     
-    func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
-        let ipsc:IPSubnetCalc! = IPSubnetCalc("10.0.0.0")
-            print("IP Address: \(ipsc.ipv4Address)")
-            print("Mask Bits: \(ipsc.maskBits)")
-            print("IP Network Class: \(ipsc.networkClass)")
-        initAddressTab()
-        initSubnetsTab()
-        initCIDRTab()
-    }
-    
-    func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
+    private func URLEncode(url: String) -> String
+    {
+        return "@TEST"
     }
     
     private func checkAddr(address: NSString) -> Bool
@@ -216,26 +199,41 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         
     }
     
-    func numberOfRowsInTableView(aTableView: NSTableView) -> Int
-    {
-        return 0
-    }
-    
-    //Display all subnets info in the TableView Subnet/Hosts
-    func tableView(aTableView: NSTableView, aTableColumn: NSTableColumn, row: Int) -> Any
-    {
-        return (Any).self
-    }
-    
     func printAllSubnets()
     {
         
     }
     
-    func tableView(aTableView: NSTableView, anObject: Any, aTableColumn: NSTableColumn, row: Int)
+    func numberOfRows(in tableView: NSTableView) -> Int
     {
-        
+        if (ipsc != nil) {
+            if (self.classless == true) {
+                return Int(truncating: NSDecimalNumber(decimal: pow(2, (ipsc!.maskBits - Constants.NETWORK_BITS_MIN_CLASSLESS))))
+            }
+            else {
+                //return (ipsc!.subnetMax)
+                return 0
+            }
+        }
+        return 0
+        /*
+        if (ipsc)
+        {
+            if ([ipsc classless] == YES)
+                return (pow(2, ([[ipsc maskBits] intValue] - NETWORK_BITS_MIN_CLASSLESS)));
+            else
+                return ([[ipsc subnetMax] intValue]);
+        }
+ */
     }
+    
+    //Display all subnets info in the TableView Subnet/Hosts
+    func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?,
+               row: Int) -> Any?
+    {
+        return (Any).self
+    }
+    
     
     @IBAction func subnetBitsSlide(_ sender: AnyObject)
     {
@@ -274,20 +272,29 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             }
         }
     }
-    
-    func URLEncode(url: String) -> String
-    {
-        return "@TEST"
-    }
-    
+        
     func windowDidResize(_ notification: Notification)
     {
-        print("Windows Did Resize")
         bitsOnSlidePos()
     }
     
     func windowWillClose(_ notification: Notification)
     {
         NSApp.terminate(self)
+    }
+    
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
+        // Insert code here to initialize your application
+        let ipsc:IPSubnetCalc! = IPSubnetCalc("10.0.0.0")
+            print("IP Address: \(ipsc.ipv4Address)")
+            print("Mask Bits: \(ipsc.maskBits)")
+            print("IP Network Class: \(ipsc.networkClass)")
+        initAddressTab()
+        initSubnetsTab()
+        initCIDRTab()
+    }
+    
+    func applicationWillTerminate(_ aNotification: Notification) {
+        // Insert code here to tear down your application
     }
 }
