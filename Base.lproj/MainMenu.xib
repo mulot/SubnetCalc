@@ -467,7 +467,7 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <clipView key="contentView" id="L0l-HJ-flz">
                                                 <rect key="frame" x="1" y="1" width="379" height="207"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <autoresizingMask key="autoresizingMask"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="583" id="586">
                                                         <rect key="frame" x="0.0" y="0.0" width="379" height="184"/>
@@ -815,11 +815,7 @@
             <point key="canvasLocation" x="139" y="144"/>
         </window>
         <customObject id="420" customClass="NSFontManager"/>
-        <customObject id="494" customClass="SubnetCalcAppDelegate">
-            <connections>
-                <outlet property="window" destination="371" id="532"/>
-            </connections>
-        </customObject>
+        <customObject id="494" customClass="SubnetCalcAppDelegate"/>
         <customObject id="b7w-M5-ti7" userLabel="SubnetCalcAppDelegate" customClass="AppDelegate" customModule="SubnetCalc" customModuleProvider="target">
             <connections>
                 <outlet property="NSApp" destination="-2" id="wQ1-cQ-1kg"/>

@@ -9,7 +9,7 @@ import Foundation
 import Cocoa
 
 
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     private enum Constants {
         static let BUFFER_LINES:UInt = 1000
         static let NETWORK_BITS_MIN_CLASSLESS:UInt = 1
@@ -54,73 +54,102 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         classBinaryMap.stringValue = "00000001000000000000000000000000"
     }
     
-    private func initSubnetsTab() {
-        var addr: UInt32
+    private func initCIDRTab() {
+        for bits in (1...30) {
+            supernetMaskBitsCombo.addItem(withObjectValue: bits)
+        }
         
+        for index in (2...31).reversed() {
+            supernetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: (IPSubnetCalc.Constants.addr32Full << index)))
+        }
+        for index in (0...29) {
+            supernetMaxCombo.addItem(withObjectValue: pow(2, index))
+        }
+        for index in (1...31) {
+            supernetMaxAddr.addItem(withObjectValue: (pow(2, index) - 2))
+        }
+        for index in (0...31) {
+            supernetMaxSubnetsCombo.addItem(withObjectValue: pow(2, index))
+        }
+    }
+    
+    private func initSubnetsTab() {
         for index in (2...24).reversed() {
-            addr = (IPSubnetCalc.Constants.addr32Full << index)
             if (wildcard.state == NSControl.StateValue.on) {
-                subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: ~addr))
+                subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: ~(IPSubnetCalc.Constants.addr32Full << index)))
             }
             else {
-                subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: addr))
+                subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: (IPSubnetCalc.Constants.addr32Full << index)))
             }
         }
-        /*
-        for (i = 8; i < 31; i++)
-            [maskBitsCombo addItemWithObjectValue: [NSString stringWithFormat: @"%d", i]];
-        for (i = 0; i < 23; i++)
-            [subnetBitsCombo addItemWithObjectValue: [NSString stringWithFormat: @"%d", i]];
-        for (i = 2; i < 25; i++)
-        {
-            mask = (pow(2, i) - 2);
-            [maxHostsBySubnetCombo addItemWithObjectValue: [NSString stringWithFormat: @"%u", mask]];
+        for bits in (8...30) {
+            maskBitsCombo.addItem(withObjectValue: bits)
         }
-        for (i = 0; i < 23; i++)
-        {
-            mask = (pow(2, i));
-            [maxSubnetsCombo addItemWithObjectValue: [NSString stringWithFormat: @"%u", mask]];
+        for bits in (0...22) {
+            subnetBitsCombo.addItem(withObjectValue: bits)
         }
+        for index in (2...24) {
+            maxHostsBySubnetCombo.addItem(withObjectValue: (pow(2, index) - 2))
+        }
+        for index in (0...22) {
+            maxSubnetsCombo.addItem(withObjectValue: pow(2, index))
+        }
+    }
+    
+    private func bitsOnSlidePos()
+    {
+        var coordLabel = bitsOnSlide.frame
+        let coordSlider = subnetBitsSlide.frame
+        
+        //bitsOnSlide.stringValue = "24"
+        //print("bitsOnSlidePos")
+        coordLabel.origin.x = coordSlider.origin.x - (coordLabel.size.width / 2) + (subnetBitsSlide.knobThickness / 2) + (((coordSlider.size.width - (subnetBitsSlide.knobThickness / 2)) / CGFloat(subnetBitsSlide.numberOfTickMarks)) * CGFloat(subnetBitsSlide.floatValue - 1.0))
+        bitsOnSlide.frame = coordLabel
+         /*
+         coordLabel = [bitsOnSlide frame];
+         coordSlider = [subnetBitsSlide frame];
+         coordLabel.origin.x = coordSlider.origin.x - (coordLabel.size.width / 2) + ([subnetBitsSlide knobThickness] / 2) + (((coordSlider.size.width - ([subnetBitsSlide knobThickness] / 2)) / [subnetBitsSlide numberOfTickMarks]) * ([subnetBitsSlide floatValue] - 1.0));
+         //NSLog(@"slide x : %f label width : %f slide knob : %f slide width : %f n tick marks : %d slide value : %f x coord %f", coordSlider.origin.x, coordLabel.size.width, [subnetBitsSlide knobThickness], coordSlider.size.width, (int)[subnetBitsSlide numberOfTickMarks], [subnetBitsSlide floatValue], coordLabel.origin.x);
+         [bitsOnSlide setFrame: coordLabel];
          */
+        
+        
     }
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
-        let ipsc = IPSubnetCalc("10.0.0.0")
-        if (ipsc != nil)
-        {
-            print("IP Address: \(ipsc!.ipv4Address)")
-            print("Mask Bits: \(ipsc!.maskBits)")
-            print("IP Network Class: \(ipsc!.networkClass)")
-        }
+        let ipsc:IPSubnetCalc! = IPSubnetCalc("10.0.0.0")
+            print("IP Address: \(ipsc.ipv4Address)")
+            print("Mask Bits: \(ipsc.maskBits)")
+            print("IP Network Class: \(ipsc.networkClass)")
         initAddressTab()
         initSubnetsTab()
+        initCIDRTab()
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
     
-    func checkAddr(address: NSString) -> Bool
+    private func checkAddr(address: NSString) -> Bool
     {
         return false
     }
     
-    func initClassInfos(c: NSString)
+    private func initClassInfos(c: NSString)
     {
         
     }
     
-    func initCIDR()
+    private func doIPSubnetCalc(mask: UInt)
     {
         
     }
     
-    func doIPSubnetCalc(mask: UInt)
+    private func doSupernetCalc(maskBits: UInt)
     {
         
     }
-    
     
     @IBAction func calc(_ sender: AnyObject)
     {
@@ -158,11 +187,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @IBAction func changeMaskBits(_ sender: AnyObject)
-    {
-        
-    }
-    
-    func doSupernetCalc(maskBits: UInt)
     {
         
     }
@@ -213,12 +237,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
     }
     
-    func bitsOnSlidePos()
-    {
-        
-        
-    }
-    
     @IBAction func subnetBitsSlide(_ sender: AnyObject)
     {
         
@@ -234,7 +252,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
     }
     
-    
     @IBAction func exportCSV(_ sender: AnyObject)
     {
         
@@ -244,22 +261,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     {
         
     }
-    
-    func URLEncode(url: NSString) -> NSString
-    {
-        return "@TEST"
-    }
-    
-    func windowDidResize(notif: NSNotification)
-    {
-        bitsOnSlidePos()
-    }
-    
-    func windowWillClose(notif: NSNotification)
-    {
-        NSApp.terminate(self)
-    }
-    
     
     @IBAction func darkMode(_ sender: AnyObject)
     {
@@ -274,4 +275,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    func URLEncode(url: String) -> String
+    {
+        return "@TEST"
+    }
+    
+    func windowDidResize(_ notification: Notification)
+    {
+        print("Windows Did Resize")
+        bitsOnSlidePos()
+    }
+    
+    func windowWillClose(_ notification: Notification)
+    {
+        NSApp.terminate(self)
+    }
 }
