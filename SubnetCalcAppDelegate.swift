@@ -157,7 +157,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
         return (address, nil)
     }
     
-    private func doIPSubnetCalc(mask: UInt)
+    private func doIPSubnetCalc()
     {
         let ipaddr: String
         let ipmask: String?
@@ -168,7 +168,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
             ipmask = nil
         }
         else {
-            (ipaddr, ipmask) = splitAddrMask(address: addrField.stringValue)
+            if (ipsc == nil) {
+                (ipaddr, ipmask) = splitAddrMask(address: addrField.stringValue)
+            }
+            else {
+                ipaddr = ipsc!.ipv4Address
+                ipmask = String(ipsc!.maskBits)
+            }
         }
         if (IPSubnetCalc.isValidIP(ipAddress: ipaddr, mask: ipmask) == true) {
             //print("IP Address: \(ipaddr) mask: \(ipmask)")
@@ -281,29 +287,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
     
     @IBAction func calc(_ sender: AnyObject)
     {
-        if (ipsc != nil)
-        {
-            self.doIPSubnetCalc(mask: 0)
+        if (ipsc != nil) {
+            ipsc = nil
         }
-        else
-        {
-            self.doIPSubnetCalc(mask: 0)
-        }
-        /*
-        if (ipsc)
-        {
-            [self doIPSubnetCalc:[ipsc subnetMaskIntValue]];
-        }
-        else
-        {
-            [self doIPSubnetCalc:0];
-        }
-        */
+        self.doIPSubnetCalc()
     }
     
     @IBAction func ipAddrEdit(_ sender: AnyObject)
     {
-        
+        self.calc(sender)
     }
     
     @IBAction func changeAddrClassType(_ sender: AnyObject)
