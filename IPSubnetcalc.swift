@@ -125,7 +125,7 @@ class IPSubnetCalc: NSObject {
         return (ipAddressNum & Constants.addr32Full)
     }
     
-    //numerize a String as a Decimal value to UInt32
+    //numerize a String as a Mask bits value to UInt32
     static func numerize(str: String) -> UInt32 {
         var maskNum: UInt32 = 0
         
@@ -135,6 +135,7 @@ class IPSubnetCalc: NSObject {
         return (maskNum)
     }
     
+    //numerize a Mask bits value to UInt32
     static func numerize(number: Int) -> UInt32 {
         return ((Constants.addr32Full << (32 - number)) & Constants.addr32Full)
     }

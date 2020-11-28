@@ -398,27 +398,38 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
                 return Int(truncating: NSDecimalNumber(decimal: pow(2, (ipsc!.maskBits - Constants.NETWORK_BITS_MIN_CLASSLESS))))
             }
             else {
-                //return (ipsc!.subnetMax)
-                return 0
+                return (ipsc!.maxSubnets())
             }
         }
         return 0
-        /*
-        if (ipsc)
-        {
-            if ([ipsc classless] == YES)
-                return (pow(2, ([[ipsc maskBits] intValue] - NETWORK_BITS_MIN_CLASSLESS)));
-            else
-                return ([[ipsc subnetMax] intValue]);
-        }
- */
     }
     
     //Display all subnets info in the TableView Subnet/Hosts
     func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?,
                row: Int) -> Any?
     {
-        return (Any).self
+        if (ipsc != nil) {
+            
+            let mask: UInt32 = UInt32(row) << (32 - ipsc!.maskBits)
+            //print("tableView mask : \(mask) row : \(UInt32(row)) lshift : \(32 - ipsc!.maskBits)")
+            let ipaddr = (IPSubnetCalc.numerize(ipAddress: ipsc!.subnetId())) | mask
+            let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: ipaddr), maskbits: ipsc!.maskBits)
+            if (tableColumn != nil) {
+                if (tableColumn!.identifier.rawValue == "numCol") {
+                    return (row + 1)
+                }
+                else if (tableColumn!.identifier.rawValue == "subnetCol") {
+                    return (ipsc_tmp!.subnetId())
+                }
+                else if (tableColumn!.identifier.rawValue == "rangeCol") {
+                    return (ipsc_tmp!.subnetRange())
+                }
+                else if (tableColumn!.identifier.rawValue == "broadcastCol") {
+                    return (ipsc_tmp!.subnetBroadcast())
+                }
+            }
+        }
+        return (nil)
     }
     
     
@@ -428,12 +439,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
         {
             ipsc = IPSubnetCalc(Constants.defaultIP)
         }
-            print("subnetBitsSlide bits value : \(sender.intValue as Int)")
-            if (sender.intValue as Int >= 8)
+            //print("subnetBitsSlide bits value : \(sender.intValue as Int)")
+            if (sender.intValue as Int >= Constants.NETWORK_BITS_MIN)
             {
                 ipsc!.maskBits = sender.intValue as Int
                 self.doIPSubnetCalc()
             }
+            else {
+                ipsc!.maskBits = Constants.NETWORK_BITS_MIN
+                self.doIPSubnetCalc()
+            }
+        subnetsHostsView.reloadData()
         /*
         else {
             myAlert(message: "Bad Subnet Bits", info: "Bad value")
