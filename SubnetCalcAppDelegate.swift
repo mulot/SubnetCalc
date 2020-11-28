@@ -50,7 +50,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
     @IBOutlet var NSApp: NSApplication!
     
     private var savedTabView: [NSTabViewItem]? //ex tab_tabView
-    private var classless: Bool = false
     private var ipsc: IPSubnetCalc?
     
     private func initAddressTab() {
@@ -111,7 +110,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
     
     private func URLEncode(url: String) -> String
     {
-        return "@TEST"
+        return "TEST"
     }
     
     private func checkAddr(address: NSString) -> Bool
@@ -184,16 +183,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
             else {
                 subnetMaskCombo.selectItem(withObjectValue: ipsc!.subnetMask())
             }
-            /*
-             if ([wildcard state] == NSOnState)
-             {
-             [subnetMaskCombo selectItemWithObjectValue: [IPSubnetCalc denumberize: ~([ipsc subnetMaskIntValue])]];
-             }
-             else
-             {
-             [subnetMaskCombo selectItemWithObjectValue: [ipsc subnetMask]];
-             }
-             */
         }
     }
     
@@ -394,7 +383,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
     func numberOfRows(in tableView: NSTableView) -> Int
     {
         if (ipsc != nil) {
-            if (self.classless == true) {
+            if (tabViewClassLess.state == NSControl.StateValue.on) {
                 return Int(truncating: NSDecimalNumber(decimal: pow(2, (ipsc!.maskBits - Constants.NETWORK_BITS_MIN_CLASSLESS))))
             }
             else {
@@ -409,7 +398,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
                    row: Int) -> Any?
     {
         if (ipsc != nil) {
-            
             let mask: UInt32 = UInt32(row) << (32 - ipsc!.maskBits)
             //print("tableView mask : \(mask) row : \(UInt32(row)) lshift : \(32 - ipsc!.maskBits)")
             let ipaddr = (IPSubnetCalc.numerize(ipAddress: ipsc!.subnetId())) | mask
@@ -439,28 +427,34 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
         {
             ipsc = IPSubnetCalc(Constants.defaultIP)
         }
-        //print("subnetBitsSlide bits value : \(sender.intValue as Int)")
         if (sender.intValue as Int >= Constants.NETWORK_BITS_MIN)
         {
             ipsc!.maskBits = sender.intValue as Int
             self.doIPSubnetCalc()
+            //subnetsHostsView.reloadData()
         }
         else {
+            let maskbits = sender.intValue as Int
             ipsc!.maskBits = Constants.NETWORK_BITS_MIN
             self.doIPSubnetCalc()
+            if (tabViewClassLess.state == NSControl.StateValue.on) {
+                ipsc!.maskBits = maskbits
+                self.doSubnetHost()
+            }
         }
-        subnetsHostsView.reloadData()
-        /*
-         else {
-         myAlert(message: "Bad Subnet Bits", info: "Bad value")
-         return
-         }
-         */
     }
     
     @IBAction func changeTableViewClass(_ sender: AnyObject)
     {
-        
+        if (tabViewClassLess.state == NSControl.StateValue.off) {
+            if (ipsc != nil) {
+                if (ipsc!.maskBits < Constants.NETWORK_BITS_MIN) {
+                    ipsc!.maskBits = Constants.NETWORK_BITS_MIN
+                    self.doIPSubnetCalc()
+                }
+            }
+        }
+        self.doSubnetHost()
     }
     
     @IBAction func changeWildcard(_ sender: AnyObject)
@@ -473,9 +467,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
             if (ipsc != nil) {
                 subnetMaskCombo.selectItem(withObjectValue: ipsc!.wildcardMask())
             }
-            else {
-                subnetMaskCombo.selectItem(withObjectValue: "0.0.0.255")
-            }
         }
         else {
             for index in (2...24).reversed() {
@@ -484,49 +475,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
             if (ipsc != nil) {
                 subnetMaskCombo.selectItem(withObjectValue: ipsc!.subnetMask())
             }
-            else {
-                subnetMaskCombo.selectItem(withObjectValue: "255.0.0.0")
-            }
         }
-        /*
-         int                         i;
-         unsigned int                mask = -1;
-         unsigned int                addr_nl;
-         
-         [subnetMaskCombo removeAllItems];
-         if ([wildcard state] == NSOnState)
-         {
-         for (i = 24; i > 1; i--)
-         {
-         addr_nl = (mask << i);
-         [subnetMaskCombo addItemWithObjectValue: [IPSubnetCalc denumberize: ~addr_nl]];
-         }
-         if (ipsc)
-         {
-         [subnetMaskCombo selectItemWithObjectValue: [IPSubnetCalc denumberize: ~([ipsc subnetMaskIntValue])]];
-         }
-         else
-         {
-         [subnetMaskCombo selectItemWithObjectValue: @"0.0.0.255"];
-         }
-         }
-         else
-         {
-         for (i = 24; i > 1; i--)
-         {
-         addr_nl = (mask << i);
-         [subnetMaskCombo addItemWithObjectValue: [IPSubnetCalc denumberize: addr_nl]];
-         }
-         if (ipsc)
-         {
-         [subnetMaskCombo selectItemWithObjectValue: [ipsc subnetMask]];
-         }
-         else
-         {
-         [subnetMaskCombo selectItemWithObjectValue: @"255.0.0.0"];
-         }
-         }
-         */
     }
     
     @IBAction func exportCSV(_ sender: AnyObject)

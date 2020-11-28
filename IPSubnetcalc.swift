@@ -22,12 +22,12 @@ class IPSubnetCalc: NSObject {
         //IPv6 constants
         static let addr16Full: UInt16 = 0xFFFF
         static let addr16Empty: UInt16 = 0x0000
-        static let addr128Full: [UInt16] = [addr16Full, addr16Full, addr16Full, addr16Full, addr16Full, addr16Full, addr16Full, addr16Full]
-        static let addr128Empty: [UInt16] = [addr16Empty, addr16Empty, addr16Empty, addr16Empty, addr16Empty, addr16Empty, addr16Empty, addr16Empty]
-        static let addr16Hex1: UInt16 = 0xF000
-        static let addr16Hex2: UInt16 = 0x0F00
-        static let addr16Hex3: UInt16 = 0x00F0
-        static let addr16Hex4: UInt16 = 0x000F
+        //static let addr128Full: [UInt16] = [addr16Full, addr16Full, addr16Full, addr16Full, addr16Full, addr16Full, addr16Full, addr16Full]
+        //static let addr128Empty: [UInt16] = [addr16Empty, addr16Empty, addr16Empty, addr16Empty, addr16Empty, addr16Empty, addr16Empty, addr16Empty]
+        //static let addr16Hex1: UInt16 = 0xF000
+        //static let addr16Hex2: UInt16 = 0x0F00
+        //static let addr16Hex3: UInt16 = 0x00F0
+        //static let addr16Hex4: UInt16 = 0x000F
         static let resIPv6Blocks: [String : String] = ["::1/128" : "Loopback Address",
                                                        "::/128" : " Unspecified Address",
                                                        "2001:db8::/32" : "Documentation"]
@@ -53,7 +53,7 @@ class IPSubnetCalc: NSObject {
     var ipv4Address: String
     var maskBits: Int
     var ipv6Address: String
-    var maskBitsIPv6: Int
+    var ipv6MaskBits: Int
     
     
     //*************
@@ -152,7 +152,7 @@ class IPSubnetCalc: NSObject {
         return (ipDigits)
     }
     
-    static func isValidIP(ipAddress: String, mask: String?) -> Bool {
+    static func isValidIP(ipAddress: String, mask: String?, classless: Bool = false) -> Bool {
         var ip4Digits = [String]()
         
         ip4Digits = ipAddress.components(separatedBy: ".")
@@ -176,7 +176,13 @@ class IPSubnetCalc: NSObject {
         }
         if mask != nil {
             if let maskNum = Int(mask!) {
-                if (maskNum < Constants.NETWORK_BITS_MIN || maskNum > Constants.NETWORK_BITS_MAX) {
+                if (classless == true) {
+                    if (maskNum < Constants.NETWORK_BITS_MIN_CLASSLESS || maskNum > Constants.NETWORK_BITS_MAX) {
+                        print("classless mask \(maskNum) invalid")
+                        return false
+                    }
+                }
+                else if (maskNum < Constants.NETWORK_BITS_MIN || maskNum > Constants.NETWORK_BITS_MAX) {
                     print("mask \(maskNum) invalid")
                     return false
                 }
@@ -591,9 +597,9 @@ class IPSubnetCalc: NSObject {
     
     func networkIDIPv6() -> String {
         var netID = [UInt16]()
-        let numMask = IPSubnetCalc.numerizeMaskIPv6(maskbits: self.maskBitsIPv6)
+        let numMask = IPSubnetCalc.numerizeMaskIPv6(maskbits: self.ipv6MaskBits)
         let numIP = IPSubnetCalc.numerizeIPv6(ipAddress: fullAddressIPv6(ipAddress: self.ipv6Address))
-        let nbIndex = self.maskBitsIPv6 / 16
+        let nbIndex = self.ipv6MaskBits / 16
         
         for index in 0...nbIndex {
             if (index < 8) {
@@ -611,7 +617,7 @@ class IPSubnetCalc: NSObject {
     func networkRangeIPv6() -> String {
         var netID = [UInt16]()
         var netID2 = [UInt16]()
-        let numMask = IPSubnetCalc.numerizeMaskIPv6(maskbits: self.maskBitsIPv6)
+        let numMask = IPSubnetCalc.numerizeMaskIPv6(maskbits: self.ipv6MaskBits)
         let numIP = IPSubnetCalc.numerizeIPv6(ipAddress: self.ipv6Address)
         
         for index in 0...7 {
@@ -631,7 +637,7 @@ class IPSubnetCalc: NSObject {
         var total = Decimal()
         var number: Decimal = 2
         
-        NSDecimalPower(&total, &number , (128 - self.maskBitsIPv6), NSDecimalNumber.RoundingMode.plain)
+        NSDecimalPower(&total, &number , (128 - self.ipv6MaskBits), NSDecimalNumber.RoundingMode.plain)
         return (total)
     }
     
@@ -658,7 +664,7 @@ class IPSubnetCalc: NSObject {
         //print("NetID BEFORE compact : \(netID)")
         netID = compactAddressIPv6(ipAddress: netID)
         //print("NetID AFTER compact : \(netID)")
-        netID.append("/\(self.maskBitsIPv6)")
+        netID.append("/\(self.ipv6MaskBits)")
         
         for item in Constants.resIPv6Blocks {
             if (item.key == netID) {
@@ -669,11 +675,11 @@ class IPSubnetCalc: NSObject {
     }
     
     init?(ipAddress: String, maskbits: Int) {
-        if (IPSubnetCalc.isValidIP(ipAddress: ipAddress, mask: String(maskbits))) {
+        if (IPSubnetCalc.isValidIP(ipAddress: ipAddress, mask: String(maskbits), classless: true)) {
             self.ipv4Address = ipAddress
             self.maskBits = maskbits
             self.ipv6Address = "2001:db8::"
-            self.maskBitsIPv6 = 32
+            self.ipv6MaskBits = 32
         }
         else {
             return nil
@@ -707,7 +713,7 @@ class IPSubnetCalc: NSObject {
         
         // full ? compact ? validated ?
         self.ipv6Address = ipv6
-        self.maskBitsIPv6 = maskbits
+        self.ipv6MaskBits = maskbits
         return nil
     }
 }
