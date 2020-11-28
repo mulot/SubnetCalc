@@ -228,7 +228,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
     private func doIPSubnetCalc()
     {
         let ipaddr: String
-        let ipmask: String?
+        var ipmask: String?
         
         if (addrField.stringValue.isEmpty) {
             if (ipsc == nil)
@@ -244,11 +244,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
             }
         }
         else {
-            if (ipsc == nil) {
-                (ipaddr, ipmask) = splitAddrMask(address: addrField.stringValue)
-            }
-            else {
-                ipaddr = ipsc!.ipv4Address
+            (ipaddr, ipmask) = splitAddrMask(address: addrField.stringValue)
+            if (ipmask == nil && ipsc != nil) {
                 ipmask = String(ipsc!.maskBits)
             }
         }
@@ -285,9 +282,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
     
     @IBAction func calc(_ sender: AnyObject)
     {
-        if (ipsc != nil) {
-            ipsc = nil
-        }
         self.doIPSubnetCalc()
     }
     
@@ -319,14 +313,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
         }
         ipsc!.maskBits = sender.intValue + ipsc!.netBits()
         self.doIPSubnetCalc()
-        /*
-         unsigned int    mask = -1;
-         
-         if (ipsc)
-             [self doIPSubnetCalc: (mask << (32 - ([[sender objectValueOfSelectedItem] intValue] + [ipsc netBits])))];
-         else
-             [self doIPSubnetCalc: (mask << (32 - ([[sender objectValueOfSelectedItem] intValue] + 8)))];
-         */
     }
     
     @IBAction func changeSubnetMask(_ sender: AnyObject)
