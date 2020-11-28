@@ -125,6 +125,7 @@ class IPSubnetCalc: NSObject {
         return (ipAddressNum & Constants.addr32Full)
     }
     
+    //numerize a String as a Decimal value to UInt32
     static func numerize(str: String) -> UInt32 {
         var maskNum: UInt32 = 0
         
@@ -290,6 +291,30 @@ class IPSubnetCalc: NSObject {
         else if (classType == "C") {
             bits = self.maskBits - 24
         }
+        return (bits)
+    }
+    
+    static func maskBits(maskAddr: String) -> Int {
+        var bits: Int = 0
+        
+        var mask:UInt32 = IPSubnetCalc.numerize(ipAddress: maskAddr)
+        while (mask != 0) {
+            bits += 1
+            mask <<= 1
+        }
+        //print("maskBits \(maskAddr) bits: \(bits)")
+        return (bits)
+    }
+    
+    static func maskBits(mask: UInt32) -> Int {
+        var bits: Int = 0
+        var tmpmask = mask
+        
+        while (tmpmask != 0) {
+            bits += 1
+            tmpmask <<= 1
+        }
+        //print("maskBits \(mask) bits: \(bits)")
         return (bits)
     }
     
