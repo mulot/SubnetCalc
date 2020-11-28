@@ -10,11 +10,11 @@ import Cocoa
 
 
 class IPSubnetCalc: NSObject {
-    //*************
+    //*********
     //Constants
-    //*************
+    //*********
     enum Constants {
-        //private
+        //private constants
         static let NETWORK_BITS_MIN_CLASSLESS:Int = 1
         static let NETWORK_BITS_MIN:Int = 8
         static let NETWORK_BITS_MAX:Int = 32
@@ -47,9 +47,9 @@ class IPSubnetCalc: NSObject {
         static let maskClassC: UInt32 = 0xFFFFFF00
     }
     
-    //*************
-    //Properties
-    //*************
+    //****************
+    //Class Properties
+    //****************
     var ipv4Address: String
     var maskBits: Int
     var ipv6Address: String
@@ -220,19 +220,19 @@ class IPSubnetCalc: NSObject {
         return (IPSubnetCalc.digitize(ipAddress: wildcardMask))
     }
     
-    func maxHosts() -> String {
+    func maxHosts() -> Int {
         var maxHosts: UInt32 = 0
         
         maxHosts = (Constants.addr32Full >> self.maskBits) - 1
-        return (String(maxHosts))
+        return (Int(maxHosts))
     }
     
-    func maxCIDRSubnets() -> String {
+    func maxCIDRSubnets() -> Int {
         var max: Int = 0
         
         max = Int(truncating: NSDecimalNumber(decimal: pow(2, (32 - self.maskBits))))
         //max = Int(truncating: pow(2, (32 - self.maskBits)) as NSDecimalNumber)
-        return (String(max))
+        return (max)
     }
     
     func subnetRange() -> String {
@@ -277,7 +277,7 @@ class IPSubnetCalc: NSObject {
         return (IPSubnetCalc.netClass(ipAddress: ipv4Address))
     }
     
-    func subnetBits() -> String {
+    func subnetBits() -> Int {
         let classType = self.netClass()
         var bits: Int = 0
         
@@ -290,15 +290,31 @@ class IPSubnetCalc: NSObject {
         else if (classType == "C") {
             bits = self.maskBits - 24
         }
-        return (String(bits))
+        return (bits)
     }
     
-    func maxSubnets() -> String {
+    func netBits() -> Int {
+        let classType = self.netClass()
+        var bits: Int = 0
+        
+        if (classType == "A") {
+            bits =  8
+        }
+        else if (classType == "B") {
+            bits = 16
+        }
+        else if (classType == "C") {
+            bits = 24
+        }
+        return (bits)
+    }
+    
+    func maxSubnets() -> Int {
         var maxSubnets: Int = 0
         
         let bits = subnetBits()
-        maxSubnets = Int(truncating: NSDecimalNumber(decimal: pow(2, Int(bits)!)))
-        return (String(maxSubnets))
+        maxSubnets = Int(truncating: NSDecimalNumber(decimal: pow(2, bits)))
+        return (maxSubnets)
     }
     
     func bitMap() -> String {
@@ -336,29 +352,29 @@ class IPSubnetCalc: NSObject {
     
     func displayIPInfo() {
         print("IP Host : " + self.ipv4Address)
-        print("Mask bits : " + String(self.maskBits))
-        print("Mask : " + subnetMask())
-        print("Subnet bits : " + subnetBits())
-        print("Subnet ID : " + subnetId())
-        print("Broadcast : " + subnetBroadcast())
-        print("Max Host : " + maxHosts())
-        print("Max Subnet : " + maxSubnets())
-        print("Subnet Range : " + subnetRange())
+        print("Mask bits : \(self.maskBits)")
+        print("Mask : " + self.subnetMask())
+        print("Subnet bits : \(self.subnetBits())")
+        print("Subnet ID : " + self.subnetId())
+        print("Broadcast : " + self.subnetBroadcast())
+        print("Max Host : \(self.maxHosts())")
+        print("Max Subnet : \(self.maxSubnets())")
+        print("Subnet Range : " + self.subnetRange())
         print("IP Class Type : " + self.netClass())
         print("Hexa IP : " + self.hexaMap())
         print("Binary IP : " + self.binaryMap())
         print("BitMap : " + self.bitMap())
-        print("CIDR Netmask : " + subnetMask())
-        print("Wildcard Mask : " + wildcardMask())
-        print("CIDR Max Subnet : " + maxCIDRSubnets())
-        print("CIDR Max Hosts : " + maxHosts())
-        print("CIDR Network (Route) : " + subnetId())
-        print("CIDR Net Notation : " + subnetId() + "/" + String(self.maskBits))
-        print("CIDR Address Range : " + subnetCIDRRange())
+        print("CIDR Netmask : " + self.subnetMask())
+        print("Wildcard Mask : " + self.wildcardMask())
+        print("CIDR Max Subnet : \(self.maxCIDRSubnets())")
+        print("CIDR Max Hosts : \(self.maxHosts())")
+        print("CIDR Network (Route) : " + self.subnetId())
+        print("CIDR Net Notation : " + self.subnetId() + "/" + String(self.maskBits))
+        print("CIDR Address Range : " + self.subnetCIDRRange())
         print("IP number in binary : " + String(IPSubnetCalc.numerize(ipAddress: self.ipv4Address), radix: 2))
         print("Mask bin : " + String(IPSubnetCalc.numerize(number: self.maskBits), radix: 2))
-        //print("Subnet ID bin : " + String(subnetId(), radix: 2))
-        //print("Broadcast bin : " + String(subnetBroadcast(), radix: 2))
+        //print("Subnet ID bin : " + String(self.subnetId(), radix: 2))
+        //print("Broadcast bin : " + String(self.subnetBroadcast(), radix: 2))
     }
     
     //*************

@@ -11,6 +11,7 @@ import Cocoa
 
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableViewDataSource {
     private enum Constants {
+        static let defaultIP: String = "10.0.0.0"
         static let BUFFER_LINES:Int = 1000
         static let NETWORK_BITS_MIN_CLASSLESS:Int = 1
         static let NETWORK_BITS_MIN:Int = 8
@@ -170,10 +171,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
     private func doSubnet()
     {
         if (ipsc != nil) {
-            subnetBitsCombo.selectItem(withObjectValue: Int(ipsc!.subnetBits()))
+            subnetBitsCombo.selectItem(withObjectValue: ipsc!.subnetBits())
             maskBitsCombo.selectItem(withObjectValue: ipsc!.maskBits);
-            maxSubnetsCombo.selectItem(withObjectValue: Int(ipsc!.maxSubnets()))
-            maxHostsBySubnetCombo.selectItem(withObjectValue: Int(ipsc!.maxHosts()))
+            maxSubnetsCombo.selectItem(withObjectValue: ipsc!.maxSubnets())
+            maxHostsBySubnetCombo.selectItem(withObjectValue: ipsc!.maxHosts())
             subnetId.stringValue = ipsc!.subnetId()
             subnetBroadcast.stringValue = ipsc!.subnetBroadcast()
             subnetHostAddrRange.stringValue = ipsc!.subnetRange()
@@ -202,7 +203,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
             bitsOnSlide.stringValue = String(ipsc!.maskBits)
             subnetBitsSlide.intValue = Int32(ipsc!.maskBits)
             self.bitsOnSlidePos()
-            //[subnetsHostsView reloadData];
+            subnetsHostsView.reloadData()
         }
     }
 
@@ -214,15 +215,33 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
         }
     }
     
+    private func myAlert(message: String, info: String)
+    {
+        let alert = NSAlert()
+        alert.addButton(withTitle: "OK")
+        alert.messageText = message
+        alert.alertStyle = NSAlert.Style.warning
+        alert.informativeText = info
+        alert.runModal()
+    }
+    
     private func doIPSubnetCalc()
     {
         let ipaddr: String
         let ipmask: String?
         
         if (addrField.stringValue.isEmpty) {
-            addrField.stringValue = "10.0.0.0"
-            ipaddr = "10.0.0.0"
-            ipmask = nil
+            if (ipsc == nil)
+            {
+                addrField.stringValue = Constants.defaultIP
+                ipaddr = Constants.defaultIP
+                ipmask = nil
+            }
+            else {
+                addrField.stringValue = ipsc!.ipv4Address
+                ipaddr = ipsc!.ipv4Address
+                ipmask = String(ipsc!.maskBits)
+            }
         }
         else {
             if (ipsc == nil) {
@@ -236,10 +255,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
         if (IPSubnetCalc.isValidIP(ipAddress: ipaddr, mask: ipmask) == true) {
             //print("IP Address: \(ipaddr) mask: \(ipmask)")
             if (ipmask == nil) {
-                ipsc = IPSubnetCalc.init(ipaddr)
+                ipsc = IPSubnetCalc(ipaddr)
             }
             else {
-                ipsc = IPSubnetCalc.init(ipAddress: ipaddr, maskbits: Int(ipmask!)!)
+                ipsc = IPSubnetCalc(ipAddress: ipaddr, maskbits: Int(ipmask!)!)
             }
             if (ipsc != nil) {
                 if (tabView.numberOfTabViewItems != 4 && savedtabView != nil) {
@@ -254,87 +273,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
             }
         }
         else {
-            let alert = NSAlert()
-            alert.addButton(withTitle: "OK")
-            alert.messageText = "Bad IP Address"
-            alert.alertStyle = NSAlert.Style.warning
-            alert.informativeText = "Bad format"
-            alert.runModal()
+            myAlert(message: "Bad IP Address", info: "Bad format")
             return
         }
-        /*
-        NSRange                        range;
-        NSMutableAttributedString   *astr;
-        
-        if([[addrField stringValue] length] == 0)
-            [addrField setStringValue: NSLocalizedString(@"10.0.0.0", nil)];
-        if ([self checkAddr: [addrField stringValue]])
-        {
-            NSAlert *alert = [[NSAlert alloc] init];
-            [alert addButtonWithTitle: @"OK"];
-            [alert setMessageText: @"Bad IP Address"];
-            [alert setAlertStyle: NSAlertStyleWarning];
-            [alert setInformativeText:@"Bad format"];
-            if ([alert runModal] == NSAlertFirstButtonReturn)
-            return;
-        }
-        if ([tabView numberOfTabViewItems] != 4)
-        {
-            [tabView addTabViewItem: [tab_tabView objectAtIndex:1]];
-            [tabView addTabViewItem: [tab_tabView objectAtIndex:2]];
-            [tabView addTabViewItem: [tab_tabView objectAtIndex:3]];
-        }
-        ipsc = [[IPSubnetCalc alloc] init];
-        if (ipsc)
-        {
-            if ([tabViewClassLess state] == NSOnState)
-            {
-                [ipsc setClassless: YES];
-            }
-            else
-            {
-                [ipsc setClassless: NO];
-            }
-            range = [[addrField stringValue] rangeOfString:@"/"];
-            if (range.location != NSNotFound)
-            {
-                mask = -1;
-                mask <<= (32 - [[[addrField stringValue] substringFromIndex: range.location + 1] intValue]);
-                [addrField setStringValue: [[addrField stringValue] substringToIndex: range.location]];
-            }
-            if (mask)
-                [ipsc initAddressAndMask: [[addrField stringValue] cStringUsingEncoding: NSASCIIStringEncoding] mask: mask];
-            else
-                [ipsc initAddress: [[addrField stringValue] cStringUsingEncoding: NSASCIIStringEncoding]];
-            [self initClassInfos: [ipsc networkClass]];
-            [supernetRoute setStringValue: [ipsc supernetRoute: [[supernetMaskBitsCombo objectValueOfSelectedItem] intValue]]];
-            [supernetAddrRange setStringValue: [ipsc supernetAddrRange: [[supernetMaskBitsCombo objectValueOfSelectedItem] intValue]]];
-            astr = [[NSMutableAttributedString alloc] initWithString : [ipsc bitMap]];
-            [classBitMap setAttributedStringValue: astr];
-            [classBinaryMap setStringValue: [ipsc binMap]];
-            [classHexaMap setStringValue: [ipsc hexMap]];
-            [subnetBitsCombo selectItemWithObjectValue: [[ipsc subnetBits] stringValue]];
-            [maskBitsCombo selectItemWithObjectValue: [[ipsc maskBits] stringValue]];
-            [maxSubnetsCombo selectItemWithObjectValue: [[ipsc subnetMax] stringValue]];
-            [maxHostsBySubnetCombo selectItemWithObjectValue: [[ipsc hostMax] stringValue]];
-            if ([wildcard state] == NSOnState)
-            {
-                [subnetMaskCombo selectItemWithObjectValue: [IPSubnetCalc denumberize: ~([ipsc subnetMaskIntValue])]];
-            }
-            else
-            {
-                [subnetMaskCombo selectItemWithObjectValue: [ipsc subnetMask]];
-            }
-            [subnetId setStringValue: [ipsc subnetId]];
-            [subnetHostAddrRange setStringValue: [ipsc subnetHostAddrRange]];
-            [subnetBroadcast setStringValue: [ipsc subnetBroadcast]];
-            [bitsOnSlide setStringValue: [[ipsc maskBits] stringValue]];
-            [subnetBitsSlide setFloatValue: [[ipsc maskBits] floatValue]];
-            [self doSupernetCalc: [ipsc maskBitsIntValue]];
-            [self bitsOnSlidePos];
-            [subnetsHostsView reloadData];
-        }
-         */
     }
     
     private func doSupernetCalc(maskBits: UInt)
@@ -372,7 +313,20 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
     
     @IBAction func changeSubnetBits(_ sender: AnyObject)
     {
-        
+        if (ipsc == nil)
+        {
+            ipsc = IPSubnetCalc(Constants.defaultIP)
+        }
+        ipsc!.maskBits = sender.intValue + ipsc!.netBits()
+        self.doIPSubnetCalc()
+        /*
+         unsigned int    mask = -1;
+         
+         if (ipsc)
+             [self doIPSubnetCalc: (mask << (32 - ([[sender objectValueOfSelectedItem] intValue] + [ipsc netBits])))];
+         else
+             [self doIPSubnetCalc: (mask << (32 - ([[sender objectValueOfSelectedItem] intValue] + 8)))];
+         */
     }
     
     @IBAction func changeSubnetMask(_ sender: AnyObject)
@@ -382,7 +336,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
     
     @IBAction func changeMaskBits(_ sender: AnyObject)
     {
-        
+        if (ipsc == nil)
+        {
+            ipsc = IPSubnetCalc(Constants.defaultIP)
+        }
+        ipsc!.maskBits = sender.intValue
+        self.doIPSubnetCalc()
     }
     
     @IBAction func changeSupernetMaskBits(_ sender: AnyObject)
