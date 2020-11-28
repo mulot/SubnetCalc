@@ -125,19 +125,21 @@ class IPSubnetCalc: NSObject {
         return (ipAddressNum & Constants.addr32Full)
     }
     
-    //numerize a String as a Mask bits value to UInt32
-    static func numerize(str: String) -> UInt32 {
+    //OLD numerize a String as a Mask bits value to UInt32
+    /*
+    static func numerize(maskDigit: String) -> UInt32 {
         var maskNum: UInt32 = 0
         
-        if (Int(str) != nil) {
-            maskNum = (Constants.addr32Full << (32 - Int(str)!)) & Constants.addr32Full
+        if (Int(maskDigit) != nil) {
+            maskNum = (Constants.addr32Full << (32 - Int(maskDigit)!)) & Constants.addr32Full
         }
         return (maskNum)
     }
+ */
     
     //numerize a Mask bits value to UInt32
-    static func numerize(number: Int) -> UInt32 {
-        return ((Constants.addr32Full << (32 - number)) & Constants.addr32Full)
+    static func numerize(maskbits: Int) -> UInt32 {
+        return ((Constants.addr32Full << (32 - maskbits)) & Constants.addr32Full)
     }
     
     static func digitize(ipAddress: UInt32) -> String {
@@ -193,7 +195,7 @@ class IPSubnetCalc: NSObject {
     func subnetId() -> String {
         var subnetId: UInt32 = 0
         let ipBits = IPSubnetCalc.numerize(ipAddress: self.ipv4Address)
-        let maskBits = IPSubnetCalc.numerize(number: self.maskBits)
+        let maskBits = IPSubnetCalc.numerize(maskbits: self.maskBits)
         
         subnetId = ipBits & maskBits
         return (IPSubnetCalc.digitize(ipAddress: subnetId))
@@ -202,7 +204,7 @@ class IPSubnetCalc: NSObject {
     func subnetBroadcast() -> String {
         var broadcast: UInt32 = 0
         let ipBits = IPSubnetCalc.numerize(ipAddress: self.ipv4Address)
-        let maskBits = IPSubnetCalc.numerize(number: self.maskBits)
+        let maskBits = IPSubnetCalc.numerize(maskbits: self.maskBits)
         
         broadcast = ipBits & maskBits | (Constants.addr32Full >> self.maskBits)
         return (IPSubnetCalc.digitize(ipAddress: broadcast))
@@ -344,7 +346,7 @@ class IPSubnetCalc: NSObject {
     }
     
     func bitMap() -> String {
-        let mask_num = IPSubnetCalc.numerize(number: maskBits)
+        let mask_num = IPSubnetCalc.numerize(maskbits: maskBits)
         let classAddr = self.netClass()
         var maskClass: UInt32 = 0
         var bitMap = String()
@@ -398,7 +400,7 @@ class IPSubnetCalc: NSObject {
         print("CIDR Net Notation : " + self.subnetId() + "/" + String(self.maskBits))
         print("CIDR Address Range : " + self.subnetCIDRRange())
         print("IP number in binary : " + String(IPSubnetCalc.numerize(ipAddress: self.ipv4Address), radix: 2))
-        print("Mask bin : " + String(IPSubnetCalc.numerize(number: self.maskBits), radix: 2))
+        print("Mask bin : " + String(IPSubnetCalc.numerize(maskbits: self.maskBits), radix: 2))
         //print("Subnet ID bin : " + String(self.subnetId(), radix: 2))
         //print("Broadcast bin : " + String(self.subnetBroadcast(), radix: 2))
     }

@@ -139,9 +139,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
             savedTabView = tabView.tabViewItems
             if (savedTabView != nil)
             {
-            tabView.removeTabViewItem(savedTabView![1])
-            tabView.removeTabViewItem(savedTabView![2])
-            tabView.removeTabViewItem(savedTabView![3])
+                tabView.removeTabViewItem(savedTabView![1])
+                tabView.removeTabViewItem(savedTabView![2])
+                tabView.removeTabViewItem(savedTabView![3])
             }
         }
     }
@@ -185,15 +185,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
                 subnetMaskCombo.selectItem(withObjectValue: ipsc!.subnetMask())
             }
             /*
-            if ([wildcard state] == NSOnState)
-            {
-                [subnetMaskCombo selectItemWithObjectValue: [IPSubnetCalc denumberize: ~([ipsc subnetMaskIntValue])]];
-            }
-            else
-            {
-                [subnetMaskCombo selectItemWithObjectValue: [ipsc subnetMask]];
-            }
- */
+             if ([wildcard state] == NSOnState)
+             {
+             [subnetMaskCombo selectItemWithObjectValue: [IPSubnetCalc denumberize: ~([ipsc subnetMaskIntValue])]];
+             }
+             else
+             {
+             [subnetMaskCombo selectItemWithObjectValue: [ipsc subnetMask]];
+             }
+             */
         }
     }
     
@@ -206,7 +206,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
             subnetsHostsView.reloadData()
         }
     }
-
+    
     private func doCIDR()
     {
         if (ipsc != nil) {
@@ -334,8 +334,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
                 ipsc!.maskBits = Int(IPSubnetCalc.maskBits(mask: ~mask))
             }
             else {
-                    ipsc!.maskBits = Int(IPSubnetCalc.maskBits(mask: mask))
-                    //print("changeSubnetMask object value : \(str)")
+                ipsc!.maskBits = Int(IPSubnetCalc.maskBits(mask: mask))
+                //print("changeSubnetMask object value : \(str)")
             }
             self.doIPSubnetCalc()
         }
@@ -406,7 +406,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
     
     //Display all subnets info in the TableView Subnet/Hosts
     func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?,
-               row: Int) -> Any?
+                   row: Int) -> Any?
     {
         if (ipsc != nil) {
             
@@ -439,25 +439,22 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
         {
             ipsc = IPSubnetCalc(Constants.defaultIP)
         }
-            //print("subnetBitsSlide bits value : \(sender.intValue as Int)")
-            if (sender.intValue as Int >= Constants.NETWORK_BITS_MIN)
-            {
-                ipsc!.maskBits = sender.intValue as Int
-                self.doIPSubnetCalc()
-            }
-            else {
-                ipsc!.maskBits = Constants.NETWORK_BITS_MIN
-                self.doIPSubnetCalc()
-            }
+        //print("subnetBitsSlide bits value : \(sender.intValue as Int)")
+        if (sender.intValue as Int >= Constants.NETWORK_BITS_MIN)
+        {
+            ipsc!.maskBits = sender.intValue as Int
+            self.doIPSubnetCalc()
+        }
+        else {
+            ipsc!.maskBits = Constants.NETWORK_BITS_MIN
+            self.doIPSubnetCalc()
+        }
         subnetsHostsView.reloadData()
         /*
-        else {
-            myAlert(message: "Bad Subnet Bits", info: "Bad value")
-            return
-        }
-         */
-        /*
-         [subnetsHostsView reloadData];
+         else {
+         myAlert(message: "Bad Subnet Bits", info: "Bad value")
+         return
+         }
          */
     }
     
@@ -482,8 +479,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
         }
         else {
             for index in (2...24).reversed() {
-                    subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: (IPSubnetCalc.Constants.addr32Full << index)))
-                }
+                subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: (IPSubnetCalc.Constants.addr32Full << index)))
+            }
             if (ipsc != nil) {
                 subnetMaskCombo.selectItem(withObjectValue: ipsc!.subnetMask())
             }
@@ -499,35 +496,35 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
          [subnetMaskCombo removeAllItems];
          if ([wildcard state] == NSOnState)
          {
-             for (i = 24; i > 1; i--)
-             {
-                 addr_nl = (mask << i);
-                 [subnetMaskCombo addItemWithObjectValue: [IPSubnetCalc denumberize: ~addr_nl]];
-             }
-             if (ipsc)
-             {
-                 [subnetMaskCombo selectItemWithObjectValue: [IPSubnetCalc denumberize: ~([ipsc subnetMaskIntValue])]];
-             }
-             else
-             {
-                 [subnetMaskCombo selectItemWithObjectValue: @"0.0.0.255"];
-             }
+         for (i = 24; i > 1; i--)
+         {
+         addr_nl = (mask << i);
+         [subnetMaskCombo addItemWithObjectValue: [IPSubnetCalc denumberize: ~addr_nl]];
+         }
+         if (ipsc)
+         {
+         [subnetMaskCombo selectItemWithObjectValue: [IPSubnetCalc denumberize: ~([ipsc subnetMaskIntValue])]];
          }
          else
          {
-             for (i = 24; i > 1; i--)
-             {
-                 addr_nl = (mask << i);
-                 [subnetMaskCombo addItemWithObjectValue: [IPSubnetCalc denumberize: addr_nl]];
-             }
-             if (ipsc)
-             {
-                 [subnetMaskCombo selectItemWithObjectValue: [ipsc subnetMask]];
-             }
-             else
-             {
-                 [subnetMaskCombo selectItemWithObjectValue: @"255.0.0.0"];
-             }
+         [subnetMaskCombo selectItemWithObjectValue: @"0.0.0.255"];
+         }
+         }
+         else
+         {
+         for (i = 24; i > 1; i--)
+         {
+         addr_nl = (mask << i);
+         [subnetMaskCombo addItemWithObjectValue: [IPSubnetCalc denumberize: addr_nl]];
+         }
+         if (ipsc)
+         {
+         [subnetMaskCombo selectItemWithObjectValue: [ipsc subnetMask]];
+         }
+         else
+         {
+         [subnetMaskCombo selectItemWithObjectValue: @"255.0.0.0"];
+         }
          }
          */
     }
@@ -554,7 +551,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
             }
         }
     }
-        
+    
     func windowDidResize(_ notification: Notification)
     {
         bitsOnSlidePos()
