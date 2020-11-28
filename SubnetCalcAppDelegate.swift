@@ -157,6 +157,63 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
         return (address, nil)
     }
     
+    
+    private func doAddressMap() {
+        if (ipsc != nil) {
+            self.initClassInfos(ipsc!.netClass())
+            classBitMap.stringValue = ipsc!.bitMap()
+            classBinaryMap.stringValue = ipsc!.binaryMap()
+            classHexaMap.stringValue = ipsc!.hexaMap()
+        }
+    }
+    
+    private func doSubnet()
+    {
+        if (ipsc != nil) {
+            subnetBitsCombo.selectItem(withObjectValue: Int(ipsc!.subnetBits()))
+            maskBitsCombo.selectItem(withObjectValue: ipsc!.maskBits);
+            maxSubnetsCombo.selectItem(withObjectValue: Int(ipsc!.maxSubnets()))
+            maxHostsBySubnetCombo.selectItem(withObjectValue: Int(ipsc!.maxHosts()))
+            subnetId.stringValue = ipsc!.subnetId()
+            subnetBroadcast.stringValue = ipsc!.subnetBroadcast()
+            subnetHostAddrRange.stringValue = ipsc!.subnetRange()
+            if (wildcard.state == NSControl.StateValue.on) {
+                subnetMaskCombo.selectItem(withObjectValue: ipsc!.wildcardMask())
+            }
+            else {
+                subnetMaskCombo.selectItem(withObjectValue: ipsc!.subnetMask())
+            }
+            /*
+            if ([wildcard state] == NSOnState)
+            {
+                [subnetMaskCombo selectItemWithObjectValue: [IPSubnetCalc denumberize: ~([ipsc subnetMaskIntValue])]];
+            }
+            else
+            {
+                [subnetMaskCombo selectItemWithObjectValue: [ipsc subnetMask]];
+            }
+ */
+        }
+    }
+    
+    private func doSubnetHost()
+    {
+        if (ipsc != nil) {
+            bitsOnSlide.stringValue = String(ipsc!.maskBits)
+            subnetBitsSlide.intValue = Int32(ipsc!.maskBits)
+            self.bitsOnSlidePos()
+            //[subnetsHostsView reloadData];
+        }
+    }
+
+    private func doCIDR()
+    {
+        if (ipsc != nil) {
+            //supernetRoute.stringValue = ipsc!.subnetId()
+            supernetAddrRange.stringValue = ipsc!.subnetCIDRRange()
+        }
+    }
+    
     private func doIPSubnetCalc()
     {
         let ipaddr: String
@@ -190,10 +247,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
                     tabView.addTabViewItem(savedtabView![2])
                     tabView.addTabViewItem(savedtabView![3])
                 }
-                self.initClassInfos(ipsc!.netClass())
-                classBitMap.stringValue = ipsc!.bitMap()
-                classBinaryMap.stringValue = ipsc!.binaryMap()
-                classHexaMap.stringValue = ipsc!.hexaMap()
+                self.doAddressMap()
+                self.doSubnet()
+                self.doSubnetHost()
+                self.doCIDR()
             }
         }
         else {
@@ -401,7 +458,68 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
     
     @IBAction func changeWildcard(_ sender: AnyObject)
     {
-        
+        subnetMaskCombo.removeAllItems()
+        if (wildcard.state == NSControl.StateValue.on) {
+            for index in (2...24).reversed() {
+                subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: ~(IPSubnetCalc.Constants.addr32Full << index)))
+            }
+            if (ipsc != nil) {
+                subnetMaskCombo.selectItem(withObjectValue: ipsc!.wildcardMask())
+            }
+            else {
+                subnetMaskCombo.selectItem(withObjectValue: "0.0.0.255")
+            }
+        }
+        else {
+            for index in (2...24).reversed() {
+                    subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: (IPSubnetCalc.Constants.addr32Full << index)))
+                }
+            if (ipsc != nil) {
+                subnetMaskCombo.selectItem(withObjectValue: ipsc!.subnetMask())
+            }
+            else {
+                subnetMaskCombo.selectItem(withObjectValue: "255.0.0.0")
+            }
+        }
+        /*
+         int                         i;
+         unsigned int                mask = -1;
+         unsigned int                addr_nl;
+         
+         [subnetMaskCombo removeAllItems];
+         if ([wildcard state] == NSOnState)
+         {
+             for (i = 24; i > 1; i--)
+             {
+                 addr_nl = (mask << i);
+                 [subnetMaskCombo addItemWithObjectValue: [IPSubnetCalc denumberize: ~addr_nl]];
+             }
+             if (ipsc)
+             {
+                 [subnetMaskCombo selectItemWithObjectValue: [IPSubnetCalc denumberize: ~([ipsc subnetMaskIntValue])]];
+             }
+             else
+             {
+                 [subnetMaskCombo selectItemWithObjectValue: @"0.0.0.255"];
+             }
+         }
+         else
+         {
+             for (i = 24; i > 1; i--)
+             {
+                 addr_nl = (mask << i);
+                 [subnetMaskCombo addItemWithObjectValue: [IPSubnetCalc denumberize: addr_nl]];
+             }
+             if (ipsc)
+             {
+                 [subnetMaskCombo selectItemWithObjectValue: [ipsc subnetMask]];
+             }
+             else
+             {
+                 [subnetMaskCombo selectItemWithObjectValue: @"255.0.0.0"];
+             }
+         }
+         */
     }
     
     @IBAction func exportCSV(_ sender: AnyObject)
@@ -439,12 +557,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
-        /*
-        let ipsc:IPSubnetCalc! = IPSubnetCalc("10.0.0.0")
-            print("IP Address: \(ipsc.ipv4Address)")
-            print("Mask Bits: \(ipsc.maskBits)")
-            print("IP Network Class: \(ipsc.networkClass)")
-         */
         initAddressTab()
         initSubnetsTab()
         initCIDRTab()

@@ -188,36 +188,36 @@ class IPSubnetCalc: NSObject {
         return true
     }
     
-    func subnetId() -> UInt32 {
+    func subnetId() -> String {
         var subnetId: UInt32 = 0
         let ipBits = IPSubnetCalc.numerize(ipAddress: self.ipv4Address)
         let maskBits = IPSubnetCalc.numerize(number: self.maskBits)
         
         subnetId = ipBits & maskBits
-        return (subnetId)
+        return (IPSubnetCalc.digitize(ipAddress: subnetId))
     }
     
-    func subnetBroadcast() -> UInt32 {
+    func subnetBroadcast() -> String {
         var broadcast: UInt32 = 0
         let ipBits = IPSubnetCalc.numerize(ipAddress: self.ipv4Address)
         let maskBits = IPSubnetCalc.numerize(number: self.maskBits)
         
         broadcast = ipBits & maskBits | (Constants.addr32Full >> self.maskBits)
-        return (broadcast)
+        return (IPSubnetCalc.digitize(ipAddress: broadcast))
     }
     
-    func subnetMask() -> UInt32 {
+    func subnetMask() -> String {
         var subnetMask: UInt32 = 0
         
         subnetMask = Constants.addr32Full << (32 - self.maskBits)
-        return (subnetMask)
+        return (IPSubnetCalc.digitize(ipAddress: subnetMask))
     }
     
-    func wildcardMask() -> UInt32 {
+    func wildcardMask() -> String {
         var wildcardMask: UInt32 = 0
         
         wildcardMask = ~(Constants.addr32Full << (32 - self.maskBits))
-        return (wildcardMask)
+        return (IPSubnetCalc.digitize(ipAddress: wildcardMask))
     }
     
     func maxHosts() -> String {
@@ -231,6 +231,7 @@ class IPSubnetCalc: NSObject {
         var max: Int = 0
         
         max = Int(truncating: NSDecimalNumber(decimal: pow(2, (32 - self.maskBits))))
+        //max = Int(truncating: pow(2, (32 - self.maskBits)) as NSDecimalNumber)
         return (String(max))
     }
     
@@ -239,8 +240,8 @@ class IPSubnetCalc: NSObject {
         var firstIP: UInt32 = 0
         var lastIP: UInt32 = 0
         
-        firstIP = subnetId() + 1
-        lastIP = subnetBroadcast() - 1
+        firstIP = IPSubnetCalc.numerize(ipAddress: subnetId()) + 1
+        lastIP = IPSubnetCalc.numerize(ipAddress: subnetBroadcast()) - 1
         range = IPSubnetCalc.digitize(ipAddress: firstIP) + " - " + IPSubnetCalc.digitize(ipAddress: lastIP)
         return (range)
     }
@@ -250,8 +251,8 @@ class IPSubnetCalc: NSObject {
         var firstIP: UInt32 = 0
         var lastIP: UInt32 = 0
         
-        firstIP = subnetId()
-        lastIP = subnetBroadcast()
+        firstIP = IPSubnetCalc.numerize(ipAddress: subnetId())
+        lastIP = IPSubnetCalc.numerize(ipAddress: subnetBroadcast())
         range = IPSubnetCalc.digitize(ipAddress: firstIP) + " - " + IPSubnetCalc.digitize(ipAddress: lastIP)
         return (range)
     }
@@ -336,10 +337,10 @@ class IPSubnetCalc: NSObject {
     func displayIPInfo() {
         print("IP Host : " + self.ipv4Address)
         print("Mask bits : " + String(self.maskBits))
-        print("Mask : " + IPSubnetCalc.digitize(ipAddress: subnetMask()))
+        print("Mask : " + subnetMask())
         print("Subnet bits : " + subnetBits())
-        print("Subnet ID : " + IPSubnetCalc.digitize(ipAddress: subnetId()))
-        print("Broadcast : " + IPSubnetCalc.digitize(ipAddress: subnetBroadcast()))
+        print("Subnet ID : " + subnetId())
+        print("Broadcast : " + subnetBroadcast())
         print("Max Host : " + maxHosts())
         print("Max Subnet : " + maxSubnets())
         print("Subnet Range : " + subnetRange())
@@ -347,17 +348,17 @@ class IPSubnetCalc: NSObject {
         print("Hexa IP : " + self.hexaMap())
         print("Binary IP : " + self.binaryMap())
         print("BitMap : " + self.bitMap())
-        print("CIDR Netmask : " + IPSubnetCalc.digitize(ipAddress: subnetMask()))
-        print("Wildcard Mask : " + IPSubnetCalc.digitize(ipAddress: wildcardMask()))
+        print("CIDR Netmask : " + subnetMask())
+        print("Wildcard Mask : " + wildcardMask())
         print("CIDR Max Subnet : " + maxCIDRSubnets())
         print("CIDR Max Hosts : " + maxHosts())
-        print("CIDR Network (Route) : " + IPSubnetCalc.digitize(ipAddress: subnetId()))
-        print("CIDR Net Notation : " + IPSubnetCalc.digitize(ipAddress: subnetId()) + "/" + String(self.maskBits))
+        print("CIDR Network (Route) : " + subnetId())
+        print("CIDR Net Notation : " + subnetId() + "/" + String(self.maskBits))
         print("CIDR Address Range : " + subnetCIDRRange())
         print("IP number in binary : " + String(IPSubnetCalc.numerize(ipAddress: self.ipv4Address), radix: 2))
         print("Mask bin : " + String(IPSubnetCalc.numerize(number: self.maskBits), radix: 2))
-        print("Subnet ID bin : " + String(subnetId(), radix: 2))
-        print("Broadcast bin : " + String(subnetBroadcast(), radix: 2))
+        //print("Subnet ID bin : " + String(subnetId(), radix: 2))
+        //print("Broadcast bin : " + String(subnetBroadcast(), radix: 2))
     }
     
     //*************
@@ -587,7 +588,6 @@ class IPSubnetCalc: NSObject {
         var number: Decimal = 2
         
         NSDecimalPower(&total, &number , (128 - self.maskBitsIPv6), NSDecimalNumber.RoundingMode.plain)
-        //return (pow(2, Double(128 - maskbits)))
         return (total)
     }
     
