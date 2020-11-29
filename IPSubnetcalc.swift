@@ -292,15 +292,40 @@ class IPSubnetCalc: NSObject {
         var bits: Int = 0
         
         if (classType == "A") {
-            bits = self.maskBits - 8
+            if (self.maskBits > 8) {
+                bits = self.maskBits - 8
+            }
         }
         else if (classType == "B") {
-            bits = self.maskBits - 16
+            if (self.maskBits > 16) {
+                bits = self.maskBits - 16
+            }
         }
         else if (classType == "C") {
-            bits = self.maskBits - 24
+            if (self.maskBits > 24) {
+                bits = self.maskBits - 24
+            }
         }
         return (bits)
+        /*
+         char    class;
+         
+         class = [self getClass:address];
+         hostAddr = address;
+         [self setClassInfo:class defaults:0];
+         
+         if (mask > addressMask)
+         {
+             mask = addressMask;
+             netBits = [IPSubnetCalc countOnBits:addressMask];
+             subnetBits = 0;
+         }
+         else
+         {
+             subnetMask = mask^addressMask;
+             subnetBits = [IPSubnetCalc countOnBits:subnetMask];
+         }
+         */
     }
     
     static func maskBits(maskAddr: String) -> Int {
@@ -332,13 +357,28 @@ class IPSubnetCalc: NSObject {
         var bits: Int = 0
         
         if (classType == "A") {
-            bits =  8
+            if (self.maskBits > 8) {
+                bits =  8
+            }
+            else {
+                bits = self.maskBits
+            }
         }
         else if (classType == "B") {
-            bits = 16
+            if (self.maskBits > 16) {
+                bits = 16
+            }
+            else {
+                bits = self.maskBits
+            }
         }
         else if (classType == "C") {
-            bits = 24
+            if (self.maskBits > 24) {
+                bits = 24
+            }
+            else {
+                bits = self.maskBits
+            }
         }
         return (bits)
     }
@@ -352,26 +392,15 @@ class IPSubnetCalc: NSObject {
     }
     
     func bitMap() -> String {
-        let mask_num = IPSubnetCalc.numerize(maskbits: maskBits)
-        let classAddr = self.netClass()
-        var maskClass: UInt32 = 0
+        let netBits = self.netBits()
+        let subnetBits = self.subnetBits()
         var bitMap = String()
         
-        if (classAddr == "A") {
-            maskClass = Constants.maskClassA
-        }
-        else if (classAddr == "B") {
-            maskClass = Constants.maskClassB
-        }
-        else if (classAddr == "C") {
-            maskClass = Constants.maskClassC
-        }
-        
         for index in 0...31 {
-            if (((mask_num >> index) & maskClass) > 0) {
+            if (index < netBits) {
                 bitMap.append("n")
             }
-            else if (((mask_num >> index) & mask_num) > 0) {
+            else if (index < (netBits + subnetBits)) {
                 bitMap.append("s")
             }
             else {
