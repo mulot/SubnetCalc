@@ -12,7 +12,7 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableViewDataSource {
     private enum Constants {
         static let defaultIP: String = "10.0.0.0"
-        static let BUFFER_LINES:Int = 1000
+        static let BUFFER_LINES:Int = 200000000
         static let NETWORK_BITS_MIN_CLASSLESS:Int = 1
         static let NETWORK_BITS_MIN:Int = 8
         static let NETWORK_BITS_MAX:Int = 32
@@ -480,12 +480,49 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
     
     @IBAction func exportCSV(_ sender: AnyObject)
     {
-        
+        if (ipsc != nil) {
+            let panel = NSSavePanel()
+            panel.allowedFileTypes = ["csv"]
+            panel.begin(completionHandler: { (result) in
+                if (result == NSApplication.ModalResponse.OK && panel.url != nil) {
+                    if #available(OSX 10.14, *) {
+                        let fileMgt = FileManager(authorization: NSWorkspace.Authorization())
+                        fileMgt.createFile(atPath: panel.url!.path, contents: nil, attributes: nil)
+                        let cvsData = NSMutableData.init(capacity: Constants.BUFFER_LINES)
+                        let cvsFile = FileHandle(forWritingAtPath: panel.url!.path)
+                        if (cvsData != nil && cvsFile != nil) {
+                            var cvsStr = "#;Subnet ID;Range;Broadcast\n"
+                            for index in (0...(self.ipsc!.maxSubnets() - 1)) {
+                                let mask: UInt32 = UInt32(index) << (32 - self.ipsc!.maskBits)
+                                let ipaddr = (IPSubnetCalc.numerize(ipAddress: self.ipsc!.subnetId())) | mask
+                                let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: ipaddr), maskbits: self.ipsc!.maskBits)
+                                if (ipsc_tmp != nil) {
+                                    cvsStr.append("\(index + 1);\(ipsc_tmp!.subnetId());\(ipsc_tmp!.subnetRange());\(ipsc_tmp!.subnetBroadcast())\n")
+                                }
+                            }
+                            cvsData!.append(cvsStr.data(using: String.Encoding.ascii)!)
+                            cvsFile!.write(cvsData! as Data)
+                            cvsFile!.synchronizeFile()
+                            cvsFile!.closeFile()
+                        }
+                    } else {
+                        // Fallback on earlier versions
+                    }
+                        
+                    }
+                }
+            )
+            }
     }
     
     @IBAction func exportClipboard(_ sender: AnyObject)
     {
-        
+        if (ipsc != nil) {
+            let pb: NSPasteboard = NSPasteboard.general
+            pb.clearContents()
+            let str = "Address Class Type: \(ipsc!.netClass())\nIP Address: \(ipsc!.ipv4Address)\nSubnet ID: \(ipsc!.subnetId())\nSubnet Mask: \(ipsc!.subnetMask())\nBroadcast: \(ipsc!.subnetBroadcast())\nIP Range: \(ipsc!.subnetRange())\nMask Bits: \(ipsc!.maskBits)\nSubnet Bits: \(ipsc!.subnetBits())\nMax Subnets: \(ipsc!.maxSubnets())\nMax Hosts / Subnet: \(ipsc!.maxHosts())\nAddress Hexa: \(ipsc!.hexaMap())\nBit Map: \(ipsc!.bitMap())\nBinary Map: \(ipsc!.binaryMap())\n"
+            pb.setString(str, forType: NSPasteboard.PasteboardType.string)
+        }
     }
     
     @IBAction func darkMode(_ sender: AnyObject)

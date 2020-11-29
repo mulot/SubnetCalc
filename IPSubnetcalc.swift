@@ -307,25 +307,6 @@ class IPSubnetCalc: NSObject {
             }
         }
         return (bits)
-        /*
-         char    class;
-         
-         class = [self getClass:address];
-         hostAddr = address;
-         [self setClassInfo:class defaults:0];
-         
-         if (mask > addressMask)
-         {
-             mask = addressMask;
-             netBits = [IPSubnetCalc countOnBits:addressMask];
-             subnetBits = 0;
-         }
-         else
-         {
-             subnetMask = mask^addressMask;
-             subnetBits = [IPSubnetCalc countOnBits:subnetMask];
-         }
-         */
     }
     
     static func maskBits(maskAddr: String) -> Int {
@@ -737,8 +718,8 @@ class IPSubnetCalc: NSObject {
     }
     
     init?(ipv6: String, maskbits: Int) {
-        self.ipv4Address = ""
-        self.maskBits = 0
+        self.ipv4Address = "10.0.0.0"
+        self.maskBits = 8
         
         // full ? compact ? validated ?
         self.ipv6Address = ipv6
