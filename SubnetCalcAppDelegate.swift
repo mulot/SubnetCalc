@@ -377,10 +377,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
         if let maskStr = sender.objectValueOfSelectedItem as? String {
             let mask:UInt32 = IPSubnetCalc.numerize(ipAddress: maskStr)
             if (wildcard.state == NSControl.StateValue.on) {
-                ipsc!.maskBits = Int(IPSubnetCalc.maskBits(mask: ~mask))
+                ipsc!.maskBits = IPSubnetCalc.maskBits(mask: ~mask)
             }
             else {
-                ipsc!.maskBits = Int(IPSubnetCalc.maskBits(mask: mask))
+                ipsc!.maskBits = IPSubnetCalc.maskBits(mask: mask)
                 //print("changeSubnetMask object value : \(str)")
             }
             self.doIPSubnetCalc()
@@ -442,22 +442,112 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
     
     @IBAction func changeSupernetMask(_ sender: AnyObject)
     {
-        
+        if (ipsc == nil)
+        {
+            ipsc = IPSubnetCalc(Constants.defaultIP)
+        }
+        if let maskStr = sender.objectValueOfSelectedItem as? String {
+            let mask:UInt32 = IPSubnetCalc.numerize(ipAddress: maskStr)
+            let maskbits:Int = IPSubnetCalc.maskBits(mask: mask)
+            let classType = ipsc!.netClass()
+            var result: Int = -1
+    
+            if (classType == "A") {
+                result = maskbits - 8
+            }
+            else if (classType == "B") {
+                result = maskbits - 16
+            }
+            else if (classType == "C") {
+                result = maskbits - 24
+            }
+            if (result >= 0) {
+                ipsc!.maskBits = maskbits
+                self.doIPSubnetCalc()
+            }
+            else {
+                doCIDR(maskbits: maskbits)
+            }
+        }
+        else {
+            myAlert(message: "Bad CIDR Mask", info: "Bad format")
+            return
+        }
     }
     
     @IBAction func changeSupernetMax(_ sender: AnyObject)
     {
-        
+        if (ipsc == nil)
+        {
+            ipsc = IPSubnetCalc(Constants.defaultIP)
+        }
+        if (sender.indexOfSelectedItem != -1) {
+            let classType = ipsc!.netClass()
+            var result: Int = -1
+            
+            if (classType == "A") {
+                result = 8 - sender.indexOfSelectedItem
+            }
+            else if (classType == "B") {
+                result = 16 - sender.indexOfSelectedItem
+            }
+            else if (classType == "C") {
+                result = 24 - sender.indexOfSelectedItem
+            }
+            if (result > 0) {
+                doCIDR(maskbits: result)
+            }
+            else {
+                myAlert(message: "Bad Max Supernets", info: "Value too high")
+                return
+            }
+        }
+        else {
+            myAlert(message: "Bad Max Supernets", info: "Bad value")
+            return
+        }
     }
     
     @IBAction func changeSupernetMaxAddr(_ sender: AnyObject)
     {
-        
+        if (ipsc == nil)
+        {
+            ipsc = IPSubnetCalc(Constants.defaultIP)
+        }
+        if (sender.indexOfSelectedItem != -1) {
+            if ((32 - sender.indexOfSelectedItem - 1) < 32) {
+                doCIDR(maskbits: (32 - sender.indexOfSelectedItem - 1))
+            }
+            else {
+                myAlert(message: "Bad Max Adresses", info: "Bad value")
+                return
+            }
+        }
+        else {
+            myAlert(message: "Bad Max Adresses", info: "Bad value")
+            return
+        }
     }
     
     @IBAction func changeSupernetMaxSubnets(_ sender: AnyObject)
     {
-        
+        if (ipsc == nil)
+        {
+            ipsc = IPSubnetCalc(Constants.defaultIP)
+        }
+        if (sender.indexOfSelectedItem != -1) {
+            if ((32 - sender.indexOfSelectedItem) < 32) {
+                doCIDR(maskbits: (32 - sender.indexOfSelectedItem))
+            }
+            else {
+                myAlert(message: "Bad Max Subnets", info: "Bad value")
+                return
+            }
+        }
+        else {
+            myAlert(message: "Bad Max Subnets", info: "Bad value")
+            return
+        }
     }
     
     func printAllSubnets()
