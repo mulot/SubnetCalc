@@ -245,6 +245,43 @@ class IPSubnetCalc: NSObject {
         return (max)
     }
     
+    func maxCIDRSupernet() -> Int {
+        let classType = self.netClass()
+        var result: Decimal
+        
+        if (classType == "A") {
+            result = pow(2, 8 - self.maskBits)
+            if (result > 0) {
+                return (Int(truncating: NSDecimalNumber(decimal: result)))
+            }
+        }
+        else if (classType == "B") {
+            result = pow(2, 16 - self.maskBits)
+            if (result > 0) {
+                return (Int(truncating: NSDecimalNumber(decimal: result)))
+            }
+        }
+        else if (classType == "C") {
+            result = pow(2, 24 - self.maskBits)
+            if (result > 0) {
+                return (Int(truncating: NSDecimalNumber(decimal: result)))
+            }
+        }
+        return (1)
+    /*
+         if ([[ipsc networkClass] isEqualToString: @"A"])
+             result = pow(2, 8 - maskBits);
+         else if ([[ipsc networkClass] isEqualToString: @"B"])
+             result = pow(2, 16 - maskBits);
+         else if ([[ipsc networkClass] isEqualToString: @"C"])
+             result = pow(2, 24 - maskBits);
+         if (result > 0)
+             [supernetMaxCombo selectItemWithObjectValue: [NSString stringWithFormat: @"%u", result]];
+         else
+             [supernetMaxCombo selectItemWithObjectValue: @"1"];
+         */
+    }
+    
     func subnetRange() -> String {
         var range = String()
         var firstIP: UInt32 = 0

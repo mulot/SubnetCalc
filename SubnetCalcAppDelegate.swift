@@ -8,7 +8,6 @@
 import Foundation
 import Cocoa
 
-
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableViewDataSource {
     private enum Constants {
         static let defaultIP: String = "10.0.0.0"
@@ -108,16 +107,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
         bitsOnSlide.frame = coordLabel
     }
     
-    private func URLEncode(url: String) -> String
-    {
-        return "TEST"
-    }
-    
-    private func checkAddr(address: NSString) -> Bool
-    {
-        return false
-    }
-    
     private func initClassInfos(_ c: String)
     {
         if (c == "A")
@@ -196,11 +185,30 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
         }
     }
     
-    private func doCIDR()
+    private func doCIDR(maskbits: Int? = nil)
     {
         if (ipsc != nil) {
-            //supernetRoute.stringValue = ipsc!.subnetId()
-            supernetAddrRange.stringValue = ipsc!.subnetCIDRRange()
+            if (maskbits == nil) {
+                supernetMaskBitsCombo.selectItem(withObjectValue: String(ipsc!.maskBits))
+                supernetMaskCombo.selectItem(withObjectValue: ipsc!.subnetMask())
+                supernetMaxSubnetsCombo.selectItem(withObjectValue: String(ipsc!.maxCIDRSubnets()))
+                supernetMaxAddr.selectItem(withObjectValue: String(ipsc!.maxHosts()))
+                supernetMaxCombo.selectItem(withObjectValue: String(ipsc!.maxCIDRSupernet()))
+                supernetRoute.stringValue = ipsc!.subnetId() + "/" + String(ipsc!.maskBits)
+                supernetAddrRange.stringValue = ipsc!.subnetCIDRRange()
+            }
+            else {
+                let ipsc_tmp = IPSubnetCalc(ipAddress: ipsc!.ipv4Address, maskbits: maskbits!)
+                if (ipsc_tmp != nil) {
+                    supernetMaskBitsCombo.selectItem(withObjectValue: String(ipsc_tmp!.maskBits))
+                    supernetMaskCombo.selectItem(withObjectValue: ipsc_tmp!.subnetMask())
+                    supernetMaxSubnetsCombo.selectItem(withObjectValue: String(ipsc_tmp!.maxCIDRSubnets()))
+                    supernetMaxAddr.selectItem(withObjectValue: String(ipsc_tmp!.maxHosts()))
+                    supernetMaxCombo.selectItem(withObjectValue: String(ipsc_tmp!.maxCIDRSupernet()))
+                    supernetRoute.stringValue = ipsc_tmp!.subnetId() + "/" + String(ipsc_tmp!.maskBits)
+                    supernetAddrRange.stringValue = ipsc_tmp!.subnetCIDRRange()
+                }
+            }
         }
     }
     
@@ -265,11 +273,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
         }
     }
     
-    private func doSupernetCalc(maskBits: UInt)
-    {
-        
-    }
-    
     @IBAction func calc(_ sender: AnyObject)
     {
         self.doIPSubnetCalc()
@@ -282,17 +285,70 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
     
     @IBAction func changeAddrClassType(_ sender: AnyObject)
     {
-        
+        if (tabView.numberOfTabViewItems != 4 && savedTabView != nil) {
+            tabView.addTabViewItem(savedTabView![1])
+            tabView.addTabViewItem(savedTabView![2])
+            tabView.addTabViewItem(savedTabView![3])
+        }
+        if (sender.indexOfSelectedItem() == 0)
+        {
+            classBitMap.stringValue = "nnnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh"
+            classBinaryMap.stringValue = "00000001000000000000000000000000"
+        }
+        else if (sender.indexOfSelectedItem() == 1)
+        {
+            classBitMap.stringValue = "nnnnnnnn.nnnnnnnn.hhhhhhhh.hhhhhhhh"
+            classBinaryMap.stringValue = "10000000000000000000000000000000"
+        }
+        else if (sender.indexOfSelectedItem() == 2)
+        {
+            classBitMap.stringValue = "nnnnnnnn.nnnnnnnn.nnnnnnnn.hhhhhhhh"
+            classBinaryMap.stringValue = "11000000000000000000000000000000"
+        }
+        else if (sender.indexOfSelectedItem() == 3)
+        {
+            savedTabView = tabView.tabViewItems
+            if (savedTabView != nil)
+            {
+                tabView.removeTabViewItem(savedTabView![1])
+                tabView.removeTabViewItem(savedTabView![2])
+                tabView.removeTabViewItem(savedTabView![3])
+            }
+            classBitMap.stringValue = "hhhhhhhh.hhhhhhhh.hhhhhhhh.hhhhhhhh"
+            classBinaryMap.stringValue = "11100000000000000000000000000000"
+        }
     }
     
     @IBAction func changeMaxHosts(_ sender: AnyObject)
     {
-        
+        if (ipsc == nil)
+        {
+            ipsc = IPSubnetCalc(Constants.defaultIP)
+        }
+        if (sender.indexOfSelectedItem != -1) {
+            ipsc!.maskBits = 30 - sender.indexOfSelectedItem()
+            self.doIPSubnetCalc()
+        }
+        else {
+            myAlert(message: "Bad Max Hosts", info: "Bad value")
+            return
+        }
     }
     
     @IBAction func changeMaxSubnets(_ sender: AnyObject)
     {
-        
+        if (ipsc == nil)
+        {
+            ipsc = IPSubnetCalc(Constants.defaultIP)
+        }
+        if (sender.indexOfSelectedItem != -1) {
+            ipsc!.maskBits = 8 + sender.indexOfSelectedItem()
+            self.doIPSubnetCalc()
+        }
+        else {
+            myAlert(message: "Bad Max Subnets", info: "Bad value")
+            return
+        }
     }
     
     @IBAction func changeSubnetBits(_ sender: AnyObject)
@@ -317,6 +373,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
         {
             ipsc = IPSubnetCalc(Constants.defaultIP)
         }
+        // Check cast as String needed ?
         if let maskStr = sender.objectValueOfSelectedItem as? String {
             let mask:UInt32 = IPSubnetCalc.numerize(ipAddress: maskStr)
             if (wildcard.state == NSControl.StateValue.on) {
@@ -352,7 +409,35 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
     
     @IBAction func changeSupernetMaskBits(_ sender: AnyObject)
     {
-        
+        if (ipsc == nil)
+        {
+            ipsc = IPSubnetCalc(Constants.defaultIP)
+        }
+        if (sender.objectValueOfSelectedItem as? String) != nil {
+            let classType = ipsc!.netClass()
+            var result: Int = -1
+            
+            if (classType == "A") {
+                result = sender.intValue - 8
+            }
+            else if (classType == "B") {
+                result = sender.intValue - 16
+            }
+            else if (classType == "C") {
+                result = sender.intValue - 24
+            }
+            if (result >= 0) {
+                ipsc!.maskBits = sender.intValue
+                self.doIPSubnetCalc()
+            }
+            else {
+                doCIDR(maskbits: sender.intValue)
+            }
+        }
+        else {
+            myAlert(message: "Bad CIDR Mask Bits", info: "Bad format")
+            return
+        }
     }
     
     @IBAction func changeSupernetMask(_ sender: AnyObject)
