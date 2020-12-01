@@ -8,7 +8,7 @@
 import Foundation
 import Cocoa
 
-class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableViewDataSource {
+class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableViewDataSource {
     private enum Constants {
         static let defaultIP: String = "10.0.0.0"
         static let BUFFER_LINES:Int = 200000000
