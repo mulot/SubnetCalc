@@ -53,7 +53,7 @@
     XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"cidrmaxsubnets"] value], @"4");
     XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"cidrmaxaddr"] value], @"2");
     XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"cidrmaxsupernets"] value], @"1");
-    XCTAssertEqualObjects([subnetcalcWindow.staticTexts[@"cidrnetwork"] value], @"10.32.2.52");
+    XCTAssertEqualObjects([subnetcalcWindow.staticTexts[@"cidrnetwork"] value], @"10.32.2.52/30");
     XCTAssertEqualObjects([subnetcalcWindow.staticTexts[@"cidrrange"] value], @"10.32.2.52 - 10.32.2.55");
     [subnetcalcWindow.tabs[@"Address"] click];
     XCTAssertEqualObjects([subnetcalcWindow.popUpButtons[@"addrclasstypecell"] value], @"Class A : 1.0.0.0 - 126.255.255.255");

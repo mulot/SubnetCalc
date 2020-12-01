@@ -276,6 +276,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     @IBAction func calc(_ sender: AnyObject)
     {
         self.doIPSubnetCalc()
+        //tabView.selectTabViewItem(at: 1)
     }
     
     @IBAction func ipAddrEdit(_ sender: AnyObject)
