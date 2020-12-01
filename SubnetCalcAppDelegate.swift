@@ -53,7 +53,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
     
     private func initAddressTab() {
         classBitMap.stringValue = "nnnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh"
-        classBinaryMap.stringValue = "00000001000000000000000000000000"
+        classBinaryMap.stringValue = "00000001.00000000.00000000.00000000"
     }
     
     private func initCIDRTab() {
@@ -145,7 +145,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
         }
         return (address, nil)
     }
-    
     
     private func doAddressMap() {
         if (ipsc != nil) {
@@ -293,17 +292,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
         if (sender.indexOfSelectedItem() == 0)
         {
             classBitMap.stringValue = "nnnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh"
-            classBinaryMap.stringValue = "00000001000000000000000000000000"
+            classBinaryMap.stringValue = "00000001.00000000.00000000.00000000"
         }
         else if (sender.indexOfSelectedItem() == 1)
         {
             classBitMap.stringValue = "nnnnnnnn.nnnnnnnn.hhhhhhhh.hhhhhhhh"
-            classBinaryMap.stringValue = "10000000000000000000000000000000"
+            classBinaryMap.stringValue = "10000000.00000000.00000000.00000000"
         }
         else if (sender.indexOfSelectedItem() == 2)
         {
             classBitMap.stringValue = "nnnnnnnn.nnnnnnnn.nnnnnnnn.hhhhhhhh"
-            classBinaryMap.stringValue = "11000000000000000000000000000000"
+            classBinaryMap.stringValue = "11000000.00000000.00000000.00000000"
         }
         else if (sender.indexOfSelectedItem() == 3)
         {
@@ -315,7 +314,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
                 tabView.removeTabViewItem(savedTabView![3])
             }
             classBitMap.stringValue = "hhhhhhhh.hhhhhhhh.hhhhhhhh.hhhhhhhh"
-            classBinaryMap.stringValue = "11100000000000000000000000000000"
+            classBinaryMap.stringValue = "11100000.00000000.00000000.00000000"
         }
     }
     
@@ -577,7 +576,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
             //print("tableView mask : \(mask) row : \(UInt32(row)) lshift : \(32 - ipsc!.maskBits)")
             let ipaddr = (IPSubnetCalc.numerize(ipAddress: ipsc!.subnetId())) | mask
             let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: ipaddr), maskbits: ipsc!.maskBits)
-            if (tableColumn != nil) {
+            if (tableColumn != nil && ipsc_tmp != nil) {
                 if (tableColumn!.identifier.rawValue == "numCol") {
                     return (row + 1)
                 }
@@ -705,9 +704,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableVie
     {
         if #available(OSX 10.14, *) {
             if (darkModeMenu!.state == NSControl.StateValue.off) {
-                NSApp!.appearance = NSAppearance(named: NSAppearance.Name.darkAqua)
+                NSApp.appearance = NSAppearance(named: NSAppearance.Name.darkAqua)
                 darkModeMenu.state = NSControl.StateValue.on
-            } else if (darkModeMenu!.state == NSControl.StateValue.on) {
+            }
+            else if (darkModeMenu!.state == NSControl.StateValue.on) {
                 NSApp!.appearance = nil
                 darkModeMenu.state = NSControl.StateValue.off
             }
