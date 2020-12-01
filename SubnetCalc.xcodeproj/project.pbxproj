@@ -9,9 +9,9 @@
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
-		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		945E62F825658DBF00CDC9C7 /* SubnetCalcUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 945E62F725658DBF00CDC9C7 /* SubnetCalcUITests.m */; };
+		9482A32725765B30008D2C56 /* SubnetCalcUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9482A32625765B30008D2C56 /* SubnetCalcUITest.swift */; };
 		949420B812D3C62A00E2F57D /* License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 949420B712D3C62A00E2F57D /* License.txt */; };
 		9494DD211F7BEAE80032DB19 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9494DD201F7BEAE80032DB19 /* Images.xcassets */; };
 		94AC2613256AF7C900811156 /* SubnetCalcAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94AC2612256AF7C900811156 /* SubnetCalcAppDelegate.swift */; };
@@ -32,7 +32,6 @@
 /* Begin PBXFileReference section */
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
-		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* SubnetCalc-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "SubnetCalc-Info.plist"; sourceTree = "<group>"; };
@@ -41,6 +40,7 @@
 		945E62F525658DBF00CDC9C7 /* SubnetCalcUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SubnetCalcUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		945E62F725658DBF00CDC9C7 /* SubnetCalcUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SubnetCalcUITests.m; sourceTree = "<group>"; };
 		945E62F925658DBF00CDC9C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9482A32625765B30008D2C56 /* SubnetCalcUITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubnetCalcUITest.swift; sourceTree = "<group>"; };
 		949420B712D3C62A00E2F57D /* License.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
 		9494DD1F1F7BE7B40032DB19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		9494DD201F7BEAE80032DB19 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = SubnetCalc/Images.xcassets; sourceTree = "<group>"; };
@@ -125,7 +125,6 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -155,6 +154,7 @@
 		945E62F625658DBF00CDC9C7 /* SubnetCalcUITests */ = {
 			isa = PBXGroup;
 			children = (
+				9482A32625765B30008D2C56 /* SubnetCalcUITest.swift */,
 				945E62F725658DBF00CDC9C7 /* SubnetCalcUITests.m */,
 				945E62F925658DBF00CDC9C7 /* Info.plist */,
 			);
@@ -219,6 +219,7 @@
 					};
 					945E62F425658DBF00CDC9C7 = {
 						CreatedOnToolsVersion = 12.2;
+						LastSwiftMigration = 1220;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 8D1107260486CEB800E47090;
 					};
@@ -268,7 +269,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				94B1C507256ABC1B00F992A3 /* IPSubnetcalc.swift in Sources */,
 				94AC2613256AF7C900811156 /* SubnetCalcAppDelegate.swift in Sources */,
 			);
@@ -279,6 +279,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				945E62F825658DBF00CDC9C7 /* SubnetCalcUITests.m in Sources */,
+				9482A32725765B30008D2C56 /* SubnetCalcUITest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +351,8 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = mulot.org.SubnetCalcUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = SubnetCalc;
 			};
 			name = Debug;
@@ -387,6 +390,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = mulot.org.SubnetCalcUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = SubnetCalc;
 			};
 			name = Release;

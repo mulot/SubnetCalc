@@ -8,6 +8,7 @@
 import Foundation
 import Cocoa
 
+@main
 class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableViewDataSource {
     private enum Constants {
         static let defaultIP: String = "10.0.0.0"
