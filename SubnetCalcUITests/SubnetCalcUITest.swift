@@ -30,11 +30,13 @@ class SubnetCalcUITest: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         
         let subnetcalcWindow = XCUIApplication().windows["SubnetCalc"]
-        subnetcalcWindow.tabs["Subnets"].click()
         let ipaddrfieldTextField = subnetcalcWindow.textFields["ipaddrfield"]
+        
+        subnetcalcWindow.tabs["Subnets"].click()
         ipaddrfieldTextField.click()
         ipaddrfieldTextField.typeText("10.32.2.52/30\r")
         XCTAssertEqual(subnetcalcWindow.comboBoxes["subnetbitscombo"].value as! String, "22")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["maskbitscombo"].value as! String, "30")
         XCTAssertEqual(subnetcalcWindow.comboBoxes["subnetmaskcombo"].value as! String, "255.255.255.252")
         XCTAssertEqual(subnetcalcWindow.comboBoxes["maxsubnetcombo"].value as! String, "4194304")
         XCTAssertEqual(subnetcalcWindow.comboBoxes["maxhostscombo"].value as! String, "2")
@@ -42,66 +44,79 @@ class SubnetCalcUITest: XCTestCase {
         XCTAssertEqual(subnetcalcWindow.staticTexts["subnetidtext"].value as! String, "10.32.2.52")
         XCTAssertEqual(subnetcalcWindow.staticTexts["subnetbroadcasttext"].value as! String, "10.32.2.55")
         subnetcalcWindow.tabs["CIDR"].click()
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["cidrmaskbits"].value as! String, "30")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["cidrmask"].value as! String, "255.255.255.252")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["cidrmaxsubnets"].value as! String, "4")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["cidrmaxaddr"].value as! String, "2")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["cidrmaxsupernets"].value as! String, "1")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["cidrnetwork"].value as! String, "10.32.2.52/30")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["cidrrange"].value as! String, "10.32.2.52 - 10.32.2.55")
         subnetcalcWindow.tabs["Address"].click()
+        XCTAssertEqual(subnetcalcWindow.popUpButtons["addrclasstypecell"].value as! String, "Class A : 1.0.0.0 - 126.255.255.255")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["classbitmap"].value as! String, "nnnnnnnn.ssssssss.ssssssss.sssssshh")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["binarymap"].value as! String, "00001010.00100000.00000010.00110100")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["hexamap"].value as! String, "0A.20.02.34")
+        
+        subnetcalcWindow.tabs["Subnets"].click()
         ipaddrfieldTextField.click()
         ipaddrfieldTextField.doubleClick()
+        ipaddrfieldTextField.typeText("192.168.254.129/12\r")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["subnetbitscombo"].value as! String, "0")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["maskbitscombo"].value as! String, "12")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["subnetmaskcombo"].value as! String, "255.240.0.0")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["maxsubnetcombo"].value as! String, "1")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["maxhostscombo"].value as! String, "1048574")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["subnetrangetext"].value as! String, "192.160.0.1 - 192.175.255.254")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["subnetidtext"].value as! String, "192.160.0.0")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["subnetbroadcasttext"].value as! String, "192.175.255.255")
+        subnetcalcWindow.tabs["CIDR"].click()
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["cidrmaskbits"].value as! String, "12")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["cidrmask"].value as! String, "255.240.0.0")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["cidrmaxsubnets"].value as! String, "1048576")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["cidrmaxaddr"].value as! String, "1048574")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["cidrmaxsupernets"].value as! String, "4096")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["cidrnetwork"].value as! String, "192.160.0.0/12")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["cidrrange"].value as! String, "192.160.0.0 - 192.175.255.255")
+        subnetcalcWindow.tabs["Address"].click()
+        XCTAssertEqual(subnetcalcWindow.popUpButtons["addrclasstypecell"].value as! String, "Class C : 192.0.0.0 - 223.255.255.255")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["classbitmap"].value as! String, "nnnnnnnn.nnnnhhhh.hhhhhhhh.hhhhhhhh")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["binarymap"].value as! String, "11000000.10101000.11111110.10000001")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["hexamap"].value as! String, "C0.A8.FE.81")
         
-    
+        subnetcalcWindow.tabs["Subnets"].click()
+        ipaddrfieldTextField.click()
+        ipaddrfieldTextField.doubleClick()
+        ipaddrfieldTextField.typeText("172.16.242.132/8\r")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["subnetbitscombo"].value as! String, "0")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["maskbitscombo"].value as! String, "8")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["subnetmaskcombo"].value as! String, "255.0.0.0")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["maxsubnetcombo"].value as! String, "1")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["maxhostscombo"].value as! String, "16777214")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["subnetrangetext"].value as! String, "172.0.0.1 - 172.255.255.254")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["subnetidtext"].value as! String, "172.0.0.0")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["subnetbroadcasttext"].value as! String, "172.255.255.255")
+        subnetcalcWindow.tabs["CIDR"].click()
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["cidrmaskbits"].value as! String, "8")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["cidrmask"].value as! String, "255.0.0.0")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["cidrmaxsubnets"].value as! String, "16777216")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["cidrmaxaddr"].value as! String, "16777214")
+        XCTAssertEqual(subnetcalcWindow.comboBoxes["cidrmaxsupernets"].value as! String, "256")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["cidrnetwork"].value as! String, "172.0.0.0/8")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["cidrrange"].value as! String, "172.0.0.0 - 172.255.255.255")
+        subnetcalcWindow.tabs["Address"].click()
+        XCTAssertEqual(subnetcalcWindow.popUpButtons["addrclasstypecell"].value as! String, "Class B : 128.0.0.0 - 191.255.255.255")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["classbitmap"].value as! String, "nnnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["binarymap"].value as! String, "10101100.00010000.11110010.10000100")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["hexamap"].value as! String, "AC.10.F2.84")
+        
+        subnetcalcWindow.menuButtons["exportbutton"].click()
+        subnetcalcWindow.menuItems["exportClipboard:"].click()
+        let pb: NSPasteboard = NSPasteboard.general
+        let pbContent = pb.string(forType: NSPasteboard.PasteboardType.string)
+        let validContent = "Address Class Type: B\nIP Address: 172.16.242.132\nSubnet ID: 172.0.0.0\nSubnet Mask: 255.0.0.0\nBroadcast: 172.255.255.255\nIP Range: 172.0.0.1 - 172.255.255.254\nMask Bits: 8\nSubnet Bits: 0\nMax Subnets: 1\nMax Hosts / Subnet: 16777214\nAddress Hexa: AC.10.F2.84\nBit Map: nnnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh\nBinary Map: 10101100.00010000.11110010.10000100\n"
+        XCTAssertEqual(pbContent,validContent)
+        
         /*
-         [iptextfieldcellTextField click];
-         [iptextfieldcellTextField doubleClick];
-         [iptextfieldcellTextField typeText:@"192.168.254.129/12\r"];
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"subnetbitscombo"] value], @"0");
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"maskbitscombo"] value], @"12");
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"subnetmaskcombo"] value], @"255.240.0.0");
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"maxsubnetcombo"] value], @"1");
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"maxhostscombo"] value], @"1048574");
-         XCTAssertEqualObjects([subnetcalcWindow.staticTexts[@"subnetrangetext"] value], @"192.160.0.1 - 192.175.255.254");
-         XCTAssertEqualObjects([subnetcalcWindow.staticTexts[@"subnetidtext"] value], @"192.160.0.0");
-         XCTAssertEqualObjects([subnetcalcWindow.staticTexts[@"subnetbroadcasttext"] value], @"192.175.255.255");
-         [subnetcalcWindow.tabs[@"CIDR"] click];
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"cidrmaskbits"] value], @"12");
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"cidrmask"] value], @"255.240.0.0");
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"cidrmaxsubnets"] value], @"1048576");
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"cidrmaxaddr"] value], @"1048574");
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"cidrmaxsupernets"] value], @"4096");
-         XCTAssertEqualObjects([subnetcalcWindow.staticTexts[@"cidrnetwork"] value], @"192.160.0.0");
-         XCTAssertEqualObjects([subnetcalcWindow.staticTexts[@"cidrrange"] value], @"192.160.0.0 - 192.175.255.255");
-         [subnetcalcWindow.tabs[@"Address"] click];
-         XCTAssertEqualObjects([subnetcalcWindow.popUpButtons[@"addrclasstypecell"] value], @"Class C : 192.0.0.0 - 223.255.255.255");
-         XCTAssertEqualObjects([subnetcalcWindow.staticTexts[@"classbitmap"] value], @"nnnnnnnn.nnnnhhhh.hhhhhhhh.hhhhhhhh");
-         XCTAssertEqualObjects([subnetcalcWindow.staticTexts[@"binarymap"] value], @"11000000.10101000.11111110.10000001");
-         XCTAssertEqualObjects([subnetcalcWindow.staticTexts[@"hexamap"] value], @"C0.A8.FE.81");
-         
-         [iptextfieldcellTextField click];
-         [iptextfieldcellTextField doubleClick];
-         [iptextfieldcellTextField typeText:@"172.16.242.132/8\r"];
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"subnetbitscombo"] value], @"0");
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"maskbitscombo"] value], @"8");
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"subnetmaskcombo"] value], @"255.0.0.0");
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"maxsubnetcombo"] value], @"1");
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"maxhostscombo"] value], @"16777214");
-         XCTAssertEqualObjects([subnetcalcWindow.staticTexts[@"subnetrangetext"] value], @"172.0.0.1 - 172.255.255.254");
-         XCTAssertEqualObjects([subnetcalcWindow.staticTexts[@"subnetidtext"] value], @"172.0.0.0");
-         XCTAssertEqualObjects([subnetcalcWindow.staticTexts[@"subnetbroadcasttext"] value], @"172.255.255.255");
-         [subnetcalcWindow.tabs[@"CIDR"] click];
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"cidrmaskbits"] value], @"8");
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"cidrmask"] value], @"255.0.0.0");
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"cidrmaxsubnets"] value], @"16777216");
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"cidrmaxaddr"] value], @"16777214");
-         XCTAssertEqualObjects([subnetcalcWindow.comboBoxes[@"cidrmaxsupernets"] value], @"256");
-         XCTAssertEqualObjects([subnetcalcWindow.staticTexts[@"cidrnetwork"] value], @"172.0.0.0");
-         XCTAssertEqualObjects([subnetcalcWindow.staticTexts[@"cidrrange"] value], @"172.0.0.0 - 172.255.255.255");
-         [subnetcalcWindow.tabs[@"Address"] click];
-         XCTAssertEqualObjects([subnetcalcWindow.popUpButtons[@"addrclasstypecell"] value], @"Class B : 128.0.0.0 - 191.255.255.255");
-         XCTAssertEqualObjects([subnetcalcWindow.staticTexts[@"classbitmap"] value], @"nnnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh");
-         XCTAssertEqualObjects([subnetcalcWindow.staticTexts[@"binarymap"] value], @"10101100.00010000.11110010.10000100");
-         XCTAssertEqualObjects([subnetcalcWindow.staticTexts[@"hexamap"] value], @"AC.10.F2.84");
-         
-         
-         [[subnetcalcWindow childrenMatchingType:XCUIElementTypeMenuButton].element click];
-         [subnetcalcWindow/*@START_MENU_TOKEN@*/.menuItems[@"exportClipboard:"]/*[[".menuButtons",".menus",".menuItems[@\"Export Clipboard\"]",".menuItems[@\"exportClipboard:\"]"],[[[-1,3],[-1,2],[-1,1,2],[-1,0,1]],[[-1,3],[-1,2],[-1,1,2]],[[-1,3],[-1,2]]],[0]]@END_MENU_TOKEN@*/ click];
-         
          NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
          NSString *pastecontent = [pasteboard stringForType: NSPasteboardTypeString];
          NSString *validcontent = @"Address Class Type: B\n\
@@ -119,6 +134,7 @@ class SubnetCalcUITest: XCTestCase {
      BinMap: 10101100.00010000.11110010.10000100\n";
          XCTAssertEqualObjects(pastecontent, validcontent);
          */
+        
         //subnetcalcWindow.buttons["Calc"].click()
         ipaddrfieldTextField.typeKey("q", modifierFlags:.command)
     }
