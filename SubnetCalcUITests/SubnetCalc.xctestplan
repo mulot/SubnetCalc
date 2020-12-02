@@ -19,7 +19,7 @@
   "testTargets" : [
     {
       "skippedTests" : [
-        "SubnetCalcUITests\/testLaunchPerformance"
+        "SubnetCalcUITests"
       ],
       "target" : {
         "containerPath" : "container:SubnetCalc.xcodeproj",

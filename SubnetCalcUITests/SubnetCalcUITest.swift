@@ -30,6 +30,7 @@ class SubnetCalcUITest: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         
         let subnetcalcWindow = XCUIApplication().windows["SubnetCalc"]
+        subnetcalcWindow.tabs["Subnets"].click()
         let ipaddrfieldTextField = subnetcalcWindow.textFields["ipaddrfield"]
         ipaddrfieldTextField.click()
         ipaddrfieldTextField.typeText("10.32.2.52/30\r")
