@@ -33,6 +33,9 @@ class IPSubnetCalc: NSObject {
                                                        "2001:db8::/32" : "Documentation"]
         
         //IPv4 constants
+        static let classAbits: Int = 8
+        static let classBbits: Int = 16
+        static let classCbits: Int = 24
         static let addr32Full: UInt32 = 0xFFFFFFFF
         static let addr32Empty: UInt32 = 0x00000000
         static let addr32Digit1: UInt32 = 0xFF000000
@@ -145,9 +148,9 @@ class IPSubnetCalc: NSObject {
     static func digitize(ipAddress: UInt32) -> String {
         var ipDigits = String()
         
-        ipDigits.append(String(((ipAddress & Constants.addr32Digit1) >> 24)) + ".")
-        ipDigits.append(String(((ipAddress & Constants.addr32Digit2) >> 16)) + ".")
-        ipDigits.append(String(((ipAddress & Constants.addr32Digit3) >> 8)) + ".")
+        ipDigits.append(String(((ipAddress & Constants.addr32Digit1) >> Constants.classCbits)) + ".")
+        ipDigits.append(String(((ipAddress & Constants.addr32Digit2) >> Constants.classBbits)) + ".")
+        ipDigits.append(String(((ipAddress & Constants.addr32Digit3) >> Constants.classAbits)) + ".")
         ipDigits.append(String(((ipAddress & Constants.addr32Digit4))))
         return (ipDigits)
     }
@@ -250,36 +253,24 @@ class IPSubnetCalc: NSObject {
         var result: Decimal
         
         if (classType == "A") {
-            result = pow(2, 8 - self.maskBits)
+            result = pow(2, Constants.classAbits - self.maskBits)
             if (result > 0) {
                 return (Int(truncating: NSDecimalNumber(decimal: result)))
             }
         }
         else if (classType == "B") {
-            result = pow(2, 16 - self.maskBits)
+            result = pow(2, Constants.classBbits - self.maskBits)
             if (result > 0) {
                 return (Int(truncating: NSDecimalNumber(decimal: result)))
             }
         }
         else if (classType == "C") {
-            result = pow(2, 24 - self.maskBits)
+            result = pow(2, Constants.classCbits - self.maskBits)
             if (result > 0) {
                 return (Int(truncating: NSDecimalNumber(decimal: result)))
             }
         }
         return (1)
-    /*
-         if ([[ipsc networkClass] isEqualToString: @"A"])
-             result = pow(2, 8 - maskBits);
-         else if ([[ipsc networkClass] isEqualToString: @"B"])
-             result = pow(2, 16 - maskBits);
-         else if ([[ipsc networkClass] isEqualToString: @"C"])
-             result = pow(2, 24 - maskBits);
-         if (result > 0)
-             [supernetMaxCombo selectItemWithObjectValue: [NSString stringWithFormat: @"%u", result]];
-         else
-             [supernetMaxCombo selectItemWithObjectValue: @"1"];
-         */
     }
     
     func subnetRange() -> String {
@@ -329,18 +320,18 @@ class IPSubnetCalc: NSObject {
         var bits: Int = 0
         
         if (classType == "A") {
-            if (self.maskBits > 8) {
-                bits = self.maskBits - 8
+            if (self.maskBits > Constants.classAbits) {
+                bits = self.maskBits - Constants.classAbits
             }
         }
         else if (classType == "B") {
-            if (self.maskBits > 16) {
-                bits = self.maskBits - 16
+            if (self.maskBits > Constants.classBbits) {
+                bits = self.maskBits - Constants.classBbits
             }
         }
         else if (classType == "C") {
-            if (self.maskBits > 24) {
-                bits = self.maskBits - 24
+            if (self.maskBits > Constants.classCbits) {
+                bits = self.maskBits - Constants.classCbits
             }
         }
         return (bits)
@@ -375,24 +366,24 @@ class IPSubnetCalc: NSObject {
         var bits: Int = 0
         
         if (classType == "A") {
-            if (self.maskBits > 8) {
-                bits =  8
+            if (self.maskBits > Constants.classAbits) {
+                bits =  Constants.classAbits
             }
             else {
                 bits = self.maskBits
             }
         }
         else if (classType == "B") {
-            if (self.maskBits > 16) {
-                bits = 16
+            if (self.maskBits > Constants.classBbits) {
+                bits = Constants.classBbits
             }
             else {
                 bits = self.maskBits
             }
         }
         else if (classType == "C") {
-            if (self.maskBits > 24) {
-                bits = 24
+            if (self.maskBits > Constants.classCbits) {
+                bits = Constants.classCbits
             }
             else {
                 bits = self.maskBits
@@ -739,13 +730,13 @@ class IPSubnetCalc: NSObject {
         if (IPSubnetCalc.isValidIP(ipAddress: ipAddress, mask: nil)) {
             switch (IPSubnetCalc.netClass(ipAddress: ipAddress)) {
             case "A":
-                classbit = 8
+                classbit = Constants.classAbits
             case "B":
-                classbit = 16
+                classbit = Constants.classBbits
             case "C":
-                classbit = 24
+                classbit = Constants.classCbits
             default:
-                classbit = 8
+                classbit = Constants.classAbits
             }
             self.init(ipAddress: ipAddress, maskbits: classbit)
         }
@@ -756,7 +747,7 @@ class IPSubnetCalc: NSObject {
     
     init?(ipv6: String, maskbits: Int) {
         self.ipv4Address = "10.0.0.0"
-        self.maskBits = 8
+        self.maskBits = Constants.classAbits
         
         // full ? compact ? validated ?
         self.ipv6Address = ipv6

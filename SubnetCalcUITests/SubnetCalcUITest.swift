@@ -116,25 +116,6 @@ class SubnetCalcUITest: XCTestCase {
         let validContent = "Address Class Type: B\nIP Address: 172.16.242.132\nSubnet ID: 172.0.0.0\nSubnet Mask: 255.0.0.0\nBroadcast: 172.255.255.255\nIP Range: 172.0.0.1 - 172.255.255.254\nMask Bits: 8\nSubnet Bits: 0\nMax Subnets: 1\nMax Hosts / Subnet: 16777214\nAddress Hexa: AC.10.F2.84\nBit Map: nnnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh\nBinary Map: 10101100.00010000.11110010.10000100\n"
         XCTAssertEqual(pbContent,validContent)
         
-        /*
-         NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
-         NSString *pastecontent = [pasteboard stringForType: NSPasteboardTypeString];
-         NSString *validcontent = @"Address Class Type: B\n\
-     IP Address: 172.16.242.132\n\
-     Subnet ID: 172.0.0.0\n\
-     Subnet Mask: 255.0.0.0\n\
-     Broadcast: 172.255.255.255\n\
-     IP Range: 172.0.0.1 - 172.255.255.254\n\
-     Mask Bits: 8\n\
-     Subnet Bits: 0\n\
-     Max Subnets: 1\n\
-     Max Hosts / Subnet : 16777214\n\
-     Address Hexa: AC.10.F2.84\n\
-     BitMap: nnnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh\n\
-     BinMap: 10101100.00010000.11110010.10000100\n";
-         XCTAssertEqualObjects(pastecontent, validcontent);
-         */
-        
         //subnetcalcWindow.buttons["Calc"].click()
         ipaddrfieldTextField.typeKey("q", modifierFlags:.command)
     }
