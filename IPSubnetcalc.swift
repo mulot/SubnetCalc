@@ -452,6 +452,72 @@ class IPSubnetCalc: NSObject {
     //*************
     //IPv6 SECTION
     //*************
+    static func isValidIPv6(ipAddress: String, mask: Int?) -> Bool {
+        var ip4Hex: [String]?
+        var hex: UInt16?
+        
+        if mask != nil {
+            if (mask! < 1 || mask! > 128) {
+                print("mask \(mask!) invalid")
+                return false
+            }
+        }
+        else {
+            //print("null mask")
+        }
+        
+        ip4Hex = ipAddress.components(separatedBy: ":")
+        if (ip4Hex == nil) {
+            print("\(ipAddress) invalid")
+            return false
+        }
+        if (ip4Hex!.count != 8) {
+            print("no 8 hex")
+            if (ipAddress.contains("::"))
+            {
+                if (ipAddress.components(separatedBy: "::").count > 2) {
+                    print("too many '::'")
+                    return false
+                }
+            }
+            else {
+                print("IP \(ipAddress) bad format")
+                return false
+            }
+        }
+        for index in 0...(ip4Hex!.count - 1) {
+            //print("Index : \(index) IPHex : \(ip4Hex[index]) Dec : \(String(UInt16(ip4Hex[index], radix: 16)!, radix: 16))")
+            if (ip4Hex![index].count > 4 && ip4Hex![index].count != 0) {
+                print("\(ip4Hex![index]) too large")
+                return false
+            }
+            hex = UInt16(ip4Hex![index], radix: 16)
+            if hex != nil {
+                if (hex! < 0 || hex! > 0xFFFF) {
+                    print("\(hex!) is invalid")
+                    return false
+                }
+            }
+            else {
+                if (ip4Hex![index] != "") {
+                    print("\(ip4Hex![index]) not an integer")
+                    return false
+                }
+            }
+        }
+        
+        if mask != nil {
+            if (mask! < 1 || mask! > 128) {
+                print("mask \(mask!) invalid")
+                return false
+            }
+        }
+        else {
+            //print("null mask")
+        }
+        return true
+    }
+    
     static func numerizeIPv6(ipAddress: String) -> [UInt16] {
         var ipAddressNum: [UInt16] = Array(repeating: 0, count: 8)
         var ip4Hex = [String]()
@@ -633,7 +699,7 @@ class IPSubnetCalc: NSObject {
         return (shortAddr)
     }
     
-    func networkIDIPv6() -> String {
+    func networkIPv6() -> String {
         var netID = [UInt16]()
         let numMask = IPSubnetCalc.numerizeMaskIPv6(maskbits: self.ipv6MaskBits)
         let numIP = IPSubnetCalc.numerizeIPv6(ipAddress: fullAddressIPv6(ipAddress: self.ipv6Address))
@@ -696,7 +762,7 @@ class IPSubnetCalc: NSObject {
     }
     
     func resBlockIPv6() -> String? {
-        var netID = networkIDIPv6()
+        var netID = networkIPv6()
         
         netID = fullAddressIPv6(ipAddress: netID)
         //print("NetID BEFORE compact : \(netID)")
@@ -746,12 +812,16 @@ class IPSubnetCalc: NSObject {
     }
     
     init?(ipv6: String, maskbits: Int) {
+        if (IPSubnetCalc.isValidIPv6(ipAddress: ipv6, mask: maskbits)) {
         self.ipv4Address = "10.0.0.0"
         self.maskBits = Constants.classAbits
         
         // full ? compact ? validated ?
         self.ipv6Address = ipv6
         self.ipv6MaskBits = maskbits
-        return nil
+        }
+        else {
+            return nil
+        }
     }
 }

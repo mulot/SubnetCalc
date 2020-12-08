@@ -285,7 +285,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
         }
         else {
-            myAlert(message: "Bad IP Address", info: "Bad format")
+            myAlert(message: "Bad IPv4 Address", info: "Bad format")
             return
         }
     }
@@ -293,6 +293,57 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     //Private IPv6 functions
     private func initIPv6Tab() {
         
+    }
+    
+    private func doIPv6SubnetCalc()
+    {
+        let ipaddr: String
+        var ipmask: String?
+        
+        if (addrField.stringValue.isEmpty) {
+            if (ipsc == nil)
+            {
+                addrField.stringValue = Constants.defaultIP
+                ipaddr = Constants.defaultIP
+                ipmask = nil
+            }
+            else {
+                addrField.stringValue = ipsc!.ipv4Address
+                ipaddr = ipsc!.ipv4Address
+                ipmask = String(ipsc!.maskBits)
+            }
+        }
+        else {
+            (ipaddr, ipmask) = splitAddrMask(address: addrField.stringValue)
+            if (ipmask == nil && ipsc != nil) {
+                ipmask = String(ipsc!.maskBits)
+            }
+        }
+        if (IPSubnetCalc.isValidIP(ipAddress: ipaddr, mask: ipmask) == true) {
+            //print("IP Address: \(ipaddr) mask: \(ipmask)")
+            addrField.stringValue = ipaddr
+            if (ipmask == nil) {
+                ipsc = IPSubnetCalc(ipaddr)
+            }
+            else {
+                ipsc = IPSubnetCalc(ipAddress: ipaddr, maskbits: Int(ipmask!)!)
+            }
+            if (ipsc != nil) {
+                if (tabView.numberOfTabViewItems != 4 && savedTabView != nil) {
+                    tabView.addTabViewItem(savedTabView![1])
+                    tabView.addTabViewItem(savedTabView![2])
+                    tabView.addTabViewItem(savedTabView![3])
+                }
+                self.doAddressMap()
+                self.doSubnet()
+                self.doSubnetHost()
+                self.doCIDR()
+            }
+        }
+        else {
+            myAlert(message: "Bad IPv6 Address", info: "Bad format")
+            return
+        }
     }
     
     
@@ -689,8 +740,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     //General UI actions
     @IBAction func calc(_ sender: AnyObject)
     {
-        self.doIPSubnetCalc()
-        //tabView.selectTabViewItem(at: 1)
+        if (addrField.stringValue.contains(":")) {
+            tabView.selectTabViewItem(at: 3)
+        }
+        else {
+            self.doIPSubnetCalc()
+            //tabView.selectTabViewItem(at: 0)
+        }
     }
     
     @IBAction func ipAddrEdit(_ sender: AnyObject)
@@ -774,6 +830,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         // Insert code here to initialize your application
         initSubnetsTab()
         initCIDRTab()
+        initIPv6Tab()
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {
