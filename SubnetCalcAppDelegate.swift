@@ -18,12 +18,18 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         static let NETWORK_BITS_MAX:Int = 32
     }
     
+    //General UI elements
     @IBOutlet var window: NSWindow!
     @IBOutlet var addrField: NSTextField!
+    @IBOutlet var exportButton: NSPopUpButton!
+    @IBOutlet var tabView: NSTabView!
+    @IBOutlet var darkModeMenu: NSMenuItem!
+    @IBOutlet var NSApp: NSApplication!
+    
+    //IPv4 UI elements
     @IBOutlet var classBinaryMap: NSTextField!
     @IBOutlet var classBitMap: NSTextField!
     @IBOutlet var classHexaMap: NSTextField!
-    @IBOutlet var exportButton: NSPopUpButton!
     @IBOutlet var classType: NSPopUpButton!
     @IBOutlet var maskBitsCombo: NSComboBox!
     @IBOutlet var maxHostsBySubnetCombo: NSComboBox!
@@ -41,22 +47,30 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     @IBOutlet var supernetMaxSubnetsCombo: NSComboBox!
     @IBOutlet var supernetRoute: NSTextField!
     @IBOutlet var supernetAddrRange: NSTextField!
-    @IBOutlet var tabView: NSTabView!
     @IBOutlet var subnetBitsSlide: NSSlider!
     @IBOutlet var bitsOnSlide: NSTextField!
     @IBOutlet var tabViewClassLess: NSButton!
     @IBOutlet var wildcard: NSButton!
-    @IBOutlet var darkModeMenu: NSMenuItem!
-    @IBOutlet var NSApp: NSApplication!
     
+    //IPv6 UI elements
+    @IBOutlet var ipv6Address: NSTextField!
+    @IBOutlet var ipv6maskBitsCombo: NSComboBox!
+    @IBOutlet var ipv6maxSubnetsCombo: NSComboBox!
+    @IBOutlet var ipv6maxHostsCombo: NSComboBox!
+    @IBOutlet var ipv6Network: NSTextField!
+    @IBOutlet var ipv6Range: NSTextField!
+    @IBOutlet var ipv6Type: NSTextField!
+    @IBOutlet var ipv6HexaID: NSTextField!
+    @IBOutlet var ipv6Decimal: NSTextField!
+    @IBOutlet var ipv6Arpa: NSTextField!
+    @IBOutlet var ipv6Compact: NSButton!
+    
+    //Private global vars
     private var savedTabView: [NSTabViewItem]? //ex tab_tabView
     private var ipsc: IPSubnetCalc?
     
-    private func initAddressTab() {
-        classBitMap.stringValue = "nnnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh"
-        classBinaryMap.stringValue = "00000001.00000000.00000000.00000000"
-    }
     
+    //Private IPv4 functions
     private func initCIDRTab() {
         for bits in (1...30) {
             supernetMaskBitsCombo.addItem(withObjectValue: String(bits))
@@ -97,6 +111,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         for index in (0...22) {
             maxSubnetsCombo.addItem(withObjectValue: NSDecimalNumber(decimal: pow(2, index)).stringValue)
         }
+        classBitMap.stringValue = "nnnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh"
+        classBinaryMap.stringValue = "00000001.00000000.00000000.00000000"
+        classHexaMap.stringValue = "01.00.00.00"
     }
     
     private func bitsOnSlidePos()
@@ -273,17 +290,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
-    @IBAction func calc(_ sender: AnyObject)
-    {
-        self.doIPSubnetCalc()
-        //tabView.selectTabViewItem(at: 1)
+    //Private IPv6 functions
+    private func initIPv6Tab() {
+        
     }
     
-    @IBAction func ipAddrEdit(_ sender: AnyObject)
-    {
-        self.calc(sender)
-    }
     
+    //IPv4 UI actions
     @IBAction func changeAddrClassType(_ sender: AnyObject)
     {
         if (tabView.numberOfTabViewItems != 4 && savedTabView != nil) {
@@ -295,16 +308,19 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         {
             classBitMap.stringValue = "nnnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh"
             classBinaryMap.stringValue = "00000001.00000000.00000000.00000000"
+            classHexaMap.stringValue = "01.00.00.00"
         }
         else if (sender.indexOfSelectedItem() == 1)
         {
             classBitMap.stringValue = "nnnnnnnn.nnnnnnnn.hhhhhhhh.hhhhhhhh"
             classBinaryMap.stringValue = "10000000.00000000.00000000.00000000"
+            classHexaMap.stringValue = "80.00.00.00"
         }
         else if (sender.indexOfSelectedItem() == 2)
         {
             classBitMap.stringValue = "nnnnnnnn.nnnnnnnn.nnnnnnnn.hhhhhhhh"
             classBinaryMap.stringValue = "11000000.00000000.00000000.00000000"
+            classHexaMap.stringValue = "C0.00.00.00"
         }
         else if (sender.indexOfSelectedItem() == 3)
         {
@@ -317,6 +333,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
             classBitMap.stringValue = "hhhhhhhh.hhhhhhhh.hhhhhhhh.hhhhhhhh"
             classBinaryMap.stringValue = "11100000.00000000.00000000.00000000"
+            classHexaMap.stringValue = "E0.00.00.00"
         }
     }
     
@@ -550,12 +567,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             return
         }
     }
-    
-    func printAllSubnets()
-    {
         
-    }
-    
     func numberOfRows(in tableView: NSTableView) -> Int
     {
         if (ipsc != nil) {
@@ -595,7 +607,6 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         return (nil)
     }
-    
     
     @IBAction func subnetBitsSlide(_ sender: AnyObject)
     {
@@ -652,6 +663,39 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 subnetMaskCombo.selectItem(withObjectValue: ipsc!.subnetMask())
             }
         }
+    }
+    
+    //IPv6 UI actions
+    @IBAction func changeIPv6Format(_ sender: AnyObject)
+    {
+        
+    }
+    
+    @IBAction func changeIPv6MaskBits(_ sender: AnyObject)
+    {
+        
+    }
+    
+    @IBAction func changeIPv6MaxSubnets(_ sender: AnyObject)
+    {
+        
+    }
+    
+    @IBAction func changeIPv6MaxHosts(_ sender: AnyObject)
+    {
+        
+    }
+    
+    //General UI actions
+    @IBAction func calc(_ sender: AnyObject)
+    {
+        self.doIPSubnetCalc()
+        //tabView.selectTabViewItem(at: 1)
+    }
+    
+    @IBAction func ipAddrEdit(_ sender: AnyObject)
+    {
+        self.calc(sender)
     }
     
     @IBAction func exportCSV(_ sender: AnyObject)
@@ -728,7 +772,6 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
-        initAddressTab()
         initSubnetsTab()
         initCIDRTab()
     }
