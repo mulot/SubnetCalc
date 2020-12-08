@@ -518,6 +518,24 @@ class IPSubnetCalc: NSObject {
         return true
     }
     
+    static func convertIPv4toIPv6(ipAddress: String, _6to4: Bool = false) -> String {
+        var ipv6str = String()
+        
+        let addr = numerize(ipAddress: ipAddress)
+        ipv6str.append(String((((Constants.addr32Digit1 | Constants.addr32Digit2) & addr) >> 16), radix: 16))
+        ipv6str.append(":")
+        ipv6str.append(String(((Constants.addr32Digit3 | Constants.addr32Digit4) & addr), radix: 16))
+        if (_6to4)
+        {
+            return ("2002:" + ipv6str + ":0:0:0:0:0")
+        }
+        return ("0:0:0:0:0:ffff:" + ipv6str)
+    }
+    
+    static func convertIPv6toIPv4(ipAddress: String) -> String {
+        return ""
+    }
+    
     static func numerizeIPv6(ipAddress: String) -> [UInt16] {
         var ipAddressNum: [UInt16] = Array(repeating: 0, count: 8)
         var ip4Hex = [String]()
@@ -782,8 +800,8 @@ class IPSubnetCalc: NSObject {
         if (IPSubnetCalc.isValidIP(ipAddress: ipAddress, mask: String(maskbits), classless: true)) {
             self.ipv4Address = ipAddress
             self.maskBits = maskbits
-            self.ipv6Address = "2001:db8::"
-            self.ipv6MaskBits = 32
+            self.ipv6Address = IPSubnetCalc.convertIPv4toIPv6(ipAddress: ipAddress, _6to4: true)
+            self.ipv6MaskBits = maskbits + 96
         }
         else {
             return nil

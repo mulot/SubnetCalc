@@ -282,6 +282,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 self.doSubnet()
                 self.doSubnetHost()
                 self.doCIDR()
+                self.doIPv6()
             }
         }
         else {
@@ -293,6 +294,28 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     //Private IPv6 functions
     private func initIPv6Tab() {
         
+    }
+    
+    private func doIPv6()
+    {
+        if (ipsc != nil) {
+            ipv6Address.stringValue = ipsc!.ipv6Address
+            /*
+            subnetBitsCombo.selectItem(withObjectValue: String(ipsc!.subnetBits()))
+            maskBitsCombo.selectItem(withObjectValue: String(ipsc!.maskBits))
+            maxSubnetsCombo.selectItem(withObjectValue: String(ipsc!.maxSubnets()))
+            maxHostsBySubnetCombo.selectItem(withObjectValue: String(ipsc!.maxHosts()))
+            subnetId.stringValue = ipsc!.subnetId()
+            subnetBroadcast.stringValue = ipsc!.subnetBroadcast()
+            subnetHostAddrRange.stringValue = ipsc!.subnetRange()
+            if (wildcard.state == NSControl.StateValue.on) {
+                subnetMaskCombo.selectItem(withObjectValue: ipsc!.wildcardMask())
+            }
+            else {
+                subnetMaskCombo.selectItem(withObjectValue: ipsc!.subnetMask())
+            }
+             */
+        }
     }
     
     private func doIPv6SubnetCalc()
@@ -338,6 +361,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 self.doSubnet()
                 self.doSubnetHost()
                 self.doCIDR()
+                self.doIPv6()
             }
         }
         else {
