@@ -742,7 +742,7 @@ class IPSubnetCalc: NSObject {
         if (nbIndex < 7) {
             netIDStr.append("::")
         }
-        return (netIDStr)
+        return (self.fullAddressIPv6(ipAddress: netIDStr))
     }
     
     func networkRangeIPv6() -> String {
