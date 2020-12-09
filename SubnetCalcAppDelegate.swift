@@ -57,7 +57,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     @IBOutlet var ipv6Address: NSTextField!
     @IBOutlet var ipv6to4Address: NSTextField!
     @IBOutlet var ipv6maskBitsCombo: NSComboBox!
-    @IBOutlet var ipv6maxSubnetsCombo: NSComboBox!
+    @IBOutlet var ipv6SubnetsCombo: NSComboBox!
     @IBOutlet var ipv6maxHostsCombo: NSComboBox!
     @IBOutlet var ipv6Network: NSTextField!
     @IBOutlet var ipv6Range: NSTextField!
@@ -296,16 +296,25 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     
     //Private IPv6 functions
     private func initIPv6Tab() {
+        var total = Decimal()
+        var number: Decimal = 2
         
         for index in (1...128) {
             ipv6maskBitsCombo.addItem(withObjectValue: String(index))
         }
-        
+        for index in (0...127) {
+            NSDecimalPower(&total, &number , index, NSDecimalNumber.RoundingMode.plain)
+            ipv6maxHostsCombo.addItem(withObjectValue: total)
+        }
     }
     
     private func doIPv6()
     {
         if (ipsc != nil) {
+            var total = Decimal()
+            var number: Decimal = 2
+            
+            NSDecimalPower(&total, &number , 128 - ipsc!.ipv6MaskBits, NSDecimalNumber.RoundingMode.plain)
             if (ipv6Compact.state == NSControl.StateValue.on) {
                 ipv6Address.stringValue = ipsc!.compactAddressIPv6(ipAddress: ipsc!.ipv6Address)
                 ipv6Network.stringValue = ipsc!.compactAddressIPv6(ipAddress: ipsc!.networkIPv6())
@@ -315,6 +324,8 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 ipv6Network.stringValue = ipsc!.fullAddressIPv6(ipAddress: ipsc!.networkIPv6())
             }
             ipv6to4Address.stringValue = ipsc!.ipv4Address
+            ipv6maskBitsCombo.selectItem(withObjectValue: String(ipsc!.ipv6MaskBits))
+            ipv6maxHostsCombo.selectItem(withObjectValue: total)
             ipv6Range.stringValue = ipsc!.networkRangeIPv6()
             ipv6Type.stringValue = ipsc!.resBlockIPv6() ?? ""
             ipv6HexaID.stringValue = ipsc!.hexaIDIPv6()
@@ -748,7 +759,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         
     }
     
-    @IBAction func changeIPv6MaxSubnets(_ sender: AnyObject)
+    @IBAction func changeIPv6Subnets(_ sender: AnyObject)
     {
         
     }

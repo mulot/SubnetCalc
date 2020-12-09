@@ -459,7 +459,7 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <clipView key="contentView" id="L0l-HJ-flz">
                                                 <rect key="frame" x="1" y="1" width="567" height="485"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <autoresizingMask key="autoresizingMask"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="583" id="586">
                                                         <rect key="frame" x="0.0" y="0.0" width="567" height="462"/>
@@ -929,7 +929,7 @@
                                             </view>
                                             <font key="titleFont" metaFont="message"/>
                                         </box>
-                                        <box fixedFrame="YES" title="Max Subnets" translatesAutoresizingMaskIntoConstraints="NO" id="1vN-oq-2ue">
+                                        <box fixedFrame="YES" title="Available Subnets" translatesAutoresizingMaskIntoConstraints="NO" id="1vN-oq-2ue">
                                             <rect key="frame" x="132" y="454" width="218" height="68"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <view key="contentView" id="Y95-gg-AQn">
@@ -945,7 +945,7 @@
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </comboBoxCell>
                                                         <connections>
-                                                            <action selector="changeIPv6MaxSubnets:" target="b7w-M5-ti7" id="7zf-ai-JhR"/>
+                                                            <action selector="changeIPv6Subnets:" target="b7w-M5-ti7" id="aVr-hQ-sbQ"/>
                                                         </connections>
                                                     </comboBox>
                                                 </subviews>
@@ -1073,10 +1073,10 @@
                 <outlet property="ipv6HexaID" destination="zUG-9L-Vpv" id="Zvj-I6-5HB"/>
                 <outlet property="ipv6Network" destination="aub-Bq-s74" id="A3V-kl-4xp"/>
                 <outlet property="ipv6Range" destination="tIz-TW-giA" id="3GA-Yj-Crr"/>
+                <outlet property="ipv6SubnetsCombo" destination="6Gb-gW-s1t" id="Obf-Aa-cEO"/>
                 <outlet property="ipv6Type" destination="kjI-Hn-X8U" id="Ar6-02-rTL"/>
                 <outlet property="ipv6maskBitsCombo" destination="DK7-a5-M3j" id="ck7-KR-MoI"/>
                 <outlet property="ipv6maxHostsCombo" destination="q7N-nd-gHk" id="8F3-ex-3DJ"/>
-                <outlet property="ipv6maxSubnetsCombo" destination="6Gb-gW-s1t" id="1xX-n1-5Mg"/>
                 <outlet property="ipv6to4Address" destination="tpf-Ay-mfP" id="7bP-fz-Ra4"/>
                 <outlet property="maskBitsCombo" destination="569" id="QLr-to-MNE"/>
                 <outlet property="maxHostsBySubnetCombo" destination="573" id="gGc-XF-9uv"/>
