@@ -323,34 +323,19 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         let ipaddr: String
         var ipmask: String?
         
-        if (addrField.stringValue.isEmpty) {
-            if (ipsc == nil)
-            {
-                addrField.stringValue = Constants.defaultIP
-                ipaddr = Constants.defaultIP
-                ipmask = nil
-            }
-            else {
-                addrField.stringValue = ipsc!.ipv4Address
-                ipaddr = ipsc!.ipv4Address
-                ipmask = String(ipsc!.maskBits)
-            }
-        }
-        else {
             (ipaddr, ipmask) = splitAddrMask(address: addrField.stringValue)
-            if (ipmask == nil && ipsc != nil) {
-                ipmask = String(ipsc!.maskBits)
+            if (ipmask == nil) {
+                if (ipsc != nil) {
+                    ipmask = String(ipsc!.ipv6MaskBits)
+                }
+                else {
+                    ipmask = "64"
+                }
             }
-        }
-        if (IPSubnetCalc.isValidIP(ipAddress: ipaddr, mask: ipmask) == true) {
+        if (IPSubnetCalc.isValidIPv6(ipAddress: ipaddr, mask: Int(ipmask!)) == true) {
             //print("IP Address: \(ipaddr) mask: \(ipmask)")
             addrField.stringValue = ipaddr
-            if (ipmask == nil) {
-                ipsc = IPSubnetCalc(ipaddr)
-            }
-            else {
-                ipsc = IPSubnetCalc(ipAddress: ipaddr, maskbits: Int(ipmask!)!)
-            }
+                ipsc = IPSubnetCalc(ipv6: ipaddr, maskbits: Int(ipmask!)!)
             if (ipsc != nil) {
                 if (tabView.numberOfTabViewItems != 4 && savedTabView != nil) {
                     tabView.addTabViewItem(savedTabView![1])
@@ -765,11 +750,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     @IBAction func calc(_ sender: AnyObject)
     {
         if (addrField.stringValue.contains(":")) {
+            self.doIPv6SubnetCalc()
             tabView.selectTabViewItem(at: 3)
         }
         else {
             self.doIPSubnetCalc()
-            //tabView.selectTabViewItem(at: 0)
+            tabView.selectTabViewItem(at: 0)
         }
     }
     

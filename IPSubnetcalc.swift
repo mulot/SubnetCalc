@@ -505,16 +505,6 @@ class IPSubnetCalc: NSObject {
                 }
             }
         }
-        
-        if mask != nil {
-            if (mask! < 1 || mask! > 128) {
-                print("mask \(mask!) invalid")
-                return false
-            }
-        }
-        else {
-            //print("null mask")
-        }
         return true
     }
     
@@ -533,7 +523,26 @@ class IPSubnetCalc: NSObject {
     }
     
     static func convertIPv6toIPv4(ipAddress: String) -> String {
-        return ""
+        var ipv4str = String()
+        
+        //let ip4Hex = fullAddressIPv6(ipAddress: ipAddress).components(separatedBy: ":")
+        let ip4Hex = ipAddress.components(separatedBy: ":")
+        let index = ip4Hex.count
+        if (index < 2) {
+            ipv4str.append("0.0")
+        }
+        else {
+            if (ip4Hex[index - 2] == "") {
+                ipv4str.append("0.0")
+            }
+            else {
+                ipv4str.append(String((UInt32(ip4Hex[index - 2], radix: 16)! & Constants.addr32Digit3) >> 8))
+                ipv4str.append("." + String((UInt32(ip4Hex[index - 2], radix: 16)! & Constants.addr32Digit4)))
+            }
+        }
+        ipv4str.append("." + String((UInt32(ip4Hex[index - 1], radix: 16)! & Constants.addr32Digit3) >> 8))
+        ipv4str.append("." + String((UInt32(ip4Hex[index - 1], radix: 16)! & Constants.addr32Digit4)))
+        return ipv4str
     }
     
     static func numerizeIPv6(ipAddress: String) -> [UInt16] {
@@ -831,9 +840,14 @@ class IPSubnetCalc: NSObject {
     
     init?(ipv6: String, maskbits: Int) {
         if (IPSubnetCalc.isValidIPv6(ipAddress: ipv6, mask: maskbits)) {
-        self.ipv4Address = "10.0.0.0"
-        self.maskBits = Constants.classAbits
-        
+            self.ipv4Address = IPSubnetCalc.convertIPv6toIPv4(ipAddress: ipv6)
+            if (maskbits > 96) {
+                self.maskBits = maskbits - 96
+            }
+            else {
+                self.maskBits = Constants.classAbits
+            }
+            
         // full ? compact ? validated ?
         self.ipv6Address = ipv6
         self.ipv6MaskBits = maskbits
