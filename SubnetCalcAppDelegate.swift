@@ -744,7 +744,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     //IPv6 UI actions
     @IBAction func changeIPv6Format(_ sender: AnyObject)
     {
-        
+        self.doIPv6()
     }
     
     @IBAction func changeIPv6MaskBits(_ sender: AnyObject)
