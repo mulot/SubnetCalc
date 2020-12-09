@@ -747,16 +747,36 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <box fixedFrame="YES" title="IPv6 Address" translatesAutoresizingMaskIntoConstraints="NO" id="RHa-KG-uet">
-                                            <rect key="frame" x="6" y="526" width="412" height="70"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                            <rect key="frame" x="6" y="526" width="323" height="70"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <view key="contentView" id="P9J-86-wYq">
-                                                <rect key="frame" x="3" y="3" width="406" height="50"/>
+                                                <rect key="frame" x="3" y="3" width="317" height="50"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textField identifier="ipv6addrtext" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cip-g7-vbK">
-                                                        <rect key="frame" x="17" y="14" width="372" height="22"/>
+                                                        <rect key="frame" x="17" y="14" width="293" height="22"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="zaZ-l2-ZJw">
+                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" title="2002:0a00:0000:0000:0000:0000:0000:0001" drawsBackground="YES" id="zaZ-l2-ZJw">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                </subviews>
+                                            </view>
+                                            <font key="titleFont" metaFont="message"/>
+                                        </box>
+                                        <box fixedFrame="YES" title="6to4 Address" translatesAutoresizingMaskIntoConstraints="NO" id="wya-GI-9e3">
+                                            <rect key="frame" x="373" y="526" width="205" height="70"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES"/>
+                                            <view key="contentView" id="Awt-QT-2ZB">
+                                                <rect key="frame" x="3" y="3" width="199" height="50"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <textField identifier="ipv4addrconvtext" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tpf-Ay-mfP">
+                                                        <rect key="frame" x="17" y="14" width="165" height="22"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="iom-7w-d2J">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -814,9 +834,9 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textField identifier="ipv6rangetext" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tIz-TW-giA">
-                                                        <rect key="frame" x="17" y="14" width="532" height="22"/>
+                                                        <rect key="frame" x="17" y="14" width="570" height="22"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="rti-RH-0Ow">
+                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" title="2002:0a00:0000:0000:0000:0000:0000:0000 - 2002:0a00:0000:0000:0000:0000:00ff:ffff" drawsBackground="YES" id="rti-RH-0Ow">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -888,7 +908,7 @@
                                         </box>
                                         <box fixedFrame="YES" title="Mask Bits" translatesAutoresizingMaskIntoConstraints="NO" id="RRU-sm-xxj">
                                             <rect key="frame" x="6" y="454" width="116" height="68"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <view key="contentView" id="FCe-ZY-wfO">
                                                 <rect key="frame" x="3" y="3" width="110" height="48"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -910,14 +930,14 @@
                                             <font key="titleFont" metaFont="message"/>
                                         </box>
                                         <box fixedFrame="YES" title="Max Subnets" translatesAutoresizingMaskIntoConstraints="NO" id="1vN-oq-2ue">
-                                            <rect key="frame" x="124" y="454" width="226" height="68"/>
+                                            <rect key="frame" x="124" y="454" width="205" height="68"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <view key="contentView" id="Y95-gg-AQn">
-                                                <rect key="frame" x="3" y="3" width="220" height="48"/>
+                                                <rect key="frame" x="3" y="3" width="199" height="48"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <comboBox identifier="ipv6maxsubnetscombo" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Gb-gW-s1t">
-                                                        <rect key="frame" x="14" y="10" width="197" height="26"/>
+                                                        <rect key="frame" x="14" y="10" width="176" height="26"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                         <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="3MY-kD-lei">
                                                             <font key="font" metaFont="system"/>
@@ -932,15 +952,26 @@
                                             </view>
                                             <font key="titleFont" metaFont="message"/>
                                         </box>
+                                        <button identifier="compactbutton" imageHugsTitle="YES" id="vhs-ST-g2o">
+                                            <rect key="frame" x="243" y="571" width="83" height="37"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="check" title="Compact" bezelStyle="regularSquare" imagePosition="left" alignment="right" inset="2" id="5pc-E9-VGv">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="changeIPv6Format:" target="b7w-M5-ti7" id="lwa-Zg-oyK"/>
+                                            </connections>
+                                        </button>
                                         <box fixedFrame="YES" title="Max Hosts / Subnet" translatesAutoresizingMaskIntoConstraints="NO" id="om1-Sk-7JP">
-                                            <rect key="frame" x="352" y="454" width="226" height="68"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <rect key="frame" x="373" y="454" width="205" height="68"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES"/>
                                             <view key="contentView" id="X8j-Y7-OUp">
-                                                <rect key="frame" x="3" y="3" width="220" height="48"/>
+                                                <rect key="frame" x="3" y="3" width="199" height="48"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <comboBox identifier="ipv6maxhostscombo" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q7N-nd-gHk">
-                                                        <rect key="frame" x="14" y="10" width="197" height="26"/>
+                                                        <rect key="frame" x="14" y="10" width="176" height="26"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                         <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="OLs-oE-oOk">
                                                             <font key="font" metaFont="system"/>
@@ -955,17 +986,6 @@
                                             </view>
                                             <font key="titleFont" metaFont="message"/>
                                         </box>
-                                        <button identifier="compactbutton" imageHugsTitle="YES" id="vhs-ST-g2o">
-                                            <rect key="frame" x="423" y="535" width="83" height="37"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Compact" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="5pc-E9-VGv">
-                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="system"/>
-                                            </buttonCell>
-                                            <connections>
-                                                <action selector="changeIPv6Format:" target="b7w-M5-ti7" id="lwa-Zg-oyK"/>
-                                            </connections>
-                                        </button>
                                     </subviews>
                                 </view>
                             </tabViewItem>
@@ -1057,6 +1077,7 @@
                 <outlet property="ipv6maskBitsCombo" destination="DK7-a5-M3j" id="ck7-KR-MoI"/>
                 <outlet property="ipv6maxHostsCombo" destination="q7N-nd-gHk" id="8F3-ex-3DJ"/>
                 <outlet property="ipv6maxSubnetsCombo" destination="6Gb-gW-s1t" id="1xX-n1-5Mg"/>
+                <outlet property="ipv6to4Address" destination="tpf-Ay-mfP" id="7bP-fz-Ra4"/>
                 <outlet property="maskBitsCombo" destination="569" id="QLr-to-MNE"/>
                 <outlet property="maxHostsBySubnetCombo" destination="573" id="gGc-XF-9uv"/>
                 <outlet property="maxSubnetsCombo" destination="571" id="gn7-9F-KtD"/>

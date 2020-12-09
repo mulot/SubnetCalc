@@ -615,7 +615,7 @@ class IPSubnetCalc: NSObject {
     }
     
     func hexaIDIPv6() -> String {
-        var hexID: String = self.ipv6Address
+        var hexID: String = fullAddressIPv6(ipAddress: self.ipv6Address)
         let delimiter: Set<Character> = [":"]
         hexID.removeAll(where: { delimiter.contains($0) })
         return("0x\(hexID)")
@@ -625,9 +625,9 @@ class IPSubnetCalc: NSObject {
         return (IPSubnetCalc.binarizeIPv6(ipAddress: self.ipv6Address))
     }
     
-    func digitizeIPv6(ipAddress: String) -> String {
+    func digitizeIPv6() -> String {
         var digitStr = String()
-        let numIP = IPSubnetCalc.numerizeIPv6(ipAddress: ipAddress)
+        let numIP = IPSubnetCalc.numerizeIPv6(ipAddress: self.ipv6Address)
         
         for index in 0...7  {
             if (index != 7) {

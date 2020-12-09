@@ -12,6 +12,7 @@ import Cocoa
 class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableViewDataSource {
     private enum Constants {
         static let defaultIP: String = "10.0.0.0"
+        static let defaultIPv6Mask: String = "64"
         static let BUFFER_LINES:Int = 200000000
         static let NETWORK_BITS_MIN_CLASSLESS:Int = 1
         static let NETWORK_BITS_MIN:Int = 8
@@ -54,6 +55,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     
     //IPv6 UI elements
     @IBOutlet var ipv6Address: NSTextField!
+    @IBOutlet var ipv6to4Address: NSTextField!
     @IBOutlet var ipv6maskBitsCombo: NSComboBox!
     @IBOutlet var ipv6maxSubnetsCombo: NSComboBox!
     @IBOutlet var ipv6maxHostsCombo: NSComboBox!
@@ -64,6 +66,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     @IBOutlet var ipv6Decimal: NSTextField!
     @IBOutlet var ipv6Arpa: NSTextField!
     @IBOutlet var ipv6Compact: NSButton!
+    
     
     //Private global vars
     private var savedTabView: [NSTabViewItem]? //ex tab_tabView
@@ -299,7 +302,20 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     private func doIPv6()
     {
         if (ipsc != nil) {
-            ipv6Address.stringValue = ipsc!.ipv6Address
+            if (ipv6Compact.state == NSControl.StateValue.on) {
+                ipv6Address.stringValue = ipsc!.compactAddressIPv6(ipAddress: ipsc!.ipv6Address)
+            }
+            else {
+                ipv6Address.stringValue = ipsc!.fullAddressIPv6(ipAddress: ipsc!.ipv6Address)
+            }
+            ipv6to4Address.stringValue = ipsc!.ipv4Address
+            ipv6Network.stringValue = ipsc!.networkIPv6()
+            ipv6Range.stringValue = ipsc!.networkRangeIPv6()
+            ipv6Type.stringValue = ipsc!.resBlockIPv6() ?? ""
+            ipv6HexaID.stringValue = ipsc!.hexaIDIPv6()
+            ipv6Decimal.stringValue = ipsc!.digitizeIPv6()
+            ipv6Arpa.stringValue = ipsc!.ip6ARPA()
+            
             /*
             subnetBitsCombo.selectItem(withObjectValue: String(ipsc!.subnetBits()))
             maskBitsCombo.selectItem(withObjectValue: String(ipsc!.maskBits))
@@ -329,7 +345,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                     ipmask = String(ipsc!.ipv6MaskBits)
                 }
                 else {
-                    ipmask = "64"
+                    ipmask = Constants.defaultIPv6Mask
                 }
             }
         if (IPSubnetCalc.isValidIPv6(ipAddress: ipaddr, mask: Int(ipmask!)) == true) {
