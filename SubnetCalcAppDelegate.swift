@@ -308,12 +308,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         if (ipsc != nil) {
             if (ipv6Compact.state == NSControl.StateValue.on) {
                 ipv6Address.stringValue = ipsc!.compactAddressIPv6(ipAddress: ipsc!.ipv6Address)
+                ipv6Network.stringValue = ipsc!.compactAddressIPv6(ipAddress: ipsc!.networkIPv6())
             }
             else {
                 ipv6Address.stringValue = ipsc!.fullAddressIPv6(ipAddress: ipsc!.ipv6Address)
+                ipv6Network.stringValue = ipsc!.fullAddressIPv6(ipAddress: ipsc!.networkIPv6())
             }
             ipv6to4Address.stringValue = ipsc!.ipv4Address
-            ipv6Network.stringValue = ipsc!.networkIPv6()
             ipv6Range.stringValue = ipsc!.networkRangeIPv6()
             ipv6Type.stringValue = ipsc!.resBlockIPv6() ?? ""
             ipv6HexaID.stringValue = ipsc!.hexaIDIPv6()

@@ -730,19 +730,12 @@ class IPSubnetCalc: NSObject {
         var netID = [UInt16]()
         let numMask = IPSubnetCalc.numerizeMaskIPv6(maskbits: self.ipv6MaskBits)
         let numIP = IPSubnetCalc.numerizeIPv6(ipAddress: fullAddressIPv6(ipAddress: self.ipv6Address))
-        let nbIndex = self.ipv6MaskBits / 16
         
-        for index in 0...nbIndex {
-            if (index < 8) {
+        for index in 0...7 {
                 //print("Index: \(index) IP: \(numIP[index]) Mask : \(numMask[index]) Result : \(numIP[index] & (numMask[index])) ")
                 netID.append((numIP[index] & numMask[index]))
-            }
         }
-        var netIDStr = IPSubnetCalc.hexarizeIPv6(num: netID, full: false, column: true)
-        if (nbIndex < 7) {
-            netIDStr.append("::")
-        }
-        return (self.fullAddressIPv6(ipAddress: netIDStr))
+        return (IPSubnetCalc.hexarizeIPv6(num: netID, full: false, column: true))
     }
     
     func networkRangeIPv6() -> String {
