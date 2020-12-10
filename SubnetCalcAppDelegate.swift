@@ -329,8 +329,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             ipv6Range.stringValue = ipsc!.networkRangeIPv6()
             ipv6Type.stringValue = ipsc!.resBlockIPv6() ?? ""
             ipv6HexaID.stringValue = ipsc!.hexaIDIPv6()
-            ipv6Decimal.stringValue = ipsc!.digitizeIPv6()
+            ipv6Decimal.stringValue = ipsc!.dottedDecimalIPv6()
             ipv6Arpa.stringValue = ipsc!.ip6ARPA()
+            ipv6SubnetsCombo.removeAllItems()
             for index in (1...ipsc!.ipv6MaskBits).reversed() {
                 NSDecimalPower(&total, &number , ipsc!.ipv6MaskBits - index, NSDecimalNumber.RoundingMode.plain)
                 if (total == 1) {
@@ -341,13 +342,6 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 }
             }
             ipv6SubnetsCombo.selectItem(at: 0)
-            
-            /*
-            subnetBitsCombo.selectItem(withObjectValue: String(ipsc!.subnetBits()))
-            maskBitsCombo.selectItem(withObjectValue: String(ipsc!.maskBits))
-            maxSubnetsCombo.selectItem(withObjectValue: String(ipsc!.maxSubnets()))
-            maxHostsBySubnetCombo.selectItem(withObjectValue: String(ipsc!.maxHosts()))
-             */
         }
     }
     

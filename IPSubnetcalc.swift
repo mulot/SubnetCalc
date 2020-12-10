@@ -765,6 +765,26 @@ class IPSubnetCalc: NSObject {
         return (total)
     }
     
+    func dottedDecimalIPv6() -> String {
+        var ipv4str = String()
+        
+        let ip4Hex = fullAddressIPv6(ipAddress: self.ipv6Address).components(separatedBy: ":")
+        for index in (0...(ip4Hex.count - 1)) {
+            if (index != 0) {
+                ipv4str.append(".")
+                
+            }
+            if (ip4Hex[index] == "") {
+                ipv4str.append("0.0")
+            }
+            else {
+                ipv4str.append(String((UInt32(ip4Hex[index], radix: 16)! & Constants.addr32Digit3) >> 8))
+                ipv4str.append("." + String((UInt32(ip4Hex[index], radix: 16)! & Constants.addr32Digit4)))
+            }
+        }
+        return ipv4str
+    }
+    
     func ip6ARPA () -> String {
         var ipARPA = fullAddressIPv6(ipAddress: self.ipv6Address)
         let delimiter: Set<Character> = [":"]
