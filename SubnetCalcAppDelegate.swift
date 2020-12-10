@@ -331,6 +331,16 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             ipv6HexaID.stringValue = ipsc!.hexaIDIPv6()
             ipv6Decimal.stringValue = ipsc!.digitizeIPv6()
             ipv6Arpa.stringValue = ipsc!.ip6ARPA()
+            for index in (1...ipsc!.ipv6MaskBits).reversed() {
+                NSDecimalPower(&total, &number , ipsc!.ipv6MaskBits - index, NSDecimalNumber.RoundingMode.plain)
+                if (total == 1) {
+                    ipv6SubnetsCombo.addItem(withObjectValue: "/\(index)\t\(total) network")
+                }
+                else {
+                    ipv6SubnetsCombo.addItem(withObjectValue: "/\(index)\t\(total) networks")
+                }
+            }
+            ipv6SubnetsCombo.selectItem(at: 0)
             
             /*
             subnetBitsCombo.selectItem(withObjectValue: String(ipsc!.subnetBits()))
