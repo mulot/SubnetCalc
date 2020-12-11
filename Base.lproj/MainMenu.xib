@@ -459,7 +459,7 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <clipView key="contentView" id="L0l-HJ-flz">
                                                 <rect key="frame" x="1" y="1" width="567" height="485"/>
-                                                <autoresizingMask key="autoresizingMask"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="583" id="586">
                                                         <rect key="frame" x="0.0" y="0.0" width="567" height="462"/>
@@ -766,7 +766,7 @@
                                             </view>
                                             <font key="titleFont" metaFont="message"/>
                                         </box>
-                                        <box fixedFrame="YES" title="6to4 Address" translatesAutoresizingMaskIntoConstraints="NO" id="wya-GI-9e3">
+                                        <box fixedFrame="YES" title="IPv4 conversion" translatesAutoresizingMaskIntoConstraints="NO" id="wya-GI-9e3">
                                             <rect key="frame" x="399" y="526" width="219" height="70"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES"/>
                                             <view key="contentView" id="Awt-QT-2ZB">
@@ -1078,6 +1078,7 @@
                 <outlet property="ipv6maskBitsCombo" destination="DK7-a5-M3j" id="ck7-KR-MoI"/>
                 <outlet property="ipv6maxHostsCombo" destination="q7N-nd-gHk" id="8F3-ex-3DJ"/>
                 <outlet property="ipv6to4Address" destination="tpf-Ay-mfP" id="7bP-fz-Ra4"/>
+                <outlet property="ipv6to4Box" destination="wya-GI-9e3" id="Ver-Z8-ddF"/>
                 <outlet property="maskBitsCombo" destination="569" id="QLr-to-MNE"/>
                 <outlet property="maxHostsBySubnetCombo" destination="573" id="gGc-XF-9uv"/>
                 <outlet property="maxSubnetsCombo" destination="571" id="gn7-9F-KtD"/>

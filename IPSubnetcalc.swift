@@ -163,7 +163,7 @@ class IPSubnetCalc: NSObject {
             for item in ip4Digits {
                 if let digit = Int(item, radix: 10) {
                     if (digit > 255) {
-                        print("bad IP digit \(digit)")
+                        print("bad IPv4 digit \(digit)")
                         return false
                     }
                 }
@@ -174,24 +174,24 @@ class IPSubnetCalc: NSObject {
             }
         }
         else {
-            print("bad IP format \(ip4Digits)")
+            print("bad IPv4 format \(ip4Digits)")
             return false
         }
         if mask != nil {
             if let maskNum = Int(mask!) {
                 if (classless == true) {
                     if (maskNum < Constants.NETWORK_BITS_MIN_CLASSLESS || maskNum > Constants.NETWORK_BITS_MAX) {
-                        print("classless mask \(maskNum) invalid")
+                        print("IPv4 classless mask \(maskNum) invalid")
                         return false
                     }
                 }
                 else if (maskNum < Constants.NETWORK_BITS_MIN || maskNum > Constants.NETWORK_BITS_MAX) {
-                    print("mask \(maskNum) invalid")
+                    print("IPv4 mask \(maskNum) invalid")
                     return false
                 }
             }
             else {
-                print("mask \(mask!) is not digit")
+                print("IPv4 mask \(mask!) is not digit")
                 return false
             }
         }
@@ -522,7 +522,7 @@ class IPSubnetCalc: NSObject {
         return ("0:0:0:0:0:ffff:" + ipv6str)
     }
     
-    static func convertIPv6toIPv4(ipAddress: String) -> String {
+    static func convertIPv6toIPv4(ipAddress: String, _6to4: Bool = false) -> String {
         var ipv4str = String()
         
         //let ip4Hex = fullAddressIPv6(ipAddress: ipAddress).components(separatedBy: ":")
@@ -822,7 +822,7 @@ class IPSubnetCalc: NSObject {
         if (IPSubnetCalc.isValidIP(ipAddress: ipAddress, mask: String(maskbits), classless: true)) {
             self.ipv4Address = ipAddress
             self.maskBits = maskbits
-            self.ipv6Address = IPSubnetCalc.convertIPv4toIPv6(ipAddress: ipAddress, _6to4: true)
+            self.ipv6Address = IPSubnetCalc.convertIPv4toIPv6(ipAddress: ipAddress)
             self.ipv6MaskBits = maskbits + 96
         }
         else {

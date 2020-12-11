@@ -66,6 +66,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     @IBOutlet var ipv6Decimal: NSTextField!
     @IBOutlet var ipv6Arpa: NSTextField!
     @IBOutlet var ipv6Compact: NSButton!
+    @IBOutlet var ipv6to4Box: NSBox!
     
     
     //Private global vars
@@ -244,7 +245,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     
     private func doIPSubnetCalc()
     {
-        let ipaddr: String
+        var ipaddr: String
         var ipmask: String?
         
         if (addrField.stringValue.isEmpty) {
@@ -262,13 +263,20 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         else {
             (ipaddr, ipmask) = splitAddrMask(address: addrField.stringValue)
+            if (IPSubnetCalc.isValidIPv6(ipAddress: ipaddr, mask: Int(ipmask ?? Constants.defaultIPv6Mask)) == true) {
+                if (ipsc != nil) {
+                    ipaddr = ipsc!.ipv4Address
+                }
+            }
             if (ipmask == nil && ipsc != nil) {
                 ipmask = String(ipsc!.maskBits)
             }
         }
         if (IPSubnetCalc.isValidIP(ipAddress: ipaddr, mask: ipmask) == true) {
             //print("IP Address: \(ipaddr) mask: \(ipmask)")
-            addrField.stringValue = ipaddr
+            if (addrField.stringValue.isEmpty) {
+                addrField.stringValue = ipaddr
+            }
             if (ipmask == nil) {
                 ipsc = IPSubnetCalc(ipaddr)
             }
@@ -323,7 +331,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 ipv6Address.stringValue = ipsc!.fullAddressIPv6(ipAddress: ipsc!.ipv6Address)
                 ipv6Network.stringValue = ipsc!.fullAddressIPv6(ipAddress: ipsc!.networkIPv6())
             }
-            ipv6to4Address.stringValue = ipsc!.ipv4Address
+            ipv6to4Address.stringValue = IPSubnetCalc.convertIPv6toIPv4(ipAddress: ipsc!.ipv6Address)
             ipv6maskBitsCombo.selectItem(withObjectValue: String(ipsc!.ipv6MaskBits))
             ipv6maxHostsCombo.selectItem(withObjectValue: total)
             ipv6Range.stringValue = ipsc!.networkRangeIPv6()
@@ -347,13 +355,20 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     
     private func doIPv6SubnetCalc()
     {
-        let ipaddr: String
+        var ipaddr: String
         var ipmask: String?
         
             (ipaddr, ipmask) = splitAddrMask(address: addrField.stringValue)
+        if (IPSubnetCalc.isValidIP(ipAddress: ipaddr, mask: ipmask) == true) {
+            if (ipsc != nil) {
+                ipaddr = ipsc!.ipv6Address
+                //print("doIPv6SubnetCalc ipaddr to ipv6 : \(ipsc!.ipv6Address)")
+            }
+        }
             if (ipmask == nil) {
                 if (ipsc != nil) {
                     ipmask = String(ipsc!.ipv6MaskBits)
+                    //print("doIPv6SubnetCalc ipmask ipv6 : \(ipsc!.ipv6MaskBits)")
                 }
                 else {
                     ipmask = Constants.defaultIPv6Mask
@@ -361,7 +376,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
         if (IPSubnetCalc.isValidIPv6(ipAddress: ipaddr, mask: Int(ipmask!)) == true) {
             //print("IP Address: \(ipaddr) mask: \(ipmask)")
-            addrField.stringValue = ipaddr
+            if (addrField.stringValue.isEmpty) {
+                addrField.stringValue = ipaddr
+            }
                 ipsc = IPSubnetCalc(ipv6: ipaddr, maskbits: Int(ipmask!)!)
             if (ipsc != nil) {
                 if (tabView.numberOfTabViewItems != 4 && savedTabView != nil) {
@@ -760,17 +777,29 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     
     @IBAction func changeIPv6MaskBits(_ sender: AnyObject)
     {
-        
+        //print("changeIPv6MaskBits")
+        if (ipsc == nil)
+        {
+            ipsc = IPSubnetCalc(Constants.defaultIP)
+        }
+        if (sender.objectValueOfSelectedItem as? String) != nil {
+            ipsc!.ipv6MaskBits = sender.intValue
+            self.doIPv6SubnetCalc()
+        }
+        else {
+            myAlert(message: "Bad IPv6 Mask Bits", info: "Bad format")
+            return
+        }
     }
     
     @IBAction func changeIPv6Subnets(_ sender: AnyObject)
     {
-        
+        self.doIPv6()
     }
     
     @IBAction func changeIPv6MaxHosts(_ sender: AnyObject)
     {
-        
+        self.doIPv6()
     }
     
     //General UI actions
