@@ -236,6 +236,9 @@ class IPSubnetCalc: NSObject {
     func maxHosts() -> Int {
         var maxHosts: UInt32 = 0
         
+        if (self.maskBits == 32) {
+            return (1)
+        }
         maxHosts = (Constants.addr32Full >> self.maskBits) - 1
         return (Int(maxHosts))
     }
