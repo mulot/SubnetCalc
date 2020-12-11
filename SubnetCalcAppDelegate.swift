@@ -321,6 +321,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         if (ipsc != nil) {
             var total = Decimal()
             var number: Decimal = 2
+            var typeConv: String
             
             NSDecimalPower(&total, &number , 128 - ipsc!.ipv6MaskBits, NSDecimalNumber.RoundingMode.plain)
             if (ipv6Compact.state == NSControl.StateValue.on) {
@@ -331,7 +332,8 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 ipv6Address.stringValue = ipsc!.fullAddressIPv6(ipAddress: ipsc!.ipv6Address)
                 ipv6Network.stringValue = ipsc!.fullAddressIPv6(ipAddress: ipsc!.networkIPv6())
             }
-            ipv6to4Address.stringValue = IPSubnetCalc.convertIPv6toIPv4(ipAddress: ipsc!.ipv6Address)
+            (ipv6to4Address.stringValue, typeConv) = IPSubnetCalc.convertIPv6toIPv4(ipAddress: ipsc!.ipv6Address)
+            ipv6to4Box.title = "IPv4 conversion" + " (\(typeConv))"
             ipv6maskBitsCombo.selectItem(withObjectValue: String(ipsc!.ipv6MaskBits))
             ipv6maxHostsCombo.selectItem(withObjectValue: total)
             ipv6Range.stringValue = ipsc!.networkRangeIPv6()

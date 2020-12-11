@@ -481,7 +481,7 @@ class IPSubnetCalc: NSObject {
                 }
             }
             else {
-                print("IP \(ipAddress) bad format")
+                print("IPv6 \(ipAddress) bad format")
                 return false
             }
         }
@@ -522,12 +522,31 @@ class IPSubnetCalc: NSObject {
         return ("0:0:0:0:0:ffff:" + ipv6str)
     }
     
-    static func convertIPv6toIPv4(ipAddress: String, _6to4: Bool = false) -> String {
+    static func convertIPv6toIPv4(ipAddress: String) -> (String, String) {
         var ipv4str = String()
-        
         //let ip4Hex = fullAddressIPv6(ipAddress: ipAddress).components(separatedBy: ":")
         let ip4Hex = ipAddress.components(separatedBy: ":")
         let index = ip4Hex.count
+        if (ip4Hex[0] == "2002") {
+            if (index > 2) {
+                if (ip4Hex[1] == "") {
+                    ipv4str.append("0.0")
+                }
+                else {
+                    ipv4str.append(String((UInt32(ip4Hex[1], radix: 16)! & Constants.addr32Digit3) >> 8))
+                    ipv4str.append("." + String((UInt32(ip4Hex[1], radix: 16)! & Constants.addr32Digit4)))
+                }
+                if (ip4Hex[2] == "") {
+                    ipv4str.append("0.0")
+                }
+                else {
+                    ipv4str.append("." + String((UInt32(ip4Hex[2], radix: 16)! & Constants.addr32Digit3) >> 8))
+                    ipv4str.append("." + String((UInt32(ip4Hex[2], radix: 16)! & Constants.addr32Digit4)))
+                }
+            }
+            return (ipv4str, "6to4")
+        }
+        else {
         if (index < 2) {
             ipv4str.append("0.0")
         }
@@ -542,7 +561,8 @@ class IPSubnetCalc: NSObject {
         }
         ipv4str.append("." + String((UInt32(ip4Hex[index - 1], radix: 16)! & Constants.addr32Digit3) >> 8))
         ipv4str.append("." + String((UInt32(ip4Hex[index - 1], radix: 16)! & Constants.addr32Digit4)))
-        return ipv4str
+        return (ipv4str, "6PE")
+        }
     }
     
     static func numerizeIPv6(ipAddress: String) -> [UInt16] {
@@ -853,7 +873,7 @@ class IPSubnetCalc: NSObject {
     
     init?(ipv6: String, maskbits: Int) {
         if (IPSubnetCalc.isValidIPv6(ipAddress: ipv6, mask: maskbits)) {
-            self.ipv4Address = IPSubnetCalc.convertIPv6toIPv4(ipAddress: ipv6)
+            (self.ipv4Address, _) = IPSubnetCalc.convertIPv6toIPv4(ipAddress: ipv6)
             if (maskbits > 96) {
                 self.maskBits = maskbits - 96
             }
