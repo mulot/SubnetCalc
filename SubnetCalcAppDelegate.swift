@@ -360,32 +360,32 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         var ipaddr: String
         var ipmask: String?
         
-            (ipaddr, ipmask) = splitAddrMask(address: addrField.stringValue)
+        (ipaddr, ipmask) = splitAddrMask(address: addrField.stringValue)
         if (IPSubnetCalc.isValidIP(ipAddress: ipaddr, mask: ipmask) == true) {
             if (ipsc != nil) {
                 ipaddr = ipsc!.ipv6Address
                 //print("doIPv6SubnetCalc ipaddr to ipv6 : \(ipsc!.ipv6Address)")
             }
         }
-            if (ipmask == nil) {
-                if (ipsc != nil) {
-                    ipmask = String(ipsc!.ipv6MaskBits)
-                    //print("doIPv6SubnetCalc ipmask ipv6 : \(ipsc!.ipv6MaskBits)")
-                }
-                else {
-                    ipmask = Constants.defaultIPv6Mask
-                }
+        if (ipmask == nil) {
+            if (ipsc != nil) {
+                ipmask = String(ipsc!.ipv6MaskBits)
+                //print("doIPv6SubnetCalc ipmask ipv6 : \(ipsc!.ipv6MaskBits)")
             }
-            else if (Int(ipmask!) == nil) {
-                myAlert(message: "Bad IPv6 mask", info: "Bad format")
-                return
+            else {
+                ipmask = Constants.defaultIPv6Mask
             }
+        }
+        else if (Int(ipmask!) == nil) {
+            myAlert(message: "Bad IPv6 mask", info: "Bad format")
+            return
+        }
         if (IPSubnetCalc.isValidIPv6(ipAddress: ipaddr, mask: Int(ipmask!)) == true) {
             //print("IP Address: \(ipaddr) mask: \(ipmask)")
             if (addrField.stringValue.isEmpty) {
                 addrField.stringValue = ipaddr
             }
-                ipsc = IPSubnetCalc(ipv6: ipaddr, maskbits: Int(ipmask!)!)
+            ipsc = IPSubnetCalc(ipv6: ipaddr, maskbits: Int(ipmask!)!)
             if (ipsc != nil) {
                 if (tabView.numberOfTabViewItems != 4 && savedTabView != nil) {
                     tabView.addTabViewItem(savedTabView![1])
@@ -579,7 +579,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             let maskbits:Int = IPSubnetCalc.maskBits(mask: mask)
             let classType = ipsc!.netClass()
             var result: Int = -1
-    
+            
             if (classType == "A") {
                 result = maskbits - 8
             }
@@ -677,7 +677,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             return
         }
     }
-        
+    
     func numberOfRows(in tableView: NSTableView) -> Int
     {
         if (ipsc != nil) {
@@ -857,11 +857,11 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                     } else {
                         // Fallback on earlier versions
                     }
-                        
-                    }
+                    
                 }
-            )
             }
+            )
+        }
     }
     
     @IBAction func exportClipboard(_ sender: AnyObject)

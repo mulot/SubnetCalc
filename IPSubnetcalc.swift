@@ -48,7 +48,7 @@ class IPSubnetCalc: NSObject {
                                                        "2620:4f:8000::/48" : "Direct Delegation AS112 Service",
                                                        "fc00::/7" : "Unique-Local",
                                                        "fe80::/10" : "Link-Local Unicast"
-                                                       ]
+        ]
         
         //IPv4 constants
         static let classAbits: Int = 8
@@ -148,15 +148,15 @@ class IPSubnetCalc: NSObject {
     
     //OLD numerize a String as a Mask bits value to UInt32
     /*
-    static func numerize(maskDigit: String) -> UInt32 {
-        var maskNum: UInt32 = 0
-        
-        if (Int(maskDigit) != nil) {
-            maskNum = (Constants.addr32Full << (32 - Int(maskDigit)!)) & Constants.addr32Full
-        }
-        return (maskNum)
-    }
- */
+     static func numerize(maskDigit: String) -> UInt32 {
+     var maskNum: UInt32 = 0
+     
+     if (Int(maskDigit) != nil) {
+     maskNum = (Constants.addr32Full << (32 - Int(maskDigit)!)) & Constants.addr32Full
+     }
+     return (maskNum)
+     }
+     */
     
     //numerize a Mask bits value to UInt32
     static func numerize(maskbits: Int) -> UInt32 {
@@ -568,26 +568,26 @@ class IPSubnetCalc: NSObject {
             return (ipv4str, "6to4")
         }
         else {
-        if (index < 2) {
-            ipv4str.append("0.0")
-        }
-        else {
-            if (ip4Hex[index - 2] == "") {
+            if (index < 2) {
                 ipv4str.append("0.0")
             }
             else {
-                ipv4str.append(String((UInt32(ip4Hex[index - 2], radix: 16)! & Constants.addr32Digit3) >> 8))
-                ipv4str.append("." + String((UInt32(ip4Hex[index - 2], radix: 16)! & Constants.addr32Digit4)))
+                if (ip4Hex[index - 2] == "") {
+                    ipv4str.append("0.0")
+                }
+                else {
+                    ipv4str.append(String((UInt32(ip4Hex[index - 2], radix: 16)! & Constants.addr32Digit3) >> 8))
+                    ipv4str.append("." + String((UInt32(ip4Hex[index - 2], radix: 16)! & Constants.addr32Digit4)))
+                }
             }
-        }
             if (ip4Hex[index - 1] == "") {
                 ipv4str.append(".0.0")
             }
-                    else {
-                       ipv4str.append("." + String((UInt32(ip4Hex[index - 1], radix: 16)! & Constants.addr32Digit3) >> 8))
-                       ipv4str.append("." + String((UInt32(ip4Hex[index - 1], radix: 16)! & Constants.addr32Digit4)))
-                       }
-        return (ipv4str, "6PE")
+            else {
+                ipv4str.append("." + String((UInt32(ip4Hex[index - 1], radix: 16)! & Constants.addr32Digit3) >> 8))
+                ipv4str.append("." + String((UInt32(ip4Hex[index - 1], radix: 16)! & Constants.addr32Digit4)))
+            }
+            return (ipv4str, "6PE")
         }
     }
     
@@ -754,7 +754,7 @@ class IPSubnetCalc: NSObject {
             }
             else {
                 if (prevAreZero && !prevCompactZero) {
-                        shortAddr.append(":")
+                    shortAddr.append(":")
                     prevCompactZero = true
                 }
                 shortAddr.append(String(UInt16(ip4Hex[index], radix: 16)!, radix: 16))
@@ -776,8 +776,8 @@ class IPSubnetCalc: NSObject {
         let numIP = IPSubnetCalc.numerizeIPv6(ipAddress: fullAddressIPv6(ipAddress: self.ipv6Address))
         
         for index in 0...7 {
-                //print("Index: \(index) IP: \(numIP[index]) Mask : \(numMask[index]) Result : \(numIP[index] & (numMask[index])) ")
-                netID.append((numIP[index] & numMask[index]))
+            //print("Index: \(index) IP: \(numIP[index]) Mask : \(numMask[index]) Result : \(numIP[index] & (numMask[index])) ")
+            netID.append((numIP[index] & numMask[index]))
         }
         return (IPSubnetCalc.hexarizeIPv6(num: netID, full: false, column: true))
     }
@@ -905,9 +905,9 @@ class IPSubnetCalc: NSObject {
                 self.maskBits = Constants.classAbits
             }
             
-        // full ? compact ? validated ?
-        self.ipv6Address = ipv6
-        self.ipv6MaskBits = maskbits
+            // full ? compact ? validated ?
+            self.ipv6Address = ipv6
+            self.ipv6MaskBits = maskbits
             //print("init IPv6 ipv6 addr: \(self.ipv6Address) ipv4 addr: \(self.ipv4Address)")
         }
         else {
