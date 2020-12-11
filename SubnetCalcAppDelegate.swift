@@ -376,6 +376,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                     ipmask = Constants.defaultIPv6Mask
                 }
             }
+            else if (Int(ipmask!) == nil) {
+                myAlert(message: "Bad IPv6 mask", info: "Bad format")
+                return
+            }
         if (IPSubnetCalc.isValidIPv6(ipAddress: ipaddr, mask: Int(ipmask!)) == true) {
             //print("IP Address: \(ipaddr) mask: \(ipmask)")
             if (addrField.stringValue.isEmpty) {

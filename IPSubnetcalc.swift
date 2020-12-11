@@ -30,7 +30,25 @@ class IPSubnetCalc: NSObject {
         //static let addr16Hex4: UInt16 = 0x000F
         static let resIPv6Blocks: [String : String] = ["::1/128" : "Loopback Address",
                                                        "::/128" : " Unspecified Address",
-                                                       "2001:db8::/32" : "Documentation"]
+                                                       "::ffff:0:0/96" : "IPv4-mapped Address",
+                                                       "64:ff9b::/96" : "IPv4-IPv6 Translation",
+                                                       "64:ff9b:1::/48" : "IPv4-IPv6 Translation",
+                                                       "100::/64" : "Discard-Only Address Block",
+                                                       "2001::/23" : "IETF Protocol Assignments",
+                                                       "2001::/32" : "TEREDO",
+                                                       "2001:1::1/128" : "Port Control Protocol Anycast",
+                                                       "2001:1::2/128" : "Traversal Using Relays around NAT Anycast",
+                                                       "2001:2::/48" : "Benchmarking",
+                                                       "2001:3::/32" : "AMT",
+                                                       "2001:4:112::/48" : "AS112-v6",
+                                                       "2001:10::/28" : "Deprecated (previously ORCHID)",
+                                                       "2001:20::/28" : "ORCHIDv2",
+                                                       "2001:db8::/32" : "Documentation",
+                                                       "2002::/16" : "6to4",
+                                                       "2620:4f:8000::/48" : "Direct Delegation AS112 Service",
+                                                       "fc00::/7" : "Unique-Local",
+                                                       "fe80::/10" : "Link-Local Unicast"
+                                                       ]
         
         //IPv4 constants
         static let classAbits: Int = 8
@@ -540,7 +558,7 @@ class IPSubnetCalc: NSObject {
                     ipv4str.append("." + String((UInt32(ip4Hex[1], radix: 16)! & Constants.addr32Digit4)))
                 }
                 if (ip4Hex[2] == "") {
-                    ipv4str.append("0.0")
+                    ipv4str.append(".0.0")
                 }
                 else {
                     ipv4str.append("." + String((UInt32(ip4Hex[2], radix: 16)! & Constants.addr32Digit3) >> 8))
@@ -562,8 +580,13 @@ class IPSubnetCalc: NSObject {
                 ipv4str.append("." + String((UInt32(ip4Hex[index - 2], radix: 16)! & Constants.addr32Digit4)))
             }
         }
-        ipv4str.append("." + String((UInt32(ip4Hex[index - 1], radix: 16)! & Constants.addr32Digit3) >> 8))
-        ipv4str.append("." + String((UInt32(ip4Hex[index - 1], radix: 16)! & Constants.addr32Digit4)))
+            if (ip4Hex[index - 1] == "") {
+                ipv4str.append(".0.0")
+            }
+                    else {
+                       ipv4str.append("." + String((UInt32(ip4Hex[index - 1], radix: 16)! & Constants.addr32Digit3) >> 8))
+                       ipv4str.append("." + String((UInt32(ip4Hex[index - 1], radix: 16)! & Constants.addr32Digit4)))
+                       }
         return (ipv4str, "6PE")
         }
     }
@@ -573,7 +596,10 @@ class IPSubnetCalc: NSObject {
         var ip4Hex = [String]()
         
         ip4Hex = ipAddress.components(separatedBy: ":")
-        for index in 0...7 {
+        for index in 0...(ip4Hex.count - 1) {
+            if (ip4Hex[index] == "") {
+                ip4Hex[index] = "0"
+            }
             ipAddressNum[index] = UInt16(ip4Hex[index], radix: 16)!
             //print("Index: \(index) Ip4Hex: \(ip4Hex[index]) Hexa : \(UInt16(ip4Hex[index], radix: 16)!)")
         }
@@ -701,9 +727,8 @@ class IPSubnetCalc: NSObject {
         var prevCompactZero = false
         
         //print("IP Address: \(ipAddress)")
-        ip4Hex = ipAddress.components(separatedBy: ":")
+        ip4Hex = self.fullAddressIPv6(ipAddress: ipAddress).components(separatedBy: ":")
         for index in 0...(ip4Hex.count - 1) {
-            //print("Index : \(index) IPHex : \(ip4Hex[index]) Dec : \(String(UInt16(ip4Hex[index], radix: 16)!, radix: 16))")
             if (UInt16(ip4Hex[index], radix: 16)! == 0) {
                 if (!prevIsZero || prevCompactZero) {
                     if index == (ip4Hex.count - 1) {
@@ -729,12 +754,7 @@ class IPSubnetCalc: NSObject {
             }
             else {
                 if (prevAreZero && !prevCompactZero) {
-                    if index == (ip4Hex.count - 1) {
-                        shortAddr.append("::")
-                    }
-                    else {
                         shortAddr.append(":")
-                    }
                     prevCompactZero = true
                 }
                 shortAddr.append(String(UInt16(ip4Hex[index], radix: 16)!, radix: 16))
@@ -744,8 +764,9 @@ class IPSubnetCalc: NSObject {
                 prevIsZero = false
                 prevAreZero = false
             }
-            
+            //print("Index : \(index) IPHex : \(ip4Hex[index]) shortAddr: \(shortAddr)")
         }
+        //print("compactAddressIPv6 short ip: \(shortAddr)")
         return (shortAddr)
     }
     
@@ -887,6 +908,7 @@ class IPSubnetCalc: NSObject {
         // full ? compact ? validated ?
         self.ipv6Address = ipv6
         self.ipv6MaskBits = maskbits
+            //print("init IPv6 ipv6 addr: \(self.ipv6Address) ipv4 addr: \(self.ipv4Address)")
         }
         else {
             return nil
