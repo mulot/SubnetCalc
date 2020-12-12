@@ -275,6 +275,14 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 if (ipsc != nil) {
                     ipaddr = ipsc!.ipv4Address
                 }
+                if (ipmask != nil) {
+                    if (Int(ipmask!)! >= (96 + 8)) {
+                        ipmask = String(Int(ipmask!)! - 96)
+                    }
+                    else {
+                        ipmask = "8"
+                    }
+                }
             }
             if (ipmask == nil && ipsc != nil) {
                 ipmask = String(ipsc!.maskBits)
@@ -282,9 +290,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         if (IPSubnetCalc.isValidIP(ipAddress: ipaddr, mask: ipmask) == true) {
             //print("IP Address: \(ipaddr) mask: \(ipmask)")
-            if (addrField.stringValue.isEmpty) {
-                addrField.stringValue = ipaddr
-            }
+            addrField.stringValue = ipaddr
             if (ipmask == nil) {
                 ipsc = IPSubnetCalc(ipaddr)
             }
@@ -389,9 +395,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         if (IPSubnetCalc.isValidIPv6(ipAddress: ipaddr, mask: Int(ipmask!)) == true) {
             //print("IP Address: \(ipaddr) mask: \(ipmask)")
-            if (addrField.stringValue.isEmpty) {
-                addrField.stringValue = ipaddr
-            }
+            addrField.stringValue = ipaddr
             ipsc = IPSubnetCalc(ipv6: ipaddr, maskbits: Int(ipmask!)!)
             if (ipsc != nil) {
                 if (tabView.numberOfTabViewItems != 4 && savedTabView != nil) {
