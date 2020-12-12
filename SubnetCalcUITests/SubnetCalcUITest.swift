@@ -58,7 +58,8 @@ class SubnetCalcUITest: XCTestCase {
         
         subnetcalcWindow.tabs["IPv4"].click()
         ipaddrfieldTextField.click()
-        ipaddrfieldTextField.doubleClick()
+        ipaddrfieldTextField.typeKey("a", modifierFlags:.command)
+        ipaddrfieldTextField.typeKey(.delete, modifierFlags:[])
         ipaddrfieldTextField.typeText("192.168.254.129/12\r")
         XCTAssertEqual(subnetcalcWindow.comboBoxes["subnetbitscombo"].value as! String, "0")
         XCTAssertEqual(subnetcalcWindow.comboBoxes["maskbitscombo"].value as! String, "12")
@@ -84,7 +85,8 @@ class SubnetCalcUITest: XCTestCase {
         
         subnetcalcWindow.tabs["IPv4"].click()
         ipaddrfieldTextField.click()
-        ipaddrfieldTextField.doubleClick()
+        ipaddrfieldTextField.typeKey("a", modifierFlags:.command)
+        ipaddrfieldTextField.typeKey(.delete, modifierFlags:[])
         ipaddrfieldTextField.typeText("172.16.242.132/8\r")
         XCTAssertEqual(subnetcalcWindow.comboBoxes["subnetbitscombo"].value as! String, "0")
         XCTAssertEqual(subnetcalcWindow.comboBoxes["maskbitscombo"].value as! String, "8")
@@ -114,6 +116,64 @@ class SubnetCalcUITest: XCTestCase {
         let validContent = "IPv4 Address Class Type: B\nIPv4 Address: 172.16.242.132\nIPv4 Subnet ID: 172.0.0.0\nIPv4 Subnet Mask: 255.0.0.0\nIPv4 Broadcast: 172.255.255.255\nIPv4 Address Range: 172.0.0.1 - 172.255.255.254\nIPv4 Mask Bits: 8\nIPv4 Subnet Bits: 0\nMax IPv4 Subnets: 1\nIPv4 Max Hosts / Subnet: 16777214\nIPv4 Address Hexa: AC.10.F2.84\nIPv4 Bit Map: nnnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh\nIPv4 Binary Map: 10101100.00010000.11110010.10000100\n\nIPv6 Address: 0:0:0:0:0:ffff:ac10:f284\nLong IPv6 Address: 0000:0000:0000:0000:0000:ffff:ac10:f284\nShort IPv6 Address: ::ffff:ac10:f284\nIPv6-to-IPv4: (\"172.16.242.132\", \"IPv4-Mapped\")\nIPv6 Mask Bits: 104\nIPv6 Max Hosts / Subnet: 16777216\nNetwork: ::ffff:ac00:0\nIPv6 Address Range: 0000:0000:0000:0000:0000:ffff:ac00:0000 - 0000:0000:0000:0000:0000:ffff:acff:ffff\nIPv6 Address Type: None\nIPv6 Address Hexa: 0x00000000000000000000ffffac10f284\nIPv6 Address Dotted Decimal: 0.0.0.0.0.0.0.0.0.0.255.255.172.16.242.132\nIP6.ARPA: 4.8.2.f.0.1.c.a.f.f.f.f.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa\n"
         XCTAssertEqual(pbContent,validContent)
         
+        subnetcalcWindow.tabs["IPv6"].click()
+        ipaddrfieldTextField.click()
+        ipaddrfieldTextField.typeKey("a", modifierFlags:.command)
+        ipaddrfieldTextField.typeKey(.delete, modifierFlags:[])
+        ipaddrfieldTextField.typeText("2001:0db8:0000:85a3:0000:0000:ac1f:8001\r")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["ipv6addrtext"].value as! String, "2001:db8:0:85a3::ac1f:8001")
+        
+        subnetcalcWindow.tabs["IPv6"].click()
+        ipaddrfieldTextField.click()
+        ipaddrfieldTextField.typeKey("a", modifierFlags:.command)
+        ipaddrfieldTextField.typeKey(.delete, modifierFlags:[])
+        ipaddrfieldTextField.typeText("2001:0000:0000:85a3:0000:0000:ac1f:0801\r")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["ipv6addrtext"].value as! String, "2001::85a3:0:0:ac1f:801")
+        
+        subnetcalcWindow.tabs["IPv6"].click()
+        ipaddrfieldTextField.click()
+        ipaddrfieldTextField.typeKey("a", modifierFlags:.command)
+        ipaddrfieldTextField.typeKey(.delete, modifierFlags:[])
+        ipaddrfieldTextField.typeText("2001:0000:0000:85a3:0000:0000:ac1f:0000\r")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["ipv6addrtext"].value as! String, "2001::85a3:0:0:ac1f:0")
+        
+        subnetcalcWindow.tabs["IPv6"].click()
+        ipaddrfieldTextField.click()
+        ipaddrfieldTextField.typeKey("a", modifierFlags:.command)
+        ipaddrfieldTextField.typeKey(.delete, modifierFlags:[])
+        ipaddrfieldTextField.typeText("2001:0db8:0000:85a3:0200:0000:ac1f:0000\r")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["ipv6addrtext"].value as! String, "2001:db8:0:85a3:200:0:ac1f:0")
+        
+        subnetcalcWindow.tabs["IPv6"].click()
+        ipaddrfieldTextField.click()
+        ipaddrfieldTextField.typeKey("a", modifierFlags:.command)
+        ipaddrfieldTextField.typeKey(.delete, modifierFlags:[])
+        ipaddrfieldTextField.typeText("2001:0db8:0000:85a3:0200:0020:0000:0000\r")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["ipv6addrtext"].value as! String, "2001:db8:0:85a3:200:20::")
+        
+        subnetcalcWindow.tabs["IPv6"].click()
+        ipaddrfieldTextField.click()
+        ipaddrfieldTextField.typeKey("a", modifierFlags:.command)
+        ipaddrfieldTextField.typeKey(.delete, modifierFlags:[])
+        ipaddrfieldTextField.typeText("0000:0000:0000:0000:0000:0000:0000:0001\r")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["ipv6addrtext"].value as! String, "::1")
+        
+        subnetcalcWindow.tabs["IPv6"].click()
+        ipaddrfieldTextField.click()
+        ipaddrfieldTextField.typeKey("a", modifierFlags:.command)
+        ipaddrfieldTextField.typeKey(.delete, modifierFlags:[])
+        ipaddrfieldTextField.typeText("0000:0000:0000:0000:0000:0000:0000:0000\r")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["ipv6addrtext"].value as! String, "::")
+        
+        subnetcalcWindow.tabs["IPv6"].click()
+        ipaddrfieldTextField.click()
+        ipaddrfieldTextField.typeKey("a", modifierFlags:.command)
+        ipaddrfieldTextField.typeKey(.delete, modifierFlags:[])
+        ipaddrfieldTextField.typeText("0:0:0::\r")
+        XCTAssertEqual(subnetcalcWindow.staticTexts["ipv6addrtext"].value as! String, "::")
+ 
+        //ipaddrfieldTextField.typeKey(.delete, modifierFlags:[])
+
         //subnetcalcWindow.buttons["Calc"].click()
         ipaddrfieldTextField.typeKey("q", modifierFlags:.command)
     }
