@@ -812,12 +812,27 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     
     @IBAction func changeIPv6Subnets(_ sender: AnyObject)
     {
-        self.doIPv6()
+        if (ipsc == nil ) {
+            ipsc = IPSubnetCalc(Constants.defaultIP)
+        }
+        ipsc!.ipv6MaskBits -= sender.indexOfSelectedItem()
+        self.doIPv6SubnetCalc()
     }
     
     @IBAction func changeIPv6MaxHosts(_ sender: AnyObject)
     {
-        self.doIPv6()
+        if (ipsc == nil)
+        {
+            ipsc = IPSubnetCalc(Constants.defaultIP)
+        }
+        if (sender.indexOfSelectedItem != -1) {
+            ipsc!.ipv6MaskBits = 128 - sender.indexOfSelectedItem()
+            self.doIPv6SubnetCalc()
+        }
+        else {
+            myAlert(message: "Bad Max Hosts", info: "Bad format")
+            return
+        }
     }
     
     //General UI actions
