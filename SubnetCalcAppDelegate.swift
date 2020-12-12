@@ -52,6 +52,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     @IBOutlet var bitsOnSlide: NSTextField!
     @IBOutlet var tabViewClassLess: NSButton!
     @IBOutlet var wildcard: NSButton!
+    @IBOutlet var dotted: NSButton!
     
     //IPv6 UI elements
     @IBOutlet var ipv6Address: NSTextField!
@@ -171,9 +172,16 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     private func doAddressMap() {
         if (ipsc != nil) {
             self.initClassInfos(ipsc!.netClass())
-            classBitMap.stringValue = ipsc!.bitMap()
-            classBinaryMap.stringValue = ipsc!.binaryMap()
-            classHexaMap.stringValue = ipsc!.hexaMap()
+            if (dotted.state == NSControl.StateValue.on) {
+                classBitMap.stringValue = ipsc!.bitMap(dotted: true)
+                classBinaryMap.stringValue = ipsc!.binaryMap(dotted: true)
+                classHexaMap.stringValue = ipsc!.hexaMap(dotted: true)
+            }
+            else {
+                classBitMap.stringValue = ipsc!.bitMap(dotted: false)
+                classBinaryMap.stringValue = ipsc!.binaryMap(dotted: false)
+                classHexaMap.stringValue = ipsc!.hexaMap(dotted: false)
+            }
         }
     }
     
@@ -772,6 +780,11 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 subnetMaskCombo.selectItem(withObjectValue: ipsc!.subnetMask())
             }
         }
+    }
+    
+    @IBAction func changeDotted(_ sender: AnyObject)
+    {
+        self.doAddressMap()
     }
     
     //IPv6 UI actions

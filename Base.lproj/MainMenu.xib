@@ -346,9 +346,9 @@
                                             <font key="titleFont" metaFont="message"/>
                                         </box>
                                         <button fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QkZ-rA-ck3">
-                                            <rect key="frame" x="529" y="575" width="80" height="32"/>
+                                            <rect key="frame" x="524" y="576" width="80" height="32"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Wildcard" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="x4T-jO-RhV">
+                                            <buttonCell key="cell" type="check" title="Wildcard" bezelStyle="regularSquare" imagePosition="left" alignment="right" inset="2" id="x4T-jO-RhV">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -446,6 +446,17 @@
                                             </view>
                                             <font key="titleFont" metaFont="message"/>
                                         </box>
+                                        <button fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LRz-jt-Y3U">
+                                            <rect key="frame" x="524" y="201" width="80" height="32"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="check" title="Dotted" bezelStyle="regularSquare" imagePosition="left" alignment="right" state="on" inset="2" id="hvV-hN-iEg">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="changeDotted:" target="b7w-M5-ti7" id="ho2-Rc-66r"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                 </view>
                             </tabViewItem>
@@ -1065,6 +1076,7 @@
                 <outlet property="classHexaMap" destination="bWR-Nt-3oP" id="1an-r6-OxK"/>
                 <outlet property="classType" destination="t0E-pd-tOK" id="3UE-66-0jK"/>
                 <outlet property="darkModeMenu" destination="yys-xA-LTX" id="778-vc-QOQ"/>
+                <outlet property="dotted" destination="LRz-jt-Y3U" id="hWi-oq-xTX"/>
                 <outlet property="exportButton" destination="737" id="FRk-lP-Tdk"/>
                 <outlet property="ipv6Address" destination="cip-g7-vbK" id="HO2-rt-DiG"/>
                 <outlet property="ipv6Arpa" destination="g3E-7f-7pH" id="gO5-Tw-HKx"/>

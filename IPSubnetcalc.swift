@@ -80,7 +80,7 @@ class IPSubnetCalc: NSObject {
     //*************
     //IPv4 SECTION
     //*************
-    static func binarize(ipAddress: String, space: Bool) -> String {
+    static func binarize(ipAddress: String, space: Bool = false, dotted: Bool = true) -> String {
         var ipAddressBin = [String]()
         var binStr = String()
         var ipDigits = [String]()
@@ -98,7 +98,12 @@ class IPSubnetCalc: NSObject {
                 digitBin.insert(" ", at: ipAddressBin[index].index(ipAddressBin[index].startIndex, offsetBy: 4))
             }
             if (index < 3) {
-                binStr += digitBin + "."
+                if (dotted == true) {
+                    binStr += digitBin + "."
+                }
+                else {
+                    binStr += digitBin
+                }
             }
             else {
                 binStr += digitBin
@@ -107,11 +112,11 @@ class IPSubnetCalc: NSObject {
         return (binStr)
     }
     
-    func binaryMap() -> String {
-        return (IPSubnetCalc.binarize(ipAddress: ipv4Address, space: false))
+    func binaryMap(dotted: Bool = true) -> String {
+        return (IPSubnetCalc.binarize(ipAddress: ipv4Address, space: false, dotted: dotted))
     }
     
-    static func hexarize(ipAddress: String) -> String {
+    static func hexarize(ipAddress: String, dotted: Bool = true) -> String {
         var ipDigits = [String]()
         var hexIP = String()
         var hex4: String
@@ -124,14 +129,16 @@ class IPSubnetCalc: NSObject {
             }
             hexIP += hex4
             if (index < 3) {
-                hexIP += "."
+                if (dotted == true) {
+                    hexIP += "."
+                }
             }
         }
         return (hexIP)
     }
     
-    func hexaMap() -> String {
-        return (IPSubnetCalc.hexarize(ipAddress: ipv4Address))
+    func hexaMap(dotted: Bool = true) -> String {
+        return (IPSubnetCalc.hexarize(ipAddress: ipv4Address, dotted: dotted))
     }
     
     static func numerize(ipAddress: String) -> UInt32 {
@@ -421,7 +428,7 @@ class IPSubnetCalc: NSObject {
         return (maxSubnets)
     }
     
-    func bitMap() -> String {
+    func bitMap(dotted: Bool = true) -> String {
         let netBits = self.netBits()
         let subnetBits = self.subnetBits()
         var bitMap = String()
@@ -437,7 +444,9 @@ class IPSubnetCalc: NSObject {
                 bitMap.append("h")
             }
             if ((index < 31) && ((index + 1) % 8 == 0)) {
-                bitMap.append(".")
+                if (dotted == true) {
+                    bitMap.append(".")
+                }
             }
         }
         return (bitMap)
