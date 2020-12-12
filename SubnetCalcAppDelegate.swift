@@ -323,7 +323,6 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             var number: Decimal = 2
             var typeConv: String
             
-            NSDecimalPower(&total, &number , 128 - ipsc!.ipv6MaskBits, NSDecimalNumber.RoundingMode.plain)
             if (ipv6Compact.state == NSControl.StateValue.on) {
                 ipv6Address.stringValue = ipsc!.compactAddressIPv6(ipAddress: ipsc!.ipv6Address)
                 ipv6Network.stringValue = ipsc!.compactAddressIPv6(ipAddress: ipsc!.networkIPv6())
@@ -335,9 +334,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             (ipv6to4Address.stringValue, typeConv) = IPSubnetCalc.convertIPv6toIPv4(ipAddress: ipsc!.ipv6Address)
             ipv6to4Box.title = "IPv4 conversion" + " (\(typeConv))"
             ipv6maskBitsCombo.selectItem(withObjectValue: String(ipsc!.ipv6MaskBits))
-            ipv6maxHostsCombo.selectItem(withObjectValue: total)
+            ipv6maxHostsCombo.selectItem(withObjectValue: ipsc!.totalIPAddrIPv6())
             ipv6Range.stringValue = ipsc!.networkRangeIPv6()
-            ipv6Type.stringValue = ipsc!.resBlockIPv6() ?? ""
+            ipv6Type.stringValue = ipsc!.resBlockIPv6() ?? "None"
             ipv6HexaID.stringValue = ipsc!.hexaIDIPv6()
             ipv6Decimal.stringValue = ipsc!.dottedDecimalIPv6()
             ipv6Arpa.stringValue = ipsc!.ip6ARPA()
@@ -869,8 +868,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         if (ipsc != nil) {
             let pb: NSPasteboard = NSPasteboard.general
             pb.clearContents()
-            let str = "Address Class Type: \(ipsc!.netClass())\nIP Address: \(ipsc!.ipv4Address)\nSubnet ID: \(ipsc!.subnetId())\nSubnet Mask: \(ipsc!.subnetMask())\nBroadcast: \(ipsc!.subnetBroadcast())\nIP Range: \(ipsc!.subnetRange())\nMask Bits: \(ipsc!.maskBits)\nSubnet Bits: \(ipsc!.subnetBits())\nMax Subnets: \(ipsc!.maxSubnets())\nMax Hosts / Subnet: \(ipsc!.maxHosts())\nAddress Hexa: \(ipsc!.hexaMap())\nBit Map: \(ipsc!.bitMap())\nBinary Map: \(ipsc!.binaryMap())\n"
-            pb.setString(str, forType: NSPasteboard.PasteboardType.string)
+            let ipv4Info = "IPv4 Address Class Type: \(ipsc!.netClass())\nIPv4 Address: \(ipsc!.ipv4Address)\nIPv4 Subnet ID: \(ipsc!.subnetId())\nIPv4 Subnet Mask: \(ipsc!.subnetMask())\nIPv4 Broadcast: \(ipsc!.subnetBroadcast())\nIPv4 Address Range: \(ipsc!.subnetRange())\nIPv4 Mask Bits: \(ipsc!.maskBits)\nIPv4 Subnet Bits: \(ipsc!.subnetBits())\nMax IPv4 Subnets: \(ipsc!.maxSubnets())\nIPv4 Max Hosts / Subnet: \(ipsc!.maxHosts())\nIPv4 Address Hexa: \(ipsc!.hexaMap())\nIPv4 Bit Map: \(ipsc!.bitMap())\nIPv4 Binary Map: \(ipsc!.binaryMap())\n"
+            let ipv6Info = "\nIPv6 Address: \(ipsc!.ipv6Address)\nLong IPv6 Address: \(ipsc!.fullAddressIPv6(ipAddress: ipsc!.ipv6Address))\nShort IPv6 Address: \(ipsc!.compactAddressIPv6(ipAddress: ipsc!.ipv6Address))\nIPv6-to-IPv4: \(IPSubnetCalc.convertIPv6toIPv4(ipAddress: ipsc!.ipv6Address))\nIPv6 Mask Bits: \(ipsc!.ipv6MaskBits)\nIPv6 Max Hosts / Subnet: \(ipsc!.totalIPAddrIPv6())\nNetwork: \(ipsc!.compactAddressIPv6(ipAddress: ipsc!.networkIPv6()))\nIPv6 Address Range: \(ipsc!.networkRangeIPv6())\nIPv6 Address Type: \(ipsc!.resBlockIPv6() ?? "None")\nIPv6 Address Hexa: \(ipsc!.hexaIDIPv6())\nIPv6 Address Dotted Decimal: \(ipsc!.dottedDecimalIPv6())\nIP6.ARPA: \(ipsc!.ip6ARPA())\n"
+            pb.setString(ipv4Info + ipv6Info, forType: NSPasteboard.PasteboardType.string)
         }
     }
     

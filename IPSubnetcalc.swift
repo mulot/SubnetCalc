@@ -587,7 +587,7 @@ class IPSubnetCalc: NSObject {
                 ipv4str.append("." + String((UInt32(ip4Hex[index - 1], radix: 16)! & Constants.addr32Digit3) >> 8))
                 ipv4str.append("." + String((UInt32(ip4Hex[index - 1], radix: 16)! & Constants.addr32Digit4)))
             }
-            return (ipv4str, "6PE")
+            return (ipv4str, "IPv4-Mapped")
         }
     }
     

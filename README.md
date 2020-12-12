@@ -1,11 +1,13 @@
 # SubnetCalc
 Subnet Calculator for MacOS 
 
-What's New in version 1.6:
-- Dark Mode support
-- Selectable cells for copy
-- New App icon 
-- Universal binary (Apple Silicon support)
+What's New in version 2.0:
+- IPv6 support!
+- New Tab presentation
+- Recoded in Swift
+- Add alerts for bad IP or mask format
+- Fix bugs
+
 
 For more information: http://subnetcalc.mulot.org
 
