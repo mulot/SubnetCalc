@@ -703,10 +703,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                    row: Int) -> Any?
     {
         if (ipsc != nil) {
-            let mask: UInt32 = UInt32(row) << (32 - ipsc!.maskBits)
-            //print("tableView mask : \(mask) row : \(UInt32(row)) lshift : \(32 - ipsc!.maskBits)")
-            let ipaddr = (IPSubnetCalc.numerize(ipAddress: ipsc!.subnetId())) | mask
+            let ipaddr: UInt32 = (((IPSubnetCalc.numerize(ipAddress: ipsc!.subnetId())) >> (32 - ipsc!.maskBits)) + UInt32(row)) << (32 - ipsc!.maskBits)
             let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: ipaddr), maskbits: ipsc!.maskBits)
+            //print("tableView Row: \(row) IP num : \(ipaddr) IP: \(IPSubnetCalc.digitize(ipAddress: ipaddr)) IP Subnet: \(ipsc_tmp!.subnetId())")
             if (tableColumn != nil && ipsc_tmp != nil) {
                 if (tableColumn!.identifier.rawValue == "numCol") {
                     return (row + 1)
@@ -744,6 +743,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             if (tabViewClassLess.state == NSControl.StateValue.on) {
                 ipsc!.maskBits = maskbits
                 self.doSubnetHost()
+                self.doCIDR(maskbits: maskbits)
             }
         }
     }
