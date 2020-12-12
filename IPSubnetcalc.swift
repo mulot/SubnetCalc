@@ -725,6 +725,7 @@ class IPSubnetCalc: NSObject {
         var prevIsZero = false
         var prevAreZero = false
         var prevCompactZero = false
+        var prevNonZero = false
         
         //print("IP Address: \(ipAddress)")
         ip4Hex = self.fullAddressIPv6(ipAddress: ipAddress).components(separatedBy: ":")
@@ -754,7 +755,12 @@ class IPSubnetCalc: NSObject {
             }
             else {
                 if (prevAreZero && !prevCompactZero) {
-                    shortAddr.append(":")
+                    if (!prevNonZero) {
+                        shortAddr.append("::")
+                    }
+                    else {
+                        shortAddr.append(":")
+                    }
                     prevCompactZero = true
                 }
                 shortAddr.append(String(UInt16(ip4Hex[index], radix: 16)!, radix: 16))
@@ -763,10 +769,10 @@ class IPSubnetCalc: NSObject {
                 }
                 prevIsZero = false
                 prevAreZero = false
+                prevNonZero = true
             }
             //print("Index : \(index) IPHex : \(ip4Hex[index]) shortAddr: \(shortAddr)")
         }
-        //print("compactAddressIPv6 short ip: \(shortAddr)")
         return (shortAddr)
     }
     
@@ -898,7 +904,7 @@ class IPSubnetCalc: NSObject {
     init?(ipv6: String, maskbits: Int) {
         if (IPSubnetCalc.isValidIPv6(ipAddress: ipv6, mask: maskbits)) {
             (self.ipv4Address, _) = IPSubnetCalc.convertIPv6toIPv4(ipAddress: ipv6)
-            if (maskbits > 96) {
+            if (maskbits >= (96 + Constants.classAbits)) {
                 self.maskBits = maskbits - 96
             }
             else {
