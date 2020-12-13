@@ -147,6 +147,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         else if (c == "D")
         {
             classType.selectItem(at: 3)
+            /*
             savedTabView = tabView.tabViewItems
             if (savedTabView != nil)
             {
@@ -154,6 +155,11 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 tabView.removeTabViewItem(savedTabView![2])
                 tabView.removeTabViewItem(savedTabView![3])
             }
+             */
+        }
+        else if (c == "E")
+        {
+            classType.selectItem(at: 4)
         }
     }
     
@@ -271,6 +277,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         else {
             (ipaddr, ipmask) = splitAddrMask(address: addrField.stringValue)
+            addrField.stringValue = ipaddr
             if (IPSubnetCalc.isValidIPv6(ipAddress: ipaddr, mask: Int(ipmask ?? Constants.defaultIPv6Mask)) == true) {
                 if (ipsc != nil) {
                     ipaddr = ipsc!.ipv4Address
@@ -290,7 +297,6 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         if (IPSubnetCalc.isValidIP(ipAddress: ipaddr, mask: ipmask) == true) {
             //print("IP Address: \(ipaddr) mask: \(ipmask)")
-            addrField.stringValue = ipaddr
             if (ipmask == nil) {
                 ipsc = IPSubnetCalc(ipaddr)
             }
@@ -311,7 +317,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
         }
         else {
-            myAlert(message: "Bad IPv4 Address", info: "Bad format")
+            myAlert(message: "Bad IPv4 Address", info: "Bad format: \(ipaddr)/\(ipmask ?? "")")
             return
         }
     }
@@ -374,6 +380,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         var ipmask: String?
         
         (ipaddr, ipmask) = splitAddrMask(address: addrField.stringValue)
+        addrField.stringValue = ipaddr
         if (IPSubnetCalc.isValidIP(ipAddress: ipaddr, mask: ipmask) == true) {
             if (ipsc != nil) {
                 ipaddr = ipsc!.ipv6Address
@@ -390,12 +397,11 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
         }
         else if (Int(ipmask!) == nil) {
-            myAlert(message: "Bad IPv6 mask", info: "Bad format")
+            myAlert(message: "Bad IPv6 mask", info: "Bad format: \(ipmask!)")
             return
         }
         if (IPSubnetCalc.isValidIPv6(ipAddress: ipaddr, mask: Int(ipmask!)) == true) {
             //print("IP Address: \(ipaddr) mask: \(ipmask)")
-            addrField.stringValue = ipaddr
             ipsc = IPSubnetCalc(ipv6: ipaddr, maskbits: Int(ipmask!)!)
             if (ipsc != nil) {
                 if (tabView.numberOfTabViewItems != 4 && savedTabView != nil) {
@@ -411,7 +417,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
         }
         else {
-            myAlert(message: "Bad IPv6 Address", info: "Bad format")
+            myAlert(message: "Bad IPv6 Address", info: "Bad format: \(ipaddr)/\(ipmask ?? "")")
             return
         }
     }
@@ -445,6 +451,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         else if (sender.indexOfSelectedItem() == 3)
         {
+            /*
             savedTabView = tabView.tabViewItems
             if (savedTabView != nil)
             {
@@ -452,9 +459,25 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 tabView.removeTabViewItem(savedTabView![2])
                 tabView.removeTabViewItem(savedTabView![3])
             }
+             */
             classBitMap.stringValue = "hhhhhhhh.hhhhhhhh.hhhhhhhh.hhhhhhhh"
             classBinaryMap.stringValue = "11100000.00000000.00000000.00000000"
             classHexaMap.stringValue = "E0.00.00.00"
+        }
+        else if (sender.indexOfSelectedItem() == 4)
+        {
+            /*
+            savedTabView = tabView.tabViewItems
+            if (savedTabView != nil)
+            {
+                tabView.removeTabViewItem(savedTabView![1])
+                tabView.removeTabViewItem(savedTabView![2])
+                tabView.removeTabViewItem(savedTabView![3])
+            }
+             */
+            classBitMap.stringValue = "hhhhhhhh.hhhhhhhh.hhhhhhhh.hhhhhhhh"
+            classBinaryMap.stringValue = "11110000.00000000.00000000.00000000"
+            classHexaMap.stringValue = "F0.00.00.00"
         }
     }
     
@@ -469,7 +492,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             self.doIPSubnetCalc()
         }
         else {
-            myAlert(message: "Bad Max Hosts", info: "Bad value")
+            myAlert(message: "Bad Max Hosts", info: "Bad selection")
             return
         }
     }
@@ -485,7 +508,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             self.doIPSubnetCalc()
         }
         else {
-            myAlert(message: "Bad Max Subnets", info: "Bad value")
+            myAlert(message: "Bad Max Subnets", info: "Bad selection")
             return
         }
     }
@@ -501,7 +524,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             self.doIPSubnetCalc()
         }
         else {
-            myAlert(message: "Bad Subnet Bits", info: "Bad format")
+            myAlert(message: "Bad Subnet Bits", info: "Bad selection")
             return
         }
     }
@@ -525,7 +548,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             self.doIPSubnetCalc()
         }
         else {
-            myAlert(message: "Bad Subnet Mask", info: "Bad format")
+            myAlert(message: "Bad Subnet Mask", info: "Bad selection")
             return
         }
     }
@@ -541,7 +564,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             self.doIPSubnetCalc()
         }
         else {
-            myAlert(message: "Bad Mask Bits", info: "Bad format")
+            myAlert(message: "Bad Mask Bits", info: "Bad selection")
             return
         }
     }
@@ -574,7 +597,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
         }
         else {
-            myAlert(message: "Bad CIDR Mask Bits", info: "Bad format")
+            myAlert(message: "Bad CIDR Mask Bits", info: "Bad selection")
             return
         }
     }
@@ -609,7 +632,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
         }
         else {
-            myAlert(message: "Bad CIDR Mask", info: "Bad format")
+            myAlert(message: "Bad CIDR Mask", info: "Bad selection")
             return
         }
     }
@@ -642,7 +665,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
         }
         else {
-            myAlert(message: "Bad Max Supernets", info: "Bad value")
+            myAlert(message: "Bad Max Supernets", info: "Bad selection")
             return
         }
     }
@@ -663,7 +686,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
         }
         else {
-            myAlert(message: "Bad Max Adresses", info: "Bad value")
+            myAlert(message: "Bad Max Adresses", info: "Bad selection")
             return
         }
     }
@@ -684,7 +707,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
         }
         else {
-            myAlert(message: "Bad Max Subnets", info: "Bad value")
+            myAlert(message: "Bad Max Subnets", info: "Bad selection")
             return
         }
     }
@@ -809,7 +832,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             self.doIPv6SubnetCalc()
         }
         else {
-            myAlert(message: "Bad IPv6 Mask Bits", info: "Bad format")
+            myAlert(message: "Bad IPv6 Mask Bits", info: "Bad selection")
             return
         }
     }
@@ -834,7 +857,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             self.doIPv6SubnetCalc()
         }
         else {
-            myAlert(message: "Bad Max Hosts", info: "Bad format")
+            myAlert(message: "Bad Max Hosts", info: "Bad selection")
             return
         }
     }

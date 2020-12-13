@@ -406,15 +406,16 @@
                                                     <popUpButton identifier="addrclasstype" verticalHuggingPriority="750" fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t0E-pd-tOK">
                                                         <rect key="frame" x="14" y="10" width="556" height="26"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                                        <popUpButtonCell key="cell" type="push" title="Class A : 1.0.0.0 - 126.255.255.255" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" identifier="addrclasstypecell" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="ti9-uV-lnh" id="0wI-q0-Xip">
+                                                        <popUpButtonCell key="cell" type="push" title="Class A: 1.0.0.0 - 126.255.255.255" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" identifier="addrclasstypecell" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="ti9-uV-lnh" id="0wI-q0-Xip">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="menu"/>
                                                             <menu key="menu" title="OtherViews" id="YLV-1Z-ut8">
                                                                 <items>
-                                                                    <menuItem title="Class A : 1.0.0.0 - 126.255.255.255" state="on" id="ti9-uV-lnh"/>
-                                                                    <menuItem title="Class B : 128.0.0.0 - 191.255.255.255" id="onb-2U-6s3"/>
-                                                                    <menuItem title="Class C : 192.0.0.0 - 223.255.255.255" id="CrS-JW-HI8"/>
-                                                                    <menuItem title="Class D/Multicast : 224.0.0.0 - 239.255.255.255" id="lRR-gY-0lr"/>
+                                                                    <menuItem title="Class A: 1.0.0.0 - 126.255.255.255" state="on" id="ti9-uV-lnh"/>
+                                                                    <menuItem title="Class B: 128.0.0.0 - 191.255.255.255" id="onb-2U-6s3"/>
+                                                                    <menuItem title="Class C: 192.0.0.0 - 223.255.255.255" id="CrS-JW-HI8"/>
+                                                                    <menuItem title="Class D/Multicast: 224.0.0.0 - 239.255.255.255" id="lRR-gY-0lr"/>
+                                                                    <menuItem title="Class E/Reserved: 240.0.0.0 - 255.255.255.255" id="tvt-9u-nNy"/>
                                                                 </items>
                                                             </menu>
                                                         </popUpButtonCell>
@@ -470,7 +471,7 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <clipView key="contentView" id="L0l-HJ-flz">
                                                 <rect key="frame" x="1" y="1" width="567" height="485"/>
-                                                <autoresizingMask key="autoresizingMask"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="583" id="586">
                                                         <rect key="frame" x="0.0" y="0.0" width="567" height="462"/>

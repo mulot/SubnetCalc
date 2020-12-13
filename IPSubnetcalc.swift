@@ -64,8 +64,12 @@ class IPSubnetCalc: NSObject {
         static let maskClassA: UInt32 = 0xFF000000
         static let netIdClassB: UInt32 = 0x80000000
         static let maskClassB: UInt32 = 0xFFFF0000
-        static let netIdClassC: UInt32 = 0xc0000000
+        static let netIdClassC: UInt32 = 0xC0000000
         static let maskClassC: UInt32 = 0xFFFFFF00
+        static let netIdClassD: UInt32 = 0xE0000000
+        static let maskClassD: UInt32 = 0xF0000000
+        static let netIdClassE: UInt32 = 0xF0000000
+        static let maskClassE: UInt32 = 0xF0000000
     }
     
     //****************
@@ -336,7 +340,10 @@ class IPSubnetCalc: NSObject {
         if (addr1stByte >= 192 && addr1stByte < 224) {
             return ("C")
         }
-        return ("D")
+        if (addr1stByte >= 224 && addr1stByte < 240) {
+            return ("D")
+        }
+        return ("E")
     }
     
     func netClass() -> String {
