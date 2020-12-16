@@ -13,6 +13,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     private enum Constants {
         static let defaultIP: String = "10.0.0.0"
         static let defaultIPv6Mask: String = "64"
+        static let defaultIPv6to4Mask: Int = 96
         static let BUFFER_LINES:Int = 200000000
         static let NETWORK_BITS_MIN_CLASSLESS:Int = 1
         static let NETWORK_BITS_MIN:Int = 8
@@ -283,8 +284,8 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                     ipaddr = ipsc!.ipv4Address
                 }
                 if (ipmask != nil) {
-                    if (Int(ipmask!)! >= (96 + 8)) {
-                        ipmask = String(Int(ipmask!)! - 96)
+                    if (Int(ipmask!)! >= (Constants.defaultIPv6to4Mask + 8)) {
+                        ipmask = String(Int(ipmask!)! - Constants.defaultIPv6to4Mask)
                     }
                     else {
                         ipmask = "8"

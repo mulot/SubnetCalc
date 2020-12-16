@@ -22,6 +22,7 @@ class IPSubnetCalc: NSObject {
         //IPv6 constants
         static let addr16Full: UInt16 = 0xFFFF
         static let addr16Empty: UInt16 = 0x0000
+        static let defaultIPv6to4Mask: Int = 96
         //static let addr128Full: [UInt16] = [addr16Full, addr16Full, addr16Full, addr16Full, addr16Full, addr16Full, addr16Full, addr16Full]
         //static let addr128Empty: [UInt16] = [addr16Empty, addr16Empty, addr16Empty, addr16Empty, addr16Empty, addr16Empty, addr16Empty, addr16Empty]
         //static let addr16Hex1: UInt16 = 0xF000
@@ -889,7 +890,7 @@ class IPSubnetCalc: NSObject {
             self.ipv4Address = ipAddress
             self.maskBits = maskbits
             self.ipv6Address = IPSubnetCalc.convertIPv4toIPv6(ipAddress: ipAddress)
-            self.ipv6MaskBits = maskbits + 96
+            self.ipv6MaskBits = maskbits + Constants.defaultIPv6to4Mask
         }
         else {
             return nil
@@ -920,8 +921,8 @@ class IPSubnetCalc: NSObject {
     init?(ipv6: String, maskbits: Int) {
         if (IPSubnetCalc.isValidIPv6(ipAddress: ipv6, mask: maskbits)) {
             (self.ipv4Address, _) = IPSubnetCalc.convertIPv6toIPv4(ipAddress: ipv6)
-            if (maskbits >= (96 + Constants.classAbits)) {
-                self.maskBits = maskbits - 96
+            if (maskbits >= (Constants.defaultIPv6to4Mask + Constants.classAbits)) {
+                self.maskBits = maskbits - Constants.defaultIPv6to4Mask
             }
             else {
                 self.maskBits = Constants.classAbits
