@@ -373,6 +373,21 @@ class IPSubnetCalc: NSObject {
         return (bits)
     }
     
+    func classBits() -> Int {
+        let classType = self.netClass()
+    
+        if (classType == "A") {
+           return (Constants.classAbits)
+        }
+        else if (classType == "B") {
+            return (Constants.classBbits)
+        }
+        else if (classType == "C") {
+            return (Constants.classCbits)
+        }
+        return (32)
+    }
+    
     static func maskBits(maskAddr: String) -> Int {
         var bits: Int = 0
         
