@@ -3,6 +3,8 @@ Subnet Calculator for MacOS
 
 What's New in version 2.0:
 - IPv6 support!
+- Address Class D (Multicast) and Class E (Reserved) support
+- 31 and 32 mask bits support
 - New Tab presentation
 - Recoded in Swift
 - Add alerts for bad IP or mask format

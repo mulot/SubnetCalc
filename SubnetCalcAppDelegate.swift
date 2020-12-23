@@ -78,26 +78,26 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     
     //Private IPv4 functions
     private func initCIDRTab() {
-        for bits in (1...30) {
+        for bits in (1...32) {
             supernetMaskBitsCombo.addItem(withObjectValue: String(bits))
         }
         
-        for index in (2...31).reversed() {
+        for index in (0...31).reversed() {
             supernetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: (IPSubnetCalc.Constants.addr32Full << index)))
         }
-        for index in (0...29) {
+        for index in (0...31) {
             supernetMaxCombo.addItem(withObjectValue: NSDecimalNumber(decimal: pow(2, index)).stringValue)
         }
         for index in (1...31) {
             supernetMaxAddr.addItem(withObjectValue: NSDecimalNumber(decimal: (pow(2, index) - 2)).stringValue)
         }
-        for index in (0...31) {
+        for index in (0...32) {
             supernetMaxSubnetsCombo.addItem(withObjectValue: NSDecimalNumber(decimal: pow(2, index)).stringValue)
         }
     }
     
     private func initSubnetsTab() {
-        for index in (2...24).reversed() {
+        for index in (0...24).reversed() {
             if (wildcard.state == NSControl.StateValue.on) {
                 subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: ~(IPSubnetCalc.Constants.addr32Full << index)))
             }
@@ -105,16 +105,16 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: (IPSubnetCalc.Constants.addr32Full << index)))
             }
         }
-        for bits in (8...30) {
+        for bits in (8...32) {
             maskBitsCombo.addItem(withObjectValue: String(bits))
         }
-        for bits in (0...22) {
+        for bits in (0...24) {
             subnetBitsCombo.addItem(withObjectValue: String(bits))
         }
-        for index in (2...24) {
+        for index in (1...24) {
             maxHostsBySubnetCombo.addItem(withObjectValue: NSDecimalNumber(decimal: (pow(2, index) - 2)).stringValue)
         }
-        for index in (0...22) {
+        for index in (0...24) {
             maxSubnetsCombo.addItem(withObjectValue: NSDecimalNumber(decimal: pow(2, index)).stringValue)
         }
         classBitMap.stringValue = "nnnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh"
@@ -489,7 +489,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             ipsc = IPSubnetCalc(Constants.defaultIP)
         }
         if (sender.indexOfSelectedItem != -1) {
-            ipsc!.maskBits = 30 - sender.indexOfSelectedItem()
+            ipsc!.maskBits = 31 - sender.indexOfSelectedItem()
             self.doIPSubnetCalc()
         }
         else {
@@ -699,7 +699,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             ipsc = IPSubnetCalc(Constants.defaultIP)
         }
         if (sender.indexOfSelectedItem != -1) {
-            if ((32 - sender.indexOfSelectedItem) < 32) {
+            if ((32 - sender.indexOfSelectedItem) <= 32) {
                 doCIDR(maskbits: (32 - sender.indexOfSelectedItem))
             }
             else {
@@ -793,7 +793,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     {
         subnetMaskCombo.removeAllItems()
         if (wildcard.state == NSControl.StateValue.on) {
-            for index in (2...24).reversed() {
+            for index in (0...24).reversed() {
                 subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: ~(IPSubnetCalc.Constants.addr32Full << index)))
             }
             if (ipsc != nil) {
@@ -801,7 +801,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
         }
         else {
-            for index in (2...24).reversed() {
+            for index in (0...24).reversed() {
                 subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: (IPSubnetCalc.Constants.addr32Full << index)))
             }
             if (ipsc != nil) {

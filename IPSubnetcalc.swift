@@ -267,7 +267,7 @@ class IPSubnetCalc: NSObject {
         var maxHosts: UInt32 = 0
         
         if (self.maskBits == 32) {
-            return (1)
+            return (0)
         }
         maxHosts = (Constants.addr32Full >> self.maskBits) - 1
         return (Int(maxHosts))
@@ -311,8 +311,14 @@ class IPSubnetCalc: NSObject {
         var firstIP: UInt32 = 0
         var lastIP: UInt32 = 0
         
-        firstIP = IPSubnetCalc.numerize(ipAddress: subnetId()) + 1
-        lastIP = IPSubnetCalc.numerize(ipAddress: subnetBroadcast()) - 1
+        if (maskBits == 31 || maskBits == 32) {
+            firstIP = IPSubnetCalc.numerize(ipAddress: subnetId())
+            lastIP = IPSubnetCalc.numerize(ipAddress: subnetBroadcast())
+        }
+        else {
+            firstIP = IPSubnetCalc.numerize(ipAddress: subnetId()) + 1
+            lastIP = IPSubnetCalc.numerize(ipAddress: subnetBroadcast()) - 1
+        }
         range = IPSubnetCalc.digitize(ipAddress: firstIP) + " - " + IPSubnetCalc.digitize(ipAddress: lastIP)
         return (range)
     }

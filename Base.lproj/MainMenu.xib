@@ -154,7 +154,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="326" width="670" height="694"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
             <value key="minSize" type="size" width="670" height="694"/>
             <view key="contentView" id="372">
                 <rect key="frame" x="0.0" y="0.0" width="670" height="694"/>
@@ -565,9 +565,9 @@
                                                         </textFieldCell>
                                                     </textField>
                                                     <slider verticalHuggingPriority="750" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="708">
-                                                        <rect key="frame" x="112" y="0.0" width="360" height="24"/>
+                                                        <rect key="frame" x="112" y="0.0" width="360" height="28"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                        <sliderCell key="cell" continuous="YES" state="on" baseWritingDirection="leftToRight" alignment="left" minValue="1" maxValue="30" doubleValue="1" tickMarkPosition="above" numberOfTickMarks="30" allowsTickMarkValuesOnly="YES" sliderType="linear" id="709"/>
+                                                        <sliderCell key="cell" continuous="YES" state="on" baseWritingDirection="leftToRight" alignment="left" minValue="1" maxValue="32" doubleValue="1" tickMarkPosition="above" numberOfTickMarks="32" allowsTickMarkValuesOnly="YES" sliderType="linear" id="709"/>
                                                         <connections>
                                                             <action selector="subnetBitsSlide:" target="b7w-M5-ti7" id="NME-GB-bJ8"/>
                                                         </connections>
