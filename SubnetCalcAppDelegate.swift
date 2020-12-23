@@ -772,6 +772,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 ipsc!.maskBits = maskbits
                 self.doSubnetHost()
                 self.doCIDR(maskbits: maskbits)
+                ipsc!.maskBits = Constants.NETWORK_BITS_MIN
             }
         }
     }
