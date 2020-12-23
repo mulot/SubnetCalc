@@ -888,31 +888,32 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             panel.allowedFileTypes = ["csv"]
             panel.begin(completionHandler: { (result) in
                 if (result == NSApplication.ModalResponse.OK && panel.url != nil) {
+                    var fileMgt: FileManager
                     if #available(OSX 10.14, *) {
-                        let fileMgt = FileManager(authorization: NSWorkspace.Authorization())
-                        fileMgt.createFile(atPath: panel.url!.path, contents: nil, attributes: nil)
-                        //var cvsData = NSMutableData.init(capacity: Constants.BUFFER_LINES)
-                        var cvsData = Data(capacity: Constants.BUFFER_LINES)
-                        let cvsFile = FileHandle(forWritingAtPath: panel.url!.path)
-                        if (cvsFile != nil) {
-                            var cvsStr = "#;Subnet ID;Range;Broadcast\n"
-                            for index in (0...(self.ipsc!.maxSubnets() - 1)) {
-                                let mask: UInt32 = UInt32(index) << (32 - self.ipsc!.maskBits)
-                                let ipaddr = (IPSubnetCalc.numerize(ipAddress: self.ipsc!.subnetId())) | mask
-                                let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: ipaddr), maskbits: self.ipsc!.maskBits)
-                                if (ipsc_tmp != nil) {
-                                    cvsStr.append("\(index + 1);\(ipsc_tmp!.subnetId());\(ipsc_tmp!.subnetRange());\(ipsc_tmp!.subnetBroadcast())\n")
-                                }
-                            }
-                            cvsData.append(cvsStr.data(using: String.Encoding.ascii)!)
-                            cvsFile!.write(cvsData)
-                            cvsFile!.synchronizeFile()
-                            cvsFile!.closeFile()
-                        }
+                        fileMgt = FileManager(authorization: NSWorkspace.Authorization())
                     } else {
                         // Fallback on earlier versions
+                        fileMgt = FileManager.default
                     }
-                    
+                    fileMgt.createFile(atPath: panel.url!.path, contents: nil, attributes: nil)
+                    //var cvsData = NSMutableData.init(capacity: Constants.BUFFER_LINES)
+                    var cvsData = Data(capacity: Constants.BUFFER_LINES)
+                    let cvsFile = FileHandle(forWritingAtPath: panel.url!.path)
+                    if (cvsFile != nil) {
+                        var cvsStr = "#;Subnet ID;Range;Broadcast\n"
+                        for index in (0...(self.ipsc!.maxSubnets() - 1)) {
+                            let mask: UInt32 = UInt32(index) << (32 - self.ipsc!.maskBits)
+                            let ipaddr = (IPSubnetCalc.numerize(ipAddress: self.ipsc!.subnetId())) | mask
+                            let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: ipaddr), maskbits: self.ipsc!.maskBits)
+                            if (ipsc_tmp != nil) {
+                                cvsStr.append("\(index + 1);\(ipsc_tmp!.subnetId());\(ipsc_tmp!.subnetRange());\(ipsc_tmp!.subnetBroadcast())\n")
+                            }
+                        }
+                        cvsData.append(cvsStr.data(using: String.Encoding.ascii)!)
+                        cvsFile!.write(cvsData)
+                        cvsFile!.synchronizeFile()
+                        cvsFile!.closeFile()
+                    }
                 }
             }
             )
