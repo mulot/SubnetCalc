@@ -344,7 +344,7 @@
                                             </view>
                                             <font key="titleFont" metaFont="message"/>
                                         </box>
-                                        <button fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QkZ-rA-ck3">
+                                        <button identifier="wildcardmask" fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QkZ-rA-ck3">
                                             <rect key="frame" x="524" y="576" width="80" height="32"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Wildcard" bezelStyle="regularSquare" imagePosition="left" alignment="right" inset="2" id="x4T-jO-RhV">
@@ -446,7 +446,7 @@
                                             </view>
                                             <font key="titleFont" metaFont="message"/>
                                         </box>
-                                        <button fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LRz-jt-Y3U">
+                                        <button identifier="dottedipv4" fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LRz-jt-Y3U">
                                             <rect key="frame" x="524" y="201" width="80" height="32"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Dotted" bezelStyle="regularSquare" imagePosition="left" alignment="right" state="on" inset="2" id="hvV-hN-iEg">
