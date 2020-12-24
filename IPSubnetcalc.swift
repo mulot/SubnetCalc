@@ -381,9 +381,9 @@ class IPSubnetCalc: NSObject {
     
     func classBits() -> Int {
         let classType = self.netClass()
-    
+        
         if (classType == "A") {
-           return (Constants.classAbits)
+            return (Constants.classAbits)
         }
         else if (classType == "B") {
             return (Constants.classBbits)
@@ -396,9 +396,9 @@ class IPSubnetCalc: NSObject {
     
     func classMask() -> UInt32 {
         let classType = self.netClass()
-    
+        
         if (classType == "A") {
-           return (Constants.maskClassA)
+            return (Constants.maskClassA)
         }
         else if (classType == "B") {
             return (Constants.maskClassB)

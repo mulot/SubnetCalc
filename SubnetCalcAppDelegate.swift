@@ -149,13 +149,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         {
             classType.selectItem(at: 3)
             /*
-            savedTabView = tabView.tabViewItems
-            if (savedTabView != nil)
-            {
-                tabView.removeTabViewItem(savedTabView![1])
-                tabView.removeTabViewItem(savedTabView![2])
-                tabView.removeTabViewItem(savedTabView![3])
-            }
+             savedTabView = tabView.tabViewItems
+             if (savedTabView != nil)
+             {
+             tabView.removeTabViewItem(savedTabView![1])
+             tabView.removeTabViewItem(savedTabView![2])
+             tabView.removeTabViewItem(savedTabView![3])
+             }
              */
         }
         else if (c == "E")
@@ -453,13 +453,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         else if (sender.indexOfSelectedItem() == 3)
         {
             /*
-            savedTabView = tabView.tabViewItems
-            if (savedTabView != nil)
-            {
-                tabView.removeTabViewItem(savedTabView![1])
-                tabView.removeTabViewItem(savedTabView![2])
-                tabView.removeTabViewItem(savedTabView![3])
-            }
+             savedTabView = tabView.tabViewItems
+             if (savedTabView != nil)
+             {
+             tabView.removeTabViewItem(savedTabView![1])
+             tabView.removeTabViewItem(savedTabView![2])
+             tabView.removeTabViewItem(savedTabView![3])
+             }
              */
             classBitMap.stringValue = "hhhhhhhh.hhhhhhhh.hhhhhhhh.hhhhhhhh"
             classBinaryMap.stringValue = "11100000.00000000.00000000.00000000"
@@ -468,13 +468,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         else if (sender.indexOfSelectedItem() == 4)
         {
             /*
-            savedTabView = tabView.tabViewItems
-            if (savedTabView != nil)
-            {
-                tabView.removeTabViewItem(savedTabView![1])
-                tabView.removeTabViewItem(savedTabView![2])
-                tabView.removeTabViewItem(savedTabView![3])
-            }
+             savedTabView = tabView.tabViewItems
+             if (savedTabView != nil)
+             {
+             tabView.removeTabViewItem(savedTabView![1])
+             tabView.removeTabViewItem(savedTabView![2])
+             tabView.removeTabViewItem(savedTabView![3])
+             }
              */
             classBitMap.stringValue = "hhhhhhhh.hhhhhhhh.hhhhhhhh.hhhhhhhh"
             classBinaryMap.stringValue = "11110000.00000000.00000000.00000000"
@@ -717,6 +717,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     {
         if (ipsc != nil) {
             if (tabViewClassLess.state == NSControl.StateValue.on) {
+                //print("numberOfRows: Maskbits : \(ipsc!.maskBits) Bits compute: \(ipsc!.maskBits - Constants.NETWORK_BITS_MIN_CLASSLESS) Power: \(NSDecimalNumber(decimal: pow(2, (ipsc!.maskBits - Constants.NETWORK_BITS_MIN_CLASSLESS))))")
                 return Int(truncating: NSDecimalNumber(decimal: pow(2, (ipsc!.maskBits - Constants.NETWORK_BITS_MIN_CLASSLESS))))
             }
             else {
