@@ -54,6 +54,14 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     @IBOutlet var tabViewClassLess: NSButton!
     @IBOutlet var wildcard: NSButton!
     @IBOutlet var dotted: NSButton!
+    @IBOutlet var maskBitsFLSMCombo: NSComboBox!
+    @IBOutlet var maskBitsVLSMCombo: NSComboBox!
+    @IBOutlet var viewFLSM: NSTableView!
+    @IBOutlet var slideFLSM: NSSlider!
+    @IBOutlet var maxSubnetsFLSM: NSTextField!
+    @IBOutlet var maxHostsBySubnetFLSM: NSTextField!
+    @IBOutlet var maxHostsFLSM: NSTextField!
+    @IBOutlet var viewVLSM: NSTableView!
     
     //IPv6 UI elements
     @IBOutlet var ipv6Address: NSTextField!
@@ -120,6 +128,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         classBitMap.stringValue = "nnnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh"
         classBinaryMap.stringValue = "00000001.00000000.00000000.00000000"
         classHexaMap.stringValue = "01.00.00.00"
+    }
+    
+    private func initFLSMTab() {
+        for bits in (8...32) {
+            maskBitsFLSMCombo.addItem(withObjectValue: String(bits))
+        }
     }
     
     private func bitsOnSlidePos()
@@ -197,6 +211,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         if (ipsc != nil) {
             subnetBitsCombo.selectItem(withObjectValue: String(ipsc!.subnetBits()))
             maskBitsCombo.selectItem(withObjectValue: String(ipsc!.maskBits))
+            maskBitsFLSMCombo.selectItem(withObjectValue: String(ipsc!.maskBits))
             maxSubnetsCombo.selectItem(withObjectValue: String(ipsc!.maxSubnets()))
             maxHostsBySubnetCombo.selectItem(withObjectValue: String(ipsc!.maxHosts()))
             subnetId.stringValue = ipsc!.subnetId()
@@ -218,6 +233,29 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             subnetBitsSlide.intValue = Int32(ipsc!.maskBits)
             self.bitsOnSlidePos()
             subnetsHostsView.reloadData()
+        }
+    }
+    
+    private func doFLSM()
+    {
+        if (ipsc != nil) {
+            //bitsOnSlide.stringValue = String(ipsc!.maskBits)
+            //subnetBitsSlide.intValue = Int32(ipsc!.maskBits)
+            //self.bitsOnSlidePos()
+            self.maxSubnetsFLSM.stringValue = NSDecimalNumber(decimal: (pow(2, slideFLSM.integerValue))).stringValue
+            self.maxHostsBySubnetFLSM.stringValue = NSDecimalNumber(decimal: (pow(2, (32 - (ipsc!.maskBits + slideFLSM.integerValue)))) - 2).stringValue
+            self.maxHostsFLSM.stringValue = NSDecimalNumber(decimal: ((pow(2, (32 - (ipsc!.maskBits + slideFLSM.integerValue)))) - 2) * (pow(2, slideFLSM.integerValue))).stringValue
+            viewFLSM.reloadData()
+        }
+    }
+    
+    private func doVLSM()
+    {
+        if (ipsc != nil) {
+            //bitsOnSlide.stringValue = String(ipsc!.maskBits)
+            //subnetBitsSlide.intValue = Int32(ipsc!.maskBits)
+            //self.bitsOnSlidePos()
+            viewVLSM.reloadData()
         }
     }
     
@@ -716,12 +754,17 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     func numberOfRows(in tableView: NSTableView) -> Int
     {
         if (ipsc != nil) {
-            if (tabViewClassLess.state == NSControl.StateValue.on) {
-                //print("numberOfRows: Maskbits : \(ipsc!.maskBits) Bits compute: \(ipsc!.maskBits - Constants.NETWORK_BITS_MIN_CLASSLESS) Power: \(NSDecimalNumber(decimal: pow(2, (ipsc!.maskBits - Constants.NETWORK_BITS_MIN_CLASSLESS))))")
-                return Int(truncating: NSDecimalNumber(decimal: pow(2, (ipsc!.maskBits - Constants.NETWORK_BITS_MIN_CLASSLESS))))
+            if (tableView == subnetsHostsView) {
+                if (tabViewClassLess.state == NSControl.StateValue.on) {
+                    //print("numberOfRows: Maskbits : \(ipsc!.maskBits) Bits compute: \(ipsc!.maskBits - Constants.NETWORK_BITS_MIN_CLASSLESS) Power: \(NSDecimalNumber(decimal: pow(2, (ipsc!.maskBits - Constants.NETWORK_BITS_MIN_CLASSLESS))))")
+                    return Int(truncating: NSDecimalNumber(decimal: pow(2, (ipsc!.maskBits - Constants.NETWORK_BITS_MIN_CLASSLESS))))
+                }
+                else {
+                    return (ipsc!.maxSubnets())
+                }
             }
-            else {
-                return (ipsc!.maxSubnets())
+            else if (tableView == viewFLSM) {
+                return  Int(truncating: NSDecimalNumber(decimal: pow(2, slideFLSM.integerValue)))
             }
         }
         return 0
@@ -732,21 +775,47 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                    row: Int) -> Any?
     {
         if (ipsc != nil) {
-            let ipaddr: UInt32 = (((IPSubnetCalc.numerize(ipAddress: ipsc!.ipv4Address) & ipsc!.classMask()) >> (32 - ipsc!.maskBits)) + UInt32(row)) << (32 - ipsc!.maskBits)
-            let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: ipaddr), maskbits: ipsc!.maskBits)
-            //print("tableView Row: \(row) IP num : \(ipaddr) IP: \(IPSubnetCalc.digitize(ipAddress: ipaddr)) IP Subnet: \(ipsc_tmp!.subnetId())")
-            if (tableColumn != nil && ipsc_tmp != nil) {
-                if (tableColumn!.identifier.rawValue == "numCol") {
-                    return (row + 1)
+            //print("Refresh TableView: \(String(describing: tableView.identifier))")
+            if (tableView == subnetsHostsView) {
+                let ipaddr: UInt32 = (((IPSubnetCalc.numerize(ipAddress: ipsc!.ipv4Address) & ipsc!.classMask()) >> (32 - ipsc!.maskBits)) + UInt32(row)) << (32 - ipsc!.maskBits)
+                let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: ipaddr), maskbits: ipsc!.maskBits)
+                //print("tableView Row: \(row) IP num : \(ipaddr) IP: \(IPSubnetCalc.digitize(ipAddress: ipaddr)) IP Subnet: \(ipsc_tmp!.subnetId())")
+                if (tableColumn != nil && ipsc_tmp != nil) {
+                    if (tableColumn!.identifier.rawValue == "numCol") {
+                        return (row + 1)
+                    }
+                    else if (tableColumn!.identifier.rawValue == "subnetCol") {
+                        return (ipsc_tmp!.subnetId())
+                    }
+                    else if (tableColumn!.identifier.rawValue == "rangeCol") {
+                        return (ipsc_tmp!.subnetRange())
+                    }
+                    else if (tableColumn!.identifier.rawValue == "broadcastCol") {
+                        return (ipsc_tmp!.subnetBroadcast())
+                    }
                 }
-                else if (tableColumn!.identifier.rawValue == "subnetCol") {
-                    return (ipsc_tmp!.subnetId())
-                }
-                else if (tableColumn!.identifier.rawValue == "rangeCol") {
-                    return (ipsc_tmp!.subnetRange())
-                }
-                else if (tableColumn!.identifier.rawValue == "broadcastCol") {
-                    return (ipsc_tmp!.subnetBroadcast())
+            }
+            else if (tableView == viewFLSM) {
+                //print("refresh View FLSM")
+                var ipaddr: UInt32 = ((IPSubnetCalc.numerize(ipAddress: ipsc!.ipv4Address) & ipsc!.classMask()) >> (32 - ipsc!.maskBits)) << (32 - ipsc!.maskBits)
+                ipaddr = (ipaddr >> (32 - (ipsc!.maskBits + slideFLSM.integerValue)) + UInt32(row)) << (32 - (ipsc!.maskBits + slideFLSM.integerValue))
+                let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: ipaddr), maskbits: (ipsc!.maskBits + slideFLSM.integerValue))
+                if (tableColumn != nil && ipsc_tmp != nil) {
+                    if (tableColumn!.identifier.rawValue == "numFLSMCol") {
+                        return (row + 1)
+                    }
+                    else if (tableColumn!.identifier.rawValue == "subnetFLSMCol") {
+                        return (ipsc_tmp!.subnetId())
+                    }
+                    else if (tableColumn!.identifier.rawValue == "maskFLSMCol") {
+                        return ("/\(ipsc!.maskBits + slideFLSM.integerValue)")
+                    }
+                    else if (tableColumn!.identifier.rawValue == "rangeFLSMCol") {
+                        return (ipsc_tmp!.subnetRange())
+                    }
+                    else if (tableColumn!.identifier.rawValue == "broadcastFLSMCol") {
+                        return (ipsc_tmp!.subnetBroadcast())
+                    }
                 }
             }
         }
@@ -775,6 +844,22 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 self.doCIDR(maskbits: maskbits)
                 ipsc!.maskBits = Constants.NETWORK_BITS_MIN
             }
+        }
+    }
+    
+    @IBAction func changeSlideFLSM(_ sender: AnyObject)
+    {
+        if (ipsc == nil)
+        {
+            ipsc = IPSubnetCalc(Constants.defaultIP)
+        }
+        if ((ipsc!.maskBits + (sender.intValue as Int)) <= 29)
+        {
+            print("FLSM Bits: \(sender.intValue as Int)")
+            self.doFLSM()
+        }
+        else {
+            
         }
     }
     
@@ -962,6 +1047,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         initSubnetsTab()
         initCIDRTab()
         initIPv6Tab()
+        initFLSMTab()
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {

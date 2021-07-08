@@ -36,7 +36,7 @@
 		8D1107310486CEB800E47090 /* SubnetCalc-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "SubnetCalc-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* SubnetCalc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SubnetCalc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		945E62EF25658A9500CDC9C7 /* SubnetCalc.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = SubnetCalc.xctestplan; sourceTree = "<group>"; };
-		945E62F525658DBF00CDC9C7 /* SubnetCalcUITests-Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SubnetCalcUITests-Runner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		945E62F525658DBF00CDC9C7 /* SubnetCalcUITests-Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "SubnetCalcUITests-Runner.app"; path = SubnetCalcUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		945E62F925658DBF00CDC9C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9482A32625765B30008D2C56 /* SubnetCalcUITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubnetCalcUITest.swift; sourceTree = "<group>"; };
 		949420B712D3C62A00E2F57D /* License.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
@@ -410,7 +410,7 @@
 				INFOPLIST_FILE = "SubnetCalc-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.mulot.subnetcalc;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mulot.subnetcalc;
 				PRODUCT_NAME = SubnetCalc;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -436,7 +436,7 @@
 				INFOPLIST_FILE = "SubnetCalc-Info.plist";
 				INSTALL_PATH = /Applications;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.mulot.subnetcalc;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mulot.subnetcalc;
 				PRODUCT_NAME = SubnetCalc;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
