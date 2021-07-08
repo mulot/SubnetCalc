@@ -55,12 +55,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     @IBOutlet var wildcard: NSButton!
     @IBOutlet var dotted: NSButton!
     @IBOutlet var maskBitsFLSMCombo: NSComboBox!
-    @IBOutlet var maskBitsVLSMCombo: NSComboBox!
     @IBOutlet var viewFLSM: NSTableView!
     @IBOutlet var slideFLSM: NSSlider!
     @IBOutlet var maxSubnetsFLSM: NSTextField!
     @IBOutlet var maxHostsBySubnetFLSM: NSTextField!
     @IBOutlet var maxHostsFLSM: NSTextField!
+    @IBOutlet var maskBitsVLSMCombo: NSComboBox!
     @IBOutlet var viewVLSM: NSTableView!
     
     //IPv6 UI elements
@@ -134,6 +134,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         for bits in (8...32) {
             maskBitsFLSMCombo.addItem(withObjectValue: String(bits))
         }
+        slideFLSM.integerValue = 1
     }
     
     private func bitsOnSlidePos()
@@ -211,7 +212,6 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         if (ipsc != nil) {
             subnetBitsCombo.selectItem(withObjectValue: String(ipsc!.subnetBits()))
             maskBitsCombo.selectItem(withObjectValue: String(ipsc!.maskBits))
-            maskBitsFLSMCombo.selectItem(withObjectValue: String(ipsc!.maskBits))
             maxSubnetsCombo.selectItem(withObjectValue: String(ipsc!.maxSubnets()))
             maxHostsBySubnetCombo.selectItem(withObjectValue: String(ipsc!.maxHosts()))
             subnetId.stringValue = ipsc!.subnetId()
@@ -242,9 +242,19 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             //bitsOnSlide.stringValue = String(ipsc!.maskBits)
             //subnetBitsSlide.intValue = Int32(ipsc!.maskBits)
             //self.bitsOnSlidePos()
-            self.maxSubnetsFLSM.stringValue = NSDecimalNumber(decimal: (pow(2, slideFLSM.integerValue))).stringValue
-            self.maxHostsBySubnetFLSM.stringValue = NSDecimalNumber(decimal: (pow(2, (32 - (ipsc!.maskBits + slideFLSM.integerValue)))) - 2).stringValue
-            self.maxHostsFLSM.stringValue = NSDecimalNumber(decimal: ((pow(2, (32 - (ipsc!.maskBits + slideFLSM.integerValue)))) - 2) * (pow(2, slideFLSM.integerValue))).stringValue
+            maskBitsFLSMCombo.selectItem(withObjectValue: String(ipsc!.maskBits))
+            if (ipsc!.maskBits <= 29) {
+                slideFLSM.numberOfTickMarks = (30 - ipsc!.maskBits)
+                slideFLSM.maxValue = Double(30 - ipsc!.maskBits)
+                self.maxSubnetsFLSM.stringValue = NSDecimalNumber(decimal: (pow(2, slideFLSM.integerValue))).stringValue
+                self.maxHostsBySubnetFLSM.stringValue = NSDecimalNumber(decimal: (pow(2, (32 - (ipsc!.maskBits + slideFLSM.integerValue)))) - 2).stringValue
+                self.maxHostsFLSM.stringValue = NSDecimalNumber(decimal: ((pow(2, (32 - (ipsc!.maskBits + slideFLSM.integerValue)))) - 2) * (pow(2, slideFLSM.integerValue))).stringValue
+            }
+            else {
+                self.maxSubnetsFLSM.stringValue = ""
+                self.maxHostsBySubnetFLSM.stringValue = ""
+                self.maxHostsFLSM.stringValue = ""
+            }
             viewFLSM.reloadData()
         }
     }
@@ -353,6 +363,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 self.doSubnetHost()
                 self.doCIDR()
                 self.doIPv6()
+                self.doFLSM()
             }
         }
         else {
@@ -452,6 +463,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 self.doSubnet()
                 self.doSubnetHost()
                 self.doCIDR()
+                self.doFLSM()
                 self.doIPv6()
             }
         }
@@ -764,7 +776,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 }
             }
             else if (tableView == viewFLSM) {
-                return  Int(truncating: NSDecimalNumber(decimal: pow(2, slideFLSM.integerValue)))
+                if (ipsc!.maskBits <= 29) {
+                    return  Int(truncating: NSDecimalNumber(decimal: pow(2, slideFLSM.integerValue)))
+                }
             }
         }
         return 0
@@ -853,9 +867,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         {
             ipsc = IPSubnetCalc(Constants.defaultIP)
         }
-        if ((ipsc!.maskBits + (sender.intValue as Int)) <= 29)
+        if ((ipsc!.maskBits + (sender.intValue as Int)) <= 30)
         {
-            print("FLSM Bits: \(sender.intValue as Int)")
+            //print("FLSM Bits: \(sender.intValue as Int)")
             self.doFLSM()
         }
         else {
