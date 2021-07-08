@@ -527,7 +527,7 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <clipView key="contentView" id="L0l-HJ-flz">
                                                 <rect key="frame" x="1" y="1" width="567" height="485"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <autoresizingMask key="autoresizingMask"/>
                                                 <subviews>
                                                     <tableView identifier="subnetsTabView" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="583" id="586">
                                                         <rect key="frame" x="0.0" y="0.0" width="567" height="462"/>
@@ -840,7 +840,7 @@
                                                                 </textFieldCell>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             </tableColumn>
-                                                            <tableColumn identifier="subnetFLSMCol" editable="NO" width="128" minWidth="40" maxWidth="1000" id="lJf-c5-yfh">
+                                                            <tableColumn identifier="subnetFLSMCol" editable="NO" width="120.5" minWidth="40" maxWidth="1000" id="lJf-c5-yfh">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Subnet ID">
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
@@ -852,7 +852,7 @@
                                                                 </textFieldCell>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             </tableColumn>
-                                                            <tableColumn identifier="maskFLSMCol" editable="NO" width="64.5" minWidth="40" maxWidth="1000" id="3Xy-9o-aBa">
+                                                            <tableColumn identifier="maskFLSMCol" editable="NO" width="57" minWidth="40" maxWidth="1000" id="3Xy-9o-aBa">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Mask bits">
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
@@ -864,7 +864,7 @@
                                                                 </textFieldCell>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             </tableColumn>
-                                                            <tableColumn identifier="rangeFLSMCol" editable="NO" width="213.843994140625" minWidth="36.844001770019531" maxWidth="1000" id="E3K-mg-KNd">
+                                                            <tableColumn identifier="rangeFLSMCol" editable="NO" width="206.343994140625" minWidth="36.844001770019531" maxWidth="1000" id="E3K-mg-KNd">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Range">
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -876,7 +876,7 @@
                                                                 </textFieldCell>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             </tableColumn>
-                                                            <tableColumn identifier="broadcastFLSMCol" editable="NO" width="96.51300048828125" minWidth="60.01300048828125" maxWidth="1000" id="xcO-Ca-qbW">
+                                                            <tableColumn identifier="broadcastFLSMCol" editable="NO" width="90.01300048828125" minWidth="60.01300048828125" maxWidth="1000" id="xcO-Ca-qbW">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Broadcast">
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>

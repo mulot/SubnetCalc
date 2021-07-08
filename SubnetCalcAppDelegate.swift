@@ -353,10 +353,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 ipsc = IPSubnetCalc(ipAddress: ipaddr, maskbits: Int(ipmask!)!)
             }
             if (ipsc != nil) {
-                if (tabView.numberOfTabViewItems != 4 && savedTabView != nil) {
+                if (tabView.numberOfTabViewItems != 6 && savedTabView != nil) {
                     tabView.addTabViewItem(savedTabView![1])
                     tabView.addTabViewItem(savedTabView![2])
                     tabView.addTabViewItem(savedTabView![3])
+                    tabView.addTabViewItem(savedTabView![4])
+                    tabView.addTabViewItem(savedTabView![5])
                 }
                 self.doAddressMap()
                 self.doSubnet()
@@ -454,10 +456,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             //print("IP Address: \(ipaddr) mask: \(ipmask)")
             ipsc = IPSubnetCalc(ipv6: ipaddr, maskbits: Int(ipmask!)!)
             if (ipsc != nil) {
-                if (tabView.numberOfTabViewItems != 4 && savedTabView != nil) {
+                if (tabView.numberOfTabViewItems != 6 && savedTabView != nil) {
                     tabView.addTabViewItem(savedTabView![1])
                     tabView.addTabViewItem(savedTabView![2])
                     tabView.addTabViewItem(savedTabView![3])
+                    tabView.addTabViewItem(savedTabView![4])
+                    tabView.addTabViewItem(savedTabView![5])
                 }
                 self.doAddressMap()
                 self.doSubnet()
@@ -477,10 +481,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     //IPv4 UI actions
     @IBAction func changeAddrClassType(_ sender: AnyObject)
     {
-        if (tabView.numberOfTabViewItems != 4 && savedTabView != nil) {
+        if (tabView.numberOfTabViewItems != 6 && savedTabView != nil) {
             tabView.addTabViewItem(savedTabView![1])
             tabView.addTabViewItem(savedTabView![2])
             tabView.addTabViewItem(savedTabView![3])
+            tabView.addTabViewItem(savedTabView![4])
+            tabView.addTabViewItem(savedTabView![5])
         }
         if (sender.indexOfSelectedItem() == 0)
         {
@@ -969,7 +975,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     {
         if (addrField.stringValue.contains(":")) {
             self.doIPv6SubnetCalc()
-            tabView.selectTabViewItem(at: 3)
+            tabView.selectTabViewItem(at: 5)
         }
         else {
             self.doIPSubnetCalc()
