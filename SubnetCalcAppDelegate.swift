@@ -84,6 +84,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     //Private global vars
     private var savedTabView: [NSTabViewItem]? //ex tab_tabView
     private var ipsc: IPSubnetCalc?
+    private var subnetsVLSM = [(String, Int, String, String)]()
     
     
     //Private IPv4 functions
@@ -791,6 +792,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                     return  Int(truncating: NSDecimalNumber(decimal: pow(2, slideFLSM.integerValue)))
                 }
             }
+            else if (tableView == viewVLSM) {
+                return  (subnetsVLSM.count)
+            }
         }
         return 0
     }
@@ -843,6 +847,26 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                     }
                 }
             }
+            else if (tableView == viewVLSM) {
+                print("refresh View VLSM")
+                if (tableColumn != nil) {
+                    if (tableColumn!.identifier.rawValue == "numVLSMCol") {
+                        return (row + 1)
+                    }
+                    else if (tableColumn!.identifier.rawValue == "subnetVLSMCol") {
+                        return (subnetsVLSM[row].0)
+                    }
+                    else if (tableColumn!.identifier.rawValue == "maskVLSMCol") {
+                        return (subnetsVLSM[row].1)
+                    }
+                    else if (tableColumn!.identifier.rawValue == "nameVLSMCol") {
+                        return (subnetsVLSM[row].2)
+                    }
+                    else if (tableColumn!.identifier.rawValue == "usedVLSMCol") {
+                        return (subnetsVLSM[row].3)
+                    }
+                }
+            }
         }
         return (nil)
     }
@@ -887,18 +911,42 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     
     @IBAction func addSubnetVLSM(_ sender: AnyObject)
     {
+        var maskbits: Int
+        var hosts: UInt
+        var used: Int
+        
         if (ipsc == nil)
         {
             ipsc = IPSubnetCalc(Constants.defaultIP)
         }
         if (requiredHostsVLSM.integerValue != 0) {
             print("VLSM Hosts required: \(requiredHostsVLSM.integerValue)")
-            print("VLSM fitting subnet: \(IPSubnetCalc.fittingSubnet(hosts: UInt(requiredHostsVLSM.integerValue)))")
-            self.doVLSM()
+            (maskbits, hosts) = IPSubnetCalc.fittingSubnet(hosts: UInt(requiredHostsVLSM.integerValue))
+            if (maskbits != 0) {
+                used = (requiredHostsVLSM.integerValue * 100) / Int(hosts)
+                print("VLSM fitting subnet mask: \(maskbits) with \(hosts) max hosts")
+                if (subnetsVLSM.count != 0) {
+                    print("VLSM subnets NOT empty")
+                    if let index = subnetsVLSM.firstIndex(where: { $0.1 > maskbits }) {
+                        subnetsVLSM.insert(("dsds", maskbits, subnetNameVLSM.stringValue, "\(requiredHostsVLSM.stringValue)/\(hosts) (\(used)%)"), at: index)
+                    }
+                    else {
+                        subnetsVLSM.append(("dsds", maskbits, subnetNameVLSM.stringValue, "\(requiredHostsVLSM.stringValue)/\(hosts) (\(used)%)"))
+                    }
+                    //subnetsVLSM.append(("dsds", maskbits, subnetNameVLSM.stringValue, "\(requiredHostsVLSM.stringValue)/\(hosts) (\(used)%)"))
+                }
+                else {
+                    print("VLSM subnets empty")
+                    subnetsVLSM.append((ipsc!.subnetId(), maskbits, subnetNameVLSM.stringValue, "\(requiredHostsVLSM.stringValue)/\(hosts) (\(used)%)"))
+                }
+                self.doVLSM()
+            }
         }
         else {
             myAlert(message: "Bad VLSM required Hosts number", info: "\(requiredHostsVLSM.integerValue) is not a number")
         }
+        requiredHostsVLSM.stringValue = ""
+        subnetNameVLSM.stringValue = ""
     }
     
     @IBAction func changeTableViewClass(_ sender: AnyObject)
