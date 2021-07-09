@@ -61,6 +61,8 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     @IBOutlet var maxHostsBySubnetFLSM: NSTextField!
     @IBOutlet var maxHostsFLSM: NSTextField!
     @IBOutlet var maskBitsVLSMCombo: NSComboBox!
+    @IBOutlet var requiredHostsVLSM: NSTextField!
+    @IBOutlet var subnetNameVLSM: NSTextField!
     @IBOutlet var viewVLSM: NSTableView!
     
     //IPv6 UI elements
@@ -135,6 +137,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             maskBitsFLSMCombo.addItem(withObjectValue: String(bits))
         }
         slideFLSM.integerValue = 1
+    }
+    
+    private func initVLSMTab() {
+        for bits in (8...32) {
+            maskBitsVLSMCombo.addItem(withObjectValue: String(bits))
+        }
     }
     
     private func bitsOnSlidePos()
@@ -239,9 +247,6 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     private func doFLSM()
     {
         if (ipsc != nil) {
-            //bitsOnSlide.stringValue = String(ipsc!.maskBits)
-            //subnetBitsSlide.intValue = Int32(ipsc!.maskBits)
-            //self.bitsOnSlidePos()
             maskBitsFLSMCombo.selectItem(withObjectValue: String(ipsc!.maskBits))
             if (ipsc!.maskBits <= 29) {
                 slideFLSM.numberOfTickMarks = (30 - ipsc!.maskBits)
@@ -262,9 +267,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     private func doVLSM()
     {
         if (ipsc != nil) {
-            //bitsOnSlide.stringValue = String(ipsc!.maskBits)
-            //subnetBitsSlide.intValue = Int32(ipsc!.maskBits)
-            //self.bitsOnSlidePos()
+            maskBitsVLSMCombo.selectItem(withObjectValue: String(ipsc!.maskBits))
             viewVLSM.reloadData()
         }
     }
@@ -366,6 +369,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 self.doCIDR()
                 self.doIPv6()
                 self.doFLSM()
+                self.doVLSM()
             }
         }
         else {
@@ -468,6 +472,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 self.doSubnetHost()
                 self.doCIDR()
                 self.doFLSM()
+                self.doVLSM()
                 self.doIPv6()
             }
         }
@@ -878,8 +883,21 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             //print("FLSM Bits: \(sender.intValue as Int)")
             self.doFLSM()
         }
+    }
+    
+    @IBAction func addSubnetVLSM(_ sender: AnyObject)
+    {
+        if (ipsc == nil)
+        {
+            ipsc = IPSubnetCalc(Constants.defaultIP)
+        }
+        if (requiredHostsVLSM.integerValue != 0) {
+            print("VLSM Hosts required: \(requiredHostsVLSM.integerValue)")
+            print("VLSM fitting subnet: \(IPSubnetCalc.fittingSubnet(hosts: UInt(requiredHostsVLSM.integerValue)))")
+            self.doVLSM()
+        }
         else {
-            
+            myAlert(message: "Bad VLSM required Hosts number", info: "\(requiredHostsVLSM.integerValue) is not a number")
         }
     }
     
@@ -1068,6 +1086,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         initCIDRTab()
         initIPv6Tab()
         initFLSMTab()
+        initVLSMTab()
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {

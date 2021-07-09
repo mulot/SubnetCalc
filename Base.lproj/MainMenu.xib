@@ -184,6 +184,7 @@
                 <outlet property="maxHostsFLSM" destination="6wQ-m8-CJC" id="kbX-xO-1Kr"/>
                 <outlet property="maxSubnetsCombo" destination="571" id="gn7-9F-KtD"/>
                 <outlet property="maxSubnetsFLSM" destination="ElZ-gK-5iz" id="eO2-Ex-JGw"/>
+                <outlet property="requiredHostsVLSM" destination="Yko-qH-e9b" id="V3t-aT-oI4"/>
                 <outlet property="slideFLSM" destination="VOQ-hO-Xwn" id="ugI-Ti-p5A"/>
                 <outlet property="subnetBitsCombo" destination="567" id="6OG-Je-O6u"/>
                 <outlet property="subnetBitsSlide" destination="708" id="sqB-Ih-CjP"/>
@@ -191,6 +192,7 @@
                 <outlet property="subnetHostAddrRange" destination="575" id="zmE-hW-8Tq"/>
                 <outlet property="subnetId" destination="577" id="Ult-L5-U9a"/>
                 <outlet property="subnetMaskCombo" destination="565" id="fo8-IZ-74L"/>
+                <outlet property="subnetNameVLSM" destination="wFc-9W-Hbl" id="CqZ-mT-1av"/>
                 <outlet property="subnetsHostsView" destination="586" id="t0i-M1-zXx"/>
                 <outlet property="supernetAddrRange" destination="612" id="oxM-Ko-MTW"/>
                 <outlet property="supernetMaskBitsCombo" destination="602" id="pgy-eF-NAM"/>
@@ -527,7 +529,7 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <clipView key="contentView" id="L0l-HJ-flz">
                                                 <rect key="frame" x="1" y="1" width="567" height="485"/>
-                                                <autoresizingMask key="autoresizingMask"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView identifier="subnetsTabView" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="583" id="586">
                                                         <rect key="frame" x="0.0" y="0.0" width="567" height="462"/>
@@ -1039,7 +1041,7 @@
                                                                 </textFieldCell>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             </tableColumn>
-                                                            <tableColumn identifier="masksVLSMCol" editable="NO" width="80.5" minWidth="40" maxWidth="1000" id="xmh-O5-nD9">
+                                                            <tableColumn identifier="maskVLSMCol" editable="NO" width="80.5" minWidth="40" maxWidth="1000" id="xmh-O5-nD9">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Mask bits">
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
@@ -1051,8 +1053,8 @@
                                                                 </textFieldCell>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             </tableColumn>
-                                                            <tableColumn identifier="rangeVLSMCol" editable="NO" width="203.843994140625" minWidth="36.844001770019531" maxWidth="1000" id="rxF-Te-Q4K">
-                                                                <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Range">
+                                                            <tableColumn identifier="nameVLSMCol" editable="NO" width="203.843994140625" minWidth="36.844001770019531" maxWidth="1000" id="rxF-Te-Q4K">
+                                                                <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Name">
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                                 </tableHeaderCell>
@@ -1063,8 +1065,8 @@
                                                                 </textFieldCell>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             </tableColumn>
-                                                            <tableColumn identifier="broadcastVLSMCol" editable="NO" width="149.51300048828125" minWidth="60.01300048828125" maxWidth="1000" id="DJx-OR-eSI">
-                                                                <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Broadcast">
+                                                            <tableColumn identifier="usedVLSMCol" editable="NO" width="149.51300048828125" minWidth="60.01300048828125" maxWidth="1000" id="DJx-OR-eSI">
+                                                                <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Used">
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                                 </tableHeaderCell>
@@ -1118,6 +1120,59 @@
                                             </view>
                                             <font key="titleFont" metaFont="message"/>
                                         </box>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MRv-Q6-HYx">
+                                            <rect key="frame" x="263" y="564" width="51" height="16"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" title="# Hosts" id="w8h-Ul-6C2">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d9z-ay-JWb">
+                                            <rect key="frame" x="166" y="533" width="148" height="16"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Subnet Name (optional)" id="Pff-gz-zaK">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yko-qH-e9b">
+                                            <rect key="frame" x="320" y="561" width="231" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="jXR-8r-mbe">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <action selector="addSubnetVLSM:" target="b7w-M5-ti7" id="L97-Po-jeR"/>
+                                            </connections>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wFc-9W-Hbl">
+                                            <rect key="frame" x="320" y="530" width="231" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="Z07-Ng-G9U">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <action selector="addSubnetVLSM:" target="b7w-M5-ti7" id="C7v-Yp-FdZ"/>
+                                            </connections>
+                                        </textField>
+                                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fa0-PM-ymd">
+                                            <rect key="frame" x="552" y="542" width="59" height="32"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="push" title="Add" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hYg-WK-tJP">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="addSubnetVLSM:" target="b7w-M5-ti7" id="PKD-8O-ZS0"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                 </view>
                             </tabViewItem>

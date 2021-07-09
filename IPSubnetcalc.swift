@@ -502,6 +502,19 @@ class IPSubnetCalc: NSObject {
         return (bitMap)
     }
     
+    // return maskbits and number of max hosts for this mask
+    static func fittingSubnet(hosts: UInt) -> (Int, UInt) {
+        var maxHosts: UInt
+        
+        for index in 1...31 {
+            maxHosts = UInt(truncating: NSDecimalNumber(decimal: pow(2, index))) - 2
+            if (hosts <= maxHosts) {
+                return (32 - index, maxHosts)
+            }
+        }
+        return (0, 0)
+    }
+    
     func displayIPInfo() {
         print("IP Host : " + self.ipv4Address)
         print("Mask bits : \(self.maskBits)")
