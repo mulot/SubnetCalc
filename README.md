@@ -1,14 +1,11 @@
 # SubnetCalc
 Subnet Calculator for MacOS 
 
-What's New in version 2.0:
-- IPv6 support!
-- Address Class D (Multicast) and Class E (Reserved) support
-- 31 and 32 mask bits support
-- New Tab presentation
-- Recoded in Swift
-- Add alerts for bad IP or mask format
-- Fix bugs
+What's New in version 2.1:
+- FLSM (Fixed Length Subnet Mask) support
+- VLSM (Variable Length Subnet Mask) support
+- Export FSLM result in a CSV file
+- Export VSLM result in a CSV file
 
 
 For more information: http://subnetcalc.mulot.org
