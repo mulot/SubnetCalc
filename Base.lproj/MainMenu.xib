@@ -67,9 +67,19 @@
                 <menuItem title="File" id="656">
                     <menu key="submenu" title="File" id="657">
                         <items>
-                            <menuItem title="Export CSV" keyEquivalent="e" id="668">
+                            <menuItem title="Export Subnets/Hosts" keyEquivalent="e" id="668">
                                 <connections>
-                                    <action selector="exportCSV:" target="b7w-M5-ti7" id="Ks9-gQ-HYU"/>
+                                    <action selector="exportSubnetsHosts:" target="b7w-M5-ti7" id="EHT-lN-ksr"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Export FLSM" keyEquivalent="e" id="xmj-b6-ggW">
+                                <connections>
+                                    <action selector="exportFLSM:" target="b7w-M5-ti7" id="uJ1-dH-jxD"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Export VLSM" keyEquivalent="e" id="XVa-5e-1dG">
+                                <connections>
+                                    <action selector="exportVLSM:" target="b7w-M5-ti7" id="oYt-CR-eL0"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Export Clipboard" keyEquivalent="b" id="ceZ-iQ-E9j">
@@ -1458,9 +1468,19 @@
                             <menu key="menu" title="OtherViews" id="739">
                                 <items>
                                     <menuItem hidden="YES" id="740"/>
-                                    <menuItem title="Export CSV" id="742">
+                                    <menuItem title="Export Subnets/Hosts" id="742">
                                         <connections>
-                                            <action selector="exportCSV:" target="b7w-M5-ti7" id="4Td-Nv-X6s"/>
+                                            <action selector="exportSubnetsHosts:" target="b7w-M5-ti7" id="207-fy-PIx"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="Export FLSM" id="pbN-aM-Sl1">
+                                        <connections>
+                                            <action selector="exportFLSM:" target="b7w-M5-ti7" id="X2n-6Q-aS4"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="Export VLSM" id="Tui-fq-nG6">
+                                        <connections>
+                                            <action selector="exportVLSM:" target="b7w-M5-ti7" id="74Q-4L-4K8"/>
                                         </connections>
                                     </menuItem>
                                     <menuItem title="Export Clipboard" id="mB2-aR-3r0">

@@ -933,7 +933,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             (maskbits, hosts) = IPSubnetCalc.fittingSubnet(hosts: UInt(requiredHostsVLSM.integerValue))
             if (maskbits != 0) {
                 used = (requiredHostsVLSM.integerValue * 100) / Int(hosts)
-                //print("VLSM fitting subnet mask: \(maskbits) with \(hosts) max hosts")
+                print("VLSM fitting subnet mask: \(maskbits) with \(hosts) max hosts")
                 if (subnetsVLSM.count != 0) {
                     print("VLSM subnets NOT empty")
                     print("Mask VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM)) Maskbits: \(IPSubnetCalc.digitize(ipAddress: ~IPSubnetCalc.numerize(maskbits: maskbits)))")
@@ -955,10 +955,16 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 else {
                     print("VLSM subnets empty")
                     globalMaskVLSM = ~IPSubnetCalc.numerize(maskbits: ipsc!.maskBits) + 1
-                    print("Mask VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM))")
+                    print("Mask VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM)) Maskbits: \(IPSubnetCalc.digitize(ipAddress: ~IPSubnetCalc.numerize(maskbits: maskbits)))")
+                    if (globalMaskVLSM > ~IPSubnetCalc.numerize(maskbits: maskbits)) {
                     globalMaskVLSM = globalMaskVLSM - (~IPSubnetCalc.numerize(maskbits: maskbits) + 1)
                     print("Mask AFTER VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM))")
-                    subnetsVLSM.append((maskbits, subnetNameVLSM.stringValue, "\(requiredHostsVLSM.stringValue)/\(hosts) (\(used)%)"))
+                        subnetsVLSM.append((maskbits, subnetNameVLSM.stringValue, "\(requiredHostsVLSM.stringValue)/\(hosts) (\(used)%)"))
+                    }
+                    else {
+                        myAlert(message: "No space for Hosts requirement", info: "\(requiredHostsVLSM.integerValue) hosts require /\(maskbits) Mask bits")
+                    }
+                        
                 }
                 viewVLSM.reloadData()
             }
@@ -1080,7 +1086,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         self.calc(sender)
     }
     
-    @IBAction func exportCSV(_ sender: AnyObject)
+    @IBAction func exportSubnetsHosts(_ sender: AnyObject)
     {
         if (ipsc != nil) {
             let panel = NSSavePanel()
@@ -1116,6 +1122,97 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 }
             }
             )
+        }
+    }
+    
+    @IBAction func exportFLSM(_ sender: AnyObject)
+    {
+        if (ipsc != nil) {
+            if (ipsc!.maskBits <= 29) {
+                let panel = NSSavePanel()
+                panel.allowedFileTypes = ["csv"]
+                panel.begin(completionHandler: { (result) in
+                    if (result == NSApplication.ModalResponse.OK && panel.url != nil) {
+                        var fileMgt: FileManager
+                        if #available(OSX 10.14, *) {
+                            fileMgt = FileManager(authorization: NSWorkspace.Authorization())
+                        } else {
+                            // Fallback on earlier versions
+                            fileMgt = FileManager.default
+                        }
+                        fileMgt.createFile(atPath: panel.url!.path, contents: nil, attributes: nil)
+                        //var cvsData = NSMutableData.init(capacity: Constants.BUFFER_LINES)
+                        var cvsData = Data(capacity: Constants.BUFFER_LINES)
+                        let cvsFile = FileHandle(forWritingAtPath: panel.url!.path)
+                        if (cvsFile != nil) {
+                            var cvsStr = "#;Subnet ID;Mask bits;Range;Broadcast\n"
+                            let subnetid: UInt32 = ((IPSubnetCalc.numerize(ipAddress: self.ipsc!.ipv4Address) & self.ipsc!.classMask()) >> (32 - self.ipsc!.maskBits)) << (32 - self.ipsc!.maskBits)
+                            for index in (0...(Int(truncating: NSDecimalNumber(decimal: pow(2, self.slideFLSM.integerValue))) - 1)) {
+                                let ipaddr = (subnetid   >> (32 - (self.ipsc!.maskBits + self.slideFLSM.integerValue)) + UInt32(index)) << (32 - (self.ipsc!.maskBits + self.slideFLSM.integerValue))
+                                let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: ipaddr), maskbits: (self.ipsc!.maskBits + self.slideFLSM.integerValue))
+                                if (ipsc_tmp != nil) {
+                                    cvsStr.append("\(index + 1);\(ipsc_tmp!.subnetId());\(self.ipsc!.maskBits + self.slideFLSM.integerValue);\(ipsc_tmp!.subnetRange());\(ipsc_tmp!.subnetBroadcast())\n")
+                                }
+                            }
+                            cvsData.append(cvsStr.data(using: String.Encoding.ascii)!)
+                            cvsFile!.write(cvsData)
+                            cvsFile!.synchronizeFile()
+                            cvsFile!.closeFile()
+                        }
+                    }
+                }
+                )
+            }
+            else {
+                myAlert(message: "Cannot not export FLSM Info", info: "Mask bits \(ipsc!.maskBits) > 29")
+            }
+        }
+    }
+    
+    @IBAction func exportVLSM(_ sender: AnyObject)
+    {
+        if (ipsc != nil) {
+            if (subnetsVLSM.count != 0) {
+                let panel = NSSavePanel()
+                panel.allowedFileTypes = ["csv"]
+                panel.begin(completionHandler: { (result) in
+                    if (result == NSApplication.ModalResponse.OK && panel.url != nil) {
+                        var fileMgt: FileManager
+                        if #available(OSX 10.14, *) {
+                            fileMgt = FileManager(authorization: NSWorkspace.Authorization())
+                        } else {
+                            // Fallback on earlier versions
+                            fileMgt = FileManager.default
+                        }
+                        fileMgt.createFile(atPath: panel.url!.path, contents: nil, attributes: nil)
+                        //var cvsData = NSMutableData.init(capacity: Constants.BUFFER_LINES)
+                        var cvsData = Data(capacity: Constants.BUFFER_LINES)
+                        let cvsFile = FileHandle(forWritingAtPath: panel.url!.path)
+                        if (cvsFile != nil) {
+                            var cvsStr = "#;Subnet ID;Mask bits;Subnet Name;Used\n"
+                            let subnetid = IPSubnetCalc.numerize(ipAddress: self.ipsc!.subnetId())
+                            for index in (0...(self.subnetsVLSM.count - 1)) {
+                                var subnet = subnetid
+                                if (index > 0) {
+                                    for index2 in (0...(index - 1)) {
+                                        subnet = subnet + ~IPSubnetCalc.numerize(maskbits: self.subnetsVLSM[index2].0) + 1
+                                    }
+                                }
+                                //print("VLSM: \(index + 1);\(IPSubnetCalc.digitize(ipAddress: subnet));\(self.subnetsVLSM[index].0);\(self.subnetsVLSM[index].1);\(self.subnetsVLSM[index].2)\n")
+                                cvsStr.append("\(index + 1);\(IPSubnetCalc.digitize(ipAddress: subnet));\(self.subnetsVLSM[index].0);\(self.subnetsVLSM[index].1);\(self.subnetsVLSM[index].2)\n")
+                            }
+                            cvsData.append(cvsStr.data(using: String.Encoding.ascii)!)
+                            cvsFile!.write(cvsData)
+                            cvsFile!.synchronizeFile()
+                            cvsFile!.closeFile()
+                        }
+                    }
+                }
+                )
+            }
+            else {
+                myAlert(message: "Cannot not export VLSM Info", info: "No subnet")
+            }
         }
     }
     
