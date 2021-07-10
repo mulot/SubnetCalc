@@ -933,38 +933,38 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             (maskbits, hosts) = IPSubnetCalc.fittingSubnet(hosts: UInt(requiredHostsVLSM.integerValue))
             if (maskbits != 0) {
                 used = (requiredHostsVLSM.integerValue * 100) / Int(hosts)
-                print("VLSM fitting subnet mask: \(maskbits) with \(hosts) max hosts")
+                //print("VLSM fitting subnet mask: \(maskbits) with \(hosts) max hosts")
                 if (subnetsVLSM.count != 0) {
-                    print("VLSM subnets NOT empty")
-                    print("Mask VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM)) Maskbits: \(IPSubnetCalc.digitize(ipAddress: ~IPSubnetCalc.numerize(maskbits: maskbits)))")
+                    //print("VLSM subnets NOT empty")
+                    //print("Mask VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM)) Maskbits: \(IPSubnetCalc.digitize(ipAddress: ~IPSubnetCalc.numerize(maskbits: maskbits)))")
                     if (globalMaskVLSM > ~IPSubnetCalc.numerize(maskbits: maskbits)) {
                         globalMaskVLSM = globalMaskVLSM - (~IPSubnetCalc.numerize(maskbits: maskbits) + 1)
-                    print("Mask AFTER VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM))")
-                    if let index = subnetsVLSM.firstIndex(where: { $0.0 > maskbits }) {
-                        subnetsVLSM.insert((maskbits, subnetNameVLSM.stringValue, "\(requiredHostsVLSM.stringValue)/\(hosts) (\(used)%)"), at: index)
-                    }
-                    else {
-                        subnetsVLSM.append((maskbits, subnetNameVLSM.stringValue, "\(requiredHostsVLSM.stringValue)/\(hosts) (\(used)%)"))
-                    }
-                    //subnetsVLSM.append(("dsds", maskbits, subnetNameVLSM.stringValue, "\(requiredHostsVLSM.stringValue)/\(hosts) (\(used)%)"))
+                        //print("Mask AFTER VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM))")
+                        if let index = subnetsVLSM.firstIndex(where: { $0.0 > maskbits }) {
+                            subnetsVLSM.insert((maskbits, subnetNameVLSM.stringValue, "\(requiredHostsVLSM.stringValue)/\(hosts) (\(used)%)"), at: index)
+                        }
+                        else {
+                            subnetsVLSM.append((maskbits, subnetNameVLSM.stringValue, "\(requiredHostsVLSM.stringValue)/\(hosts) (\(used)%)"))
+                        }
+                        //subnetsVLSM.append(("dsds", maskbits, subnetNameVLSM.stringValue, "\(requiredHostsVLSM.stringValue)/\(hosts) (\(used)%)"))
                     }
                     else {
                         myAlert(message: "No space for Hosts requirement", info: "\(requiredHostsVLSM.integerValue) hosts require /\(maskbits) Mask bits")
                     }
                 }
                 else {
-                    print("VLSM subnets empty")
+                    //print("VLSM subnets empty")
                     globalMaskVLSM = ~IPSubnetCalc.numerize(maskbits: ipsc!.maskBits) + 1
-                    print("Mask VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM)) Maskbits: \(IPSubnetCalc.digitize(ipAddress: ~IPSubnetCalc.numerize(maskbits: maskbits)))")
+                    //print("Mask VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM)) Maskbits: \(IPSubnetCalc.digitize(ipAddress: ~IPSubnetCalc.numerize(maskbits: maskbits)))")
                     if (globalMaskVLSM > ~IPSubnetCalc.numerize(maskbits: maskbits)) {
-                    globalMaskVLSM = globalMaskVLSM - (~IPSubnetCalc.numerize(maskbits: maskbits) + 1)
-                    print("Mask AFTER VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM))")
+                        globalMaskVLSM = globalMaskVLSM - (~IPSubnetCalc.numerize(maskbits: maskbits) + 1)
+                        //print("Mask AFTER VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM))")
                         subnetsVLSM.append((maskbits, subnetNameVLSM.stringValue, "\(requiredHostsVLSM.stringValue)/\(hosts) (\(used)%)"))
                     }
                     else {
                         myAlert(message: "No space for Hosts requirement", info: "\(requiredHostsVLSM.integerValue) hosts require /\(maskbits) Mask bits")
                     }
-                        
+                    
                 }
                 viewVLSM.reloadData()
             }
@@ -974,6 +974,17 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         requiredHostsVLSM.stringValue = ""
         subnetNameVLSM.stringValue = ""
+    }
+    
+    @IBAction func deleteSubnetVLSM(_ sender: AnyObject)
+    {
+        if (subnetsVLSM.count != 0) {
+            if (viewVLSM.selectedRow != -1) {
+                //print ("Row : \(viewVLSM.selectedRow)")
+                subnetsVLSM.remove(at: viewVLSM.selectedRow)
+                viewVLSM.reloadData()
+            }
+        }
     }
     
     @IBAction func clearSubnetsVLSM(_ sender: AnyObject) {
