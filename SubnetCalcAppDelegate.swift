@@ -270,6 +270,8 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     {
         if (ipsc != nil) {
             maskBitsVLSMCombo.selectItem(withObjectValue: String(ipsc!.maskBits))
+            //globalMaskVLSM = ~IPSubnetCalc.numerize(maskbits: ipsc!.maskBits) + 1
+            subnetsVLSM.removeAll()
             viewVLSM.reloadData()
         }
     }
@@ -933,11 +935,11 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 used = (requiredHostsVLSM.integerValue * 100) / Int(hosts)
                 //print("VLSM fitting subnet mask: \(maskbits) with \(hosts) max hosts")
                 if (subnetsVLSM.count != 0) {
-                    //print("VLSM subnets NOT empty")
-                    //print("Mask VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM)) Maskbits: \(IPSubnetCalc.digitize(ipAddress: ~IPSubnetCalc.numerize(maskbits: maskbits)))")
-                    if (globalMaskVLSM > (~IPSubnetCalc.numerize(maskbits: maskbits) + 1)) {
-                        globalMaskVLSM = globalMaskVLSM - ~IPSubnetCalc.numerize(maskbits: maskbits)
-                    //print("Mask AFTER VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM))")
+                    print("VLSM subnets NOT empty")
+                    print("Mask VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM)) Maskbits: \(IPSubnetCalc.digitize(ipAddress: ~IPSubnetCalc.numerize(maskbits: maskbits)))")
+                    if (globalMaskVLSM > ~IPSubnetCalc.numerize(maskbits: maskbits)) {
+                        globalMaskVLSM = globalMaskVLSM - (~IPSubnetCalc.numerize(maskbits: maskbits) + 1)
+                    print("Mask AFTER VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM))")
                     if let index = subnetsVLSM.firstIndex(where: { $0.0 > maskbits }) {
                         subnetsVLSM.insert((maskbits, subnetNameVLSM.stringValue, "\(requiredHostsVLSM.stringValue)/\(hosts) (\(used)%)"), at: index)
                     }
@@ -951,14 +953,14 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                     }
                 }
                 else {
-                    //print("VLSM subnets empty")
-                    globalMaskVLSM = ~IPSubnetCalc.numerize(maskbits: ipsc!.maskBits)
-                    //print("Mask VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM))")
-                    globalMaskVLSM = globalMaskVLSM - ~IPSubnetCalc.numerize(maskbits: maskbits)
-                    //print("Mask AFTER VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM))")
+                    print("VLSM subnets empty")
+                    globalMaskVLSM = ~IPSubnetCalc.numerize(maskbits: ipsc!.maskBits) + 1
+                    print("Mask VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM))")
+                    globalMaskVLSM = globalMaskVLSM - (~IPSubnetCalc.numerize(maskbits: maskbits) + 1)
+                    print("Mask AFTER VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM))")
                     subnetsVLSM.append((maskbits, subnetNameVLSM.stringValue, "\(requiredHostsVLSM.stringValue)/\(hosts) (\(used)%)"))
                 }
-                self.doVLSM()
+                viewVLSM.reloadData()
             }
         }
         else {
