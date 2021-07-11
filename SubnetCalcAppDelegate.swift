@@ -281,8 +281,11 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 else {
                     myAlert(message: "Mask bits too small", info: "Mask bits doest not suit all VLSM hosts requirements")
                 }
-                viewVLSM.reloadData()
             }
+            else {
+                globalMaskVLSM = maskVLSM
+            }
+            viewVLSM.reloadData()
         }
     }
     
