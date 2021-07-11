@@ -82,7 +82,6 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     
     
     //Private global vars
-    private var savedTabView: [NSTabViewItem]? //ex tab_tabView
     private var ipsc: IPSubnetCalc?
     private var subnetsVLSM = [(Int, String, String)]()
     private var globalMaskVLSM: UInt32!
@@ -173,15 +172,6 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         else if (c == "D")
         {
             classType.selectItem(at: 3)
-            /*
-             savedTabView = tabView.tabViewItems
-             if (savedTabView != nil)
-             {
-             tabView.removeTabViewItem(savedTabView![1])
-             tabView.removeTabViewItem(savedTabView![2])
-             tabView.removeTabViewItem(savedTabView![3])
-             }
-             */
         }
         else if (c == "E")
         {
@@ -380,13 +370,6 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 ipsc = IPSubnetCalc(ipAddress: ipaddr, maskbits: Int(ipmask!)!)
             }
             if (ipsc != nil) {
-                if (tabView.numberOfTabViewItems != 6 && savedTabView != nil) {
-                    tabView.addTabViewItem(savedTabView![1])
-                    tabView.addTabViewItem(savedTabView![2])
-                    tabView.addTabViewItem(savedTabView![3])
-                    tabView.addTabViewItem(savedTabView![4])
-                    tabView.addTabViewItem(savedTabView![5])
-                }
                 self.doAddressMap()
                 self.doSubnet()
                 self.doSubnetHost()
@@ -484,13 +467,6 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             //print("IP Address: \(ipaddr) mask: \(ipmask)")
             ipsc = IPSubnetCalc(ipv6: ipaddr, maskbits: Int(ipmask!)!)
             if (ipsc != nil) {
-                if (tabView.numberOfTabViewItems != 6 && savedTabView != nil) {
-                    tabView.addTabViewItem(savedTabView![1])
-                    tabView.addTabViewItem(savedTabView![2])
-                    tabView.addTabViewItem(savedTabView![3])
-                    tabView.addTabViewItem(savedTabView![4])
-                    tabView.addTabViewItem(savedTabView![5])
-                }
                 self.doAddressMap()
                 self.doSubnet()
                 self.doSubnetHost()
@@ -510,13 +486,6 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     //IPv4 UI actions
     @IBAction func changeAddrClassType(_ sender: AnyObject)
     {
-        if (tabView.numberOfTabViewItems != 6 && savedTabView != nil) {
-            tabView.addTabViewItem(savedTabView![1])
-            tabView.addTabViewItem(savedTabView![2])
-            tabView.addTabViewItem(savedTabView![3])
-            tabView.addTabViewItem(savedTabView![4])
-            tabView.addTabViewItem(savedTabView![5])
-        }
         if (sender.indexOfSelectedItem() == 0)
         {
             classBitMap.stringValue = "nnnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh"
@@ -537,30 +506,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         else if (sender.indexOfSelectedItem() == 3)
         {
-            /*
-             savedTabView = tabView.tabViewItems
-             if (savedTabView != nil)
-             {
-             tabView.removeTabViewItem(savedTabView![1])
-             tabView.removeTabViewItem(savedTabView![2])
-             tabView.removeTabViewItem(savedTabView![3])
-             }
-             */
             classBitMap.stringValue = "hhhhhhhh.hhhhhhhh.hhhhhhhh.hhhhhhhh"
             classBinaryMap.stringValue = "11100000.00000000.00000000.00000000"
             classHexaMap.stringValue = "E0.00.00.00"
         }
         else if (sender.indexOfSelectedItem() == 4)
         {
-            /*
-             savedTabView = tabView.tabViewItems
-             if (savedTabView != nil)
-             {
-             tabView.removeTabViewItem(savedTabView![1])
-             tabView.removeTabViewItem(savedTabView![2])
-             tabView.removeTabViewItem(savedTabView![3])
-             }
-             */
             classBitMap.stringValue = "hhhhhhhh.hhhhhhhh.hhhhhhhh.hhhhhhhh"
             classBinaryMap.stringValue = "11110000.00000000.00000000.00000000"
             classHexaMap.stringValue = "F0.00.00.00"
