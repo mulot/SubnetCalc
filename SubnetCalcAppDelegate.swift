@@ -85,7 +85,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     private var savedTabView: [NSTabViewItem]? //ex tab_tabView
     private var ipsc: IPSubnetCalc?
     private var subnetsVLSM = [(Int, String, String)]()
-    private var globalMaskVLSM: UInt32 = IPSubnetCalc.Constants.addr32Empty
+    private var globalMaskVLSM: UInt32!
     
     
     //Private IPv4 functions
@@ -269,10 +269,30 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     private func doVLSM()
     {
         if (ipsc != nil) {
+            //print("doVLSM")
             maskBitsVLSMCombo.selectItem(withObjectValue: String(ipsc!.maskBits))
-            //globalMaskVLSM = ~IPSubnetCalc.numerize(maskbits: ipsc!.maskBits) + 1
-            subnetsVLSM.removeAll()
-            viewVLSM.reloadData()
+            var maskVLSM = ~IPSubnetCalc.numerize(maskbits: ipsc!.maskBits) + 1
+            if (subnetsVLSM.count != 0) {
+                var fitsRequirements = true
+                for index in (0...(subnetsVLSM.count - 1)) {
+                    let maskbits = subnetsVLSM[index].0
+                    //print("Mask VLSM: \(IPSubnetCalc.digitize(ipAddress: maskVLSM)) Maskbits: \(IPSubnetCalc.digitize(ipAddress: ~IPSubnetCalc.numerize(maskbits: maskbits)))")
+                    if (maskVLSM > ~IPSubnetCalc.numerize(maskbits: maskbits)) {
+                        maskVLSM = maskVLSM - (~IPSubnetCalc.numerize(maskbits: maskbits) + 1)
+                        //print("Mask AFTER VLSM: \(IPSubnetCalc.digitize(ipAddress: maskVLSM))")
+                    }
+                    else {
+                        fitsRequirements = false
+                    }
+                }
+                if (fitsRequirements) {
+                    globalMaskVLSM = maskVLSM
+                }
+                else {
+                    myAlert(message: "Mask bits too small", info: "Mask bits doest not suit all VLSM hosts requirements")
+                }
+                viewVLSM.reloadData()
+            }
         }
     }
     
@@ -982,7 +1002,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             if (viewVLSM.selectedRow != -1) {
                 //print ("Row : \(viewVLSM.selectedRow)")
                 subnetsVLSM.remove(at: viewVLSM.selectedRow)
-                viewVLSM.reloadData()
+                doVLSM()
             }
         }
     }
