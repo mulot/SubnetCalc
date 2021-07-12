@@ -814,7 +814,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                         return (ipsc_tmp!.subnetId())
                     }
                     else if (tableColumn!.identifier.rawValue == "maskFLSMCol") {
-                        return ("/\(ipsc!.maskBits + slideFLSM.integerValue)")
+                        return (ipsc!.maskBits + slideFLSM.integerValue)
                     }
                     else if (tableColumn!.identifier.rawValue == "rangeFLSMCol") {
                         return (ipsc_tmp!.subnetRange())
