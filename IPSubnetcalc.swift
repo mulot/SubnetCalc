@@ -502,6 +502,19 @@ class IPSubnetCalc: NSObject {
         return (bitMap)
     }
     
+    // return maskbits and number of max hosts for this mask
+    static func fittingSubnet(hosts: UInt) -> (Int, UInt) {
+        var maxHosts: UInt
+        
+        for index in 1...31 {
+            maxHosts = UInt(truncating: NSDecimalNumber(decimal: pow(2, index))) - 2
+            if (hosts <= maxHosts) {
+                return (32 - index, maxHosts)
+            }
+        }
+        return (0, 0)
+    }
+    
     func displayIPInfo() {
         print("IP Host : " + self.ipv4Address)
         print("Mask bits : \(self.maskBits)")
@@ -548,39 +561,39 @@ class IPSubnetCalc: NSObject {
         
         ip4Hex = ipAddress.components(separatedBy: ":")
         if (ip4Hex == nil) {
-            print("\(ipAddress) invalid")
+            //print("\(ipAddress) invalid")
             return false
         }
         if (ip4Hex!.count != 8) {
-            print("no 8 hex")
+            //print("no 8 hex")
             if (ipAddress.contains("::"))
             {
                 if (ipAddress.components(separatedBy: "::").count > 2) {
-                    print("too many '::'")
+                    //print("too many '::'")
                     return false
                 }
             }
             else {
-                print("IPv6 \(ipAddress) bad format")
+                //print("IPv6 \(ipAddress) bad format")
                 return false
             }
         }
         for index in 0...(ip4Hex!.count - 1) {
             //print("Index : \(index) IPHex : \(ip4Hex[index]) Dec : \(String(UInt16(ip4Hex[index], radix: 16)!, radix: 16))")
             if (ip4Hex![index].count > 4 && ip4Hex![index].count != 0) {
-                print("\(ip4Hex![index]) too large")
+                //print("\(ip4Hex![index]) too large")
                 return false
             }
             hex = UInt16(ip4Hex![index], radix: 16)
             if hex != nil {
                 if (hex! < 0 || hex! > 0xFFFF) {
-                    print("\(hex!) is invalid")
+                    //print("\(hex!) is invalid")
                     return false
                 }
             }
             else {
                 if (ip4Hex![index] != "") {
-                    print("\(ip4Hex![index]) not an integer")
+                    //print("\(ip4Hex![index]) not an integer")
                     return false
                 }
             }
