@@ -776,14 +776,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         return 0
     }
     
-    //edit a value from a TabView - only for VLSM Subnet Name
+    //Invoked when editing a value from a TabView
+    //Used only for VLSM Subnet Name
     func tableView(_ tableView: NSTableView, setObjectValue object: Any?, for tableColumn: NSTableColumn?, row: Int)
     {
-        print("edit table View")
         if (tableView == viewVLSM) {
-            print("edit table View VLSM")
             if (tableColumn!.identifier.rawValue == "nameVLSMCol") {
-                print("edit tableView Name VLSM: \(row) \(object as! String)")
+                //print("edit tableView Name VLSM: \(row) \(object as! String)")
                 subnetsVLSM[row].1 = object as! String
             }
         }

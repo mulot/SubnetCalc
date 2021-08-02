@@ -1,11 +1,11 @@
 # SubnetCalc
 Subnet Calculator for MacOS 
 
-What's New in version 2.1:
-- FLSM (Fixed Length Subnet Mask) support
-- VLSM (Variable Length Subnet Mask) support
-- Export FSLM result in a CSV file
-- Export VSLM result in a CSV file
+What's New in version 2.2:
+- Can change the VLSM Subnet Name by editing the corresponding column 
+- Add Hosts Range and Broadcast columns to the VLSM view
+- Add Hosts Range and Broadcast VLSM infos to the exported CSV file 
+
 
 
 For more information: http://subnetcalc.mulot.org
