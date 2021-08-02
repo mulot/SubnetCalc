@@ -848,6 +848,32 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                     else if (tableColumn!.identifier.rawValue == "usedVLSMCol") {
                         return (subnetsVLSM[row].2)
                     }
+                    else if (tableColumn!.identifier.rawValue == "rangeVLSMCol") {
+                        var subnet = IPSubnetCalc.numerize(ipAddress: ipsc!.subnetId())
+                        if (row > 0) {
+                            for index in (0...(row - 1)) {
+                                subnet = subnet + ~IPSubnetCalc.numerize(maskbits: subnetsVLSM[index].0) + 1
+                            }
+                        }
+                        let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: subnet), maskbits: (subnetsVLSM[row].0))
+                        if (ipsc_tmp != nil)
+                        {
+                            return (ipsc_tmp!.subnetRange())
+                        }
+                    }
+                    else if (tableColumn!.identifier.rawValue == "broadcastVLSMCol") {
+                        var subnet = IPSubnetCalc.numerize(ipAddress: ipsc!.subnetId())
+                        if (row > 0) {
+                            for index in (0...(row - 1)) {
+                                subnet = subnet + ~IPSubnetCalc.numerize(maskbits: subnetsVLSM[index].0) + 1
+                            }
+                        }
+                        let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: subnet), maskbits: (subnetsVLSM[row].0))
+                        if (ipsc_tmp != nil)
+                        {
+                            return (ipsc_tmp!.subnetBroadcast())
+                        }
+                    }
                 }
             }
         }
@@ -1174,7 +1200,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                         var cvsData = Data(capacity: Constants.BUFFER_LINES)
                         let cvsFile = FileHandle(forWritingAtPath: panel.url!.path)
                         if (cvsFile != nil) {
-                            var cvsStr = "#;Subnet ID;Mask bits;Subnet Name;Used\n"
+                            var cvsStr = "#;Subnet Name;Subnet ID;Mask bits;Hosts Range;Broadcast;Used\n"
                             let subnetid = IPSubnetCalc.numerize(ipAddress: self.ipsc!.subnetId())
                             for index in (0...(self.subnetsVLSM.count - 1)) {
                                 var subnet = subnetid
@@ -1183,8 +1209,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                                         subnet = subnet + ~IPSubnetCalc.numerize(maskbits: self.subnetsVLSM[index2].0) + 1
                                     }
                                 }
+                                let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: subnet), maskbits: self.subnetsVLSM[index].0)!
                                 //print("VLSM: \(index + 1);\(IPSubnetCalc.digitize(ipAddress: subnet));\(self.subnetsVLSM[index].0);\(self.subnetsVLSM[index].1);\(self.subnetsVLSM[index].2)\n")
-                                cvsStr.append("\(index + 1);\(IPSubnetCalc.digitize(ipAddress: subnet));\(self.subnetsVLSM[index].0);\(self.subnetsVLSM[index].1);\(self.subnetsVLSM[index].2)\n")
+                                cvsStr.append("\(index + 1);\(self.subnetsVLSM[index].1);\(ipsc_tmp.subnetId());\(self.subnetsVLSM[index].0);\(ipsc_tmp.subnetRange());\(ipsc_tmp.subnetBroadcast());\(self.subnetsVLSM[index].2)\n")
                             }
                             cvsData.append(cvsStr.data(using: String.Encoding.ascii)!)
                             cvsFile!.write(cvsData)
