@@ -1,10 +1,9 @@
 # SubnetCalc
 Subnet Calculator for MacOS 
 
-What's New in version 2.2:
-- Change the VLSM Subnet Name by editing the corresponding column 
-- Display Hosts Range and Broadcast columns in the VLSM view
-- Export Hosts Range and Broadcast infos to the CSV file 
+What's New in version 2.3:
+- FLSM subnet ID bug fix
+
 
 
 
