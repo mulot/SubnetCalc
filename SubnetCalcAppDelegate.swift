@@ -815,7 +815,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
             else if (tableView == viewFLSM) {
                 //print("refresh View FLSM")
-                var ipaddr: UInt32 = ((IPSubnetCalc.numerize(ipAddress: ipsc!.ipv4Address) & ipsc!.classMask()) >> (32 - ipsc!.maskBits)) << (32 - ipsc!.maskBits)
+                var ipaddr: UInt32 = ((IPSubnetCalc.numerize(ipAddress: ipsc!.ipv4Address) & IPSubnetCalc.numerize(maskbits: ipsc!.maskBits)) >> (32 - ipsc!.maskBits)) << (32 - ipsc!.maskBits)
                 ipaddr = (ipaddr >> (32 - (ipsc!.maskBits + slideFLSM.integerValue)) + UInt32(row)) << (32 - (ipsc!.maskBits + slideFLSM.integerValue))
                 let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: ipaddr), maskbits: (ipsc!.maskBits + slideFLSM.integerValue))
                 if (tableColumn != nil && ipsc_tmp != nil) {
@@ -1169,7 +1169,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                         let cvsFile = FileHandle(forWritingAtPath: panel.url!.path)
                         if (cvsFile != nil) {
                             var cvsStr = "#;Subnet ID;Mask bits;Range;Broadcast\n"
-                            let subnetid: UInt32 = ((IPSubnetCalc.numerize(ipAddress: self.ipsc!.ipv4Address) & self.ipsc!.classMask()) >> (32 - self.ipsc!.maskBits)) << (32 - self.ipsc!.maskBits)
+                            let subnetid: UInt32 = ((IPSubnetCalc.numerize(ipAddress: self.ipsc!.ipv4Address) & IPSubnetCalc.numerize(maskbits: self.ipsc!.maskBits)) >> (32 - self.ipsc!.maskBits)) << (32 - self.ipsc!.maskBits)
                             for index in (0...(Int(truncating: NSDecimalNumber(decimal: pow(2, self.slideFLSM.integerValue))) - 1)) {
                                 let ipaddr = (subnetid   >> (32 - (self.ipsc!.maskBits + self.slideFLSM.integerValue)) + UInt32(index)) << (32 - (self.ipsc!.maskBits + self.slideFLSM.integerValue))
                                 let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: ipaddr), maskbits: (self.ipsc!.maskBits + self.slideFLSM.integerValue))
