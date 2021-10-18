@@ -19,8 +19,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         static let NETWORK_BITS_MIN:Int = 8
         static let NETWORK_BITS_MAX:Int = 32
     }
-    
+    //*******************
     //General UI elements
+    //*******************
     @IBOutlet var window: NSWindow!
     @IBOutlet var addrField: NSTextField!
     @IBOutlet var exportButton: NSPopUpButton!
@@ -28,7 +29,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     @IBOutlet var darkModeMenu: NSMenuItem!
     @IBOutlet var NSApp: NSApplication!
     
+    //****************
     //IPv4 UI elements
+    //****************
     @IBOutlet var classBinaryMap: NSTextField!
     @IBOutlet var classBitMap: NSTextField!
     @IBOutlet var classHexaMap: NSTextField!
@@ -65,7 +68,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     @IBOutlet var subnetNameVLSM: NSTextField!
     @IBOutlet var viewVLSM: NSTableView!
     
+    //****************
     //IPv6 UI elements
+    //****************
     @IBOutlet var ipv6Address: NSTextField!
     @IBOutlet var ipv6to4Address: NSTextField!
     @IBOutlet var ipv6maskBitsCombo: NSComboBox!
@@ -80,14 +85,16 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     @IBOutlet var ipv6Compact: NSButton!
     @IBOutlet var ipv6to4Box: NSBox!
     
-    
+    //*******************
     //Private global vars
+    //*******************
     private var ipsc: IPSubnetCalc?
     private var subnetsVLSM = [(Int, String, String)]()
     private var globalMaskVLSM: UInt32!
     
-    
+    //**********************
     //Private IPv4 functions
+    //**********************
     private func initCIDRTab() {
         for bits in (1...32) {
             supernetMaskBitsCombo.addItem(withObjectValue: String(bits))
@@ -388,7 +395,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    //**********************
     //Private IPv6 functions
+    //**********************
     private func initIPv6Tab() {
         var total = Decimal()
         var number: Decimal = 2
@@ -485,8 +494,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
-    
+    //***************
     //IPv4 UI actions
+    //***************
     @IBAction func changeAddrClassType(_ sender: AnyObject)
     {
         if (sender.indexOfSelectedItem() == 0)
@@ -776,8 +786,18 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         return 0
     }
     
-    //Invoked when editing a value from a TabView
-    //Used only for VLSM Subnet Name
+    /**
+     Invoked when editing a value from a TabView
+     
+     Used only for VLSM Subnet Name
+     
+     - Parameters:
+        - tableView: NSTableView
+        - object:  new String value for the edited object
+        - tableColumn: Optionnal Column
+        - row: row index
+     
+     */
     func tableView(_ tableView: NSTableView, setObjectValue object: Any?, for tableColumn: NSTableColumn?, row: Int)
     {
         if (tableView == viewVLSM) {
@@ -788,7 +808,17 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
-    //Display all subnets info in the TableView Subnet/Hosts
+    /**
+     Display all subnets info in the TableView Subnet/Hosts
+          
+     - Parameters:
+        - tableView: NSTableView
+        - tableColumn: Optionnal Column
+        - row: row index
+     
+     - Returns:
+     Object to display for the correponding column and row
+     */
     func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?,
                    row: Int) -> Any?
     {
@@ -1043,7 +1073,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         self.doAddressMap()
     }
     
+    //***************
     //IPv6 UI actions
+    //***************
     @IBAction func changeIPv6Format(_ sender: AnyObject)
     {
         self.doIPv6()
@@ -1091,7 +1123,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    //******************
     //General UI actions
+    //******************
     @IBAction func calc(_ sender: AnyObject)
     {
         if (addrField.stringValue.contains(":")) {
