@@ -94,7 +94,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         
         for index in (0...31).reversed() {
-            supernetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: (IPSubnetCalc.Constants.addr32Full << index)))
+            supernetMaskCombo.addItem(withObjectValue: IPSubnetCalc.dottedDecimal(ipAddress: (IPSubnetCalc.Constants.addr32Full << index)))
         }
         for index in (0...31) {
             supernetMaxCombo.addItem(withObjectValue: NSDecimalNumber(decimal: pow(2, index)).stringValue)
@@ -110,10 +110,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     private func initSubnetsTab() {
         for index in (0...24).reversed() {
             if (wildcard.state == NSControl.StateValue.on) {
-                subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: ~(IPSubnetCalc.Constants.addr32Full << index)))
+                subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.dottedDecimal(ipAddress: ~(IPSubnetCalc.Constants.addr32Full << index)))
             }
             else {
-                subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: (IPSubnetCalc.Constants.addr32Full << index)))
+                subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.dottedDecimal(ipAddress: (IPSubnetCalc.Constants.addr32Full << index)))
             }
         }
         for bits in (8...32) {
@@ -261,14 +261,14 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         if (ipsc != nil) {
             //print("doVLSM")
             maskBitsVLSMCombo.selectItem(withObjectValue: String(ipsc!.maskBits))
-            var maskVLSM = ~IPSubnetCalc.numerize(maskbits: ipsc!.maskBits) + 1
+            var maskVLSM = ~IPSubnetCalc.digitize(maskbits: ipsc!.maskBits) + 1
             if (subnetsVLSM.count != 0) {
                 var fitsRequirements = true
                 for index in (0...(subnetsVLSM.count - 1)) {
                     let maskbits = subnetsVLSM[index].0
                     //print("Mask VLSM: \(IPSubnetCalc.digitize(ipAddress: maskVLSM)) Maskbits: \(IPSubnetCalc.digitize(ipAddress: ~IPSubnetCalc.numerize(maskbits: maskbits)))")
-                    if (maskVLSM > ~IPSubnetCalc.numerize(maskbits: maskbits)) {
-                        maskVLSM = maskVLSM - (~IPSubnetCalc.numerize(maskbits: maskbits) + 1)
+                    if (maskVLSM > ~IPSubnetCalc.digitize(maskbits: maskbits)) {
+                        maskVLSM = maskVLSM - (~IPSubnetCalc.digitize(maskbits: maskbits) + 1)
                         //print("Mask AFTER VLSM: \(IPSubnetCalc.digitize(ipAddress: maskVLSM))")
                     }
                     else {
@@ -577,7 +577,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         // Check cast as String needed ?
         if let maskStr = sender.objectValueOfSelectedItem as? String {
-            let mask:UInt32 = IPSubnetCalc.numerize(ipAddress: maskStr)
+            let mask:UInt32 = IPSubnetCalc.digitize(ipAddress: maskStr)
             if (wildcard.state == NSControl.StateValue.on) {
                 ipsc!.maskBits = IPSubnetCalc.maskBits(mask: ~mask)
             }
@@ -649,7 +649,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             ipsc = IPSubnetCalc(Constants.defaultIP)
         }
         if let maskStr = sender.objectValueOfSelectedItem as? String {
-            let mask:UInt32 = IPSubnetCalc.numerize(ipAddress: maskStr)
+            let mask:UInt32 = IPSubnetCalc.digitize(ipAddress: maskStr)
             let maskbits:Int = IPSubnetCalc.maskBits(mask: mask)
             let classType = ipsc!.netClass()
             var result: Int = -1
@@ -795,8 +795,8 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         if (ipsc != nil) {
             //print("Refresh TableView: \(String(describing: tableView.identifier))")
             if (tableView == subnetsHostsView) {
-                let ipaddr: UInt32 = (((IPSubnetCalc.numerize(ipAddress: ipsc!.ipv4Address) & ipsc!.classMask()) >> (32 - ipsc!.maskBits)) + UInt32(row)) << (32 - ipsc!.maskBits)
-                let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: ipaddr), maskbits: ipsc!.maskBits)
+                let ipaddr: UInt32 = (((IPSubnetCalc.digitize(ipAddress: ipsc!.ipv4Address) & ipsc!.classMask()) >> (32 - ipsc!.maskBits)) + UInt32(row)) << (32 - ipsc!.maskBits)
+                let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.dottedDecimal(ipAddress: ipaddr), maskbits: ipsc!.maskBits)
                 //print("tableView Row: \(row) IP num : \(ipaddr) IP: \(IPSubnetCalc.digitize(ipAddress: ipaddr)) IP Subnet: \(ipsc_tmp!.subnetId())")
                 if (tableColumn != nil && ipsc_tmp != nil) {
                     if (tableColumn!.identifier.rawValue == "numCol") {
@@ -815,9 +815,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
             else if (tableView == viewFLSM) {
                 //print("refresh View FLSM")
-                var ipaddr: UInt32 = ((IPSubnetCalc.numerize(ipAddress: ipsc!.ipv4Address) & IPSubnetCalc.numerize(maskbits: ipsc!.maskBits)) >> (32 - ipsc!.maskBits)) << (32 - ipsc!.maskBits)
+                var ipaddr: UInt32 = ((IPSubnetCalc.digitize(ipAddress: ipsc!.ipv4Address) & IPSubnetCalc.digitize(maskbits: ipsc!.maskBits)) >> (32 - ipsc!.maskBits)) << (32 - ipsc!.maskBits)
                 ipaddr = (ipaddr >> (32 - (ipsc!.maskBits + slideFLSM.integerValue)) + UInt32(row)) << (32 - (ipsc!.maskBits + slideFLSM.integerValue))
-                let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: ipaddr), maskbits: (ipsc!.maskBits + slideFLSM.integerValue))
+                let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.dottedDecimal(ipAddress: ipaddr), maskbits: (ipsc!.maskBits + slideFLSM.integerValue))
                 if (tableColumn != nil && ipsc_tmp != nil) {
                     if (tableColumn!.identifier.rawValue == "numFLSMCol") {
                         return (row + 1)
@@ -843,13 +843,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                         return (row + 1)
                     }
                     else if (tableColumn!.identifier.rawValue == "subnetVLSMCol") {
-                        var subnet = IPSubnetCalc.numerize(ipAddress: ipsc!.subnetId())
+                        var subnet = IPSubnetCalc.digitize(ipAddress: ipsc!.subnetId())
                         if (row > 0) {
                             for index in (0...(row - 1)) {
-                                subnet = subnet + ~IPSubnetCalc.numerize(maskbits: subnetsVLSM[index].0) + 1
+                                subnet = subnet + ~IPSubnetCalc.digitize(maskbits: subnetsVLSM[index].0) + 1
                             }
                         }
-                        return (IPSubnetCalc.digitize(ipAddress: subnet))
+                        return (IPSubnetCalc.dottedDecimal(ipAddress: subnet))
                     }
                     else if (tableColumn!.identifier.rawValue == "maskVLSMCol") {
                         return (subnetsVLSM[row].0)
@@ -861,26 +861,26 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                         return (subnetsVLSM[row].2)
                     }
                     else if (tableColumn!.identifier.rawValue == "rangeVLSMCol") {
-                        var subnet = IPSubnetCalc.numerize(ipAddress: ipsc!.subnetId())
+                        var subnet = IPSubnetCalc.digitize(ipAddress: ipsc!.subnetId())
                         if (row > 0) {
                             for index in (0...(row - 1)) {
-                                subnet = subnet + ~IPSubnetCalc.numerize(maskbits: subnetsVLSM[index].0) + 1
+                                subnet = subnet + ~IPSubnetCalc.digitize(maskbits: subnetsVLSM[index].0) + 1
                             }
                         }
-                        let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: subnet), maskbits: (subnetsVLSM[row].0))
+                        let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.dottedDecimal(ipAddress: subnet), maskbits: (subnetsVLSM[row].0))
                         if (ipsc_tmp != nil)
                         {
                             return (ipsc_tmp!.subnetRange())
                         }
                     }
                     else if (tableColumn!.identifier.rawValue == "broadcastVLSMCol") {
-                        var subnet = IPSubnetCalc.numerize(ipAddress: ipsc!.subnetId())
+                        var subnet = IPSubnetCalc.digitize(ipAddress: ipsc!.subnetId())
                         if (row > 0) {
                             for index in (0...(row - 1)) {
-                                subnet = subnet + ~IPSubnetCalc.numerize(maskbits: subnetsVLSM[index].0) + 1
+                                subnet = subnet + ~IPSubnetCalc.digitize(maskbits: subnetsVLSM[index].0) + 1
                             }
                         }
-                        let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: subnet), maskbits: (subnetsVLSM[row].0))
+                        let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.dottedDecimal(ipAddress: subnet), maskbits: (subnetsVLSM[row].0))
                         if (ipsc_tmp != nil)
                         {
                             return (ipsc_tmp!.subnetBroadcast())
@@ -949,8 +949,8 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 if (subnetsVLSM.count != 0) {
                     //print("VLSM subnets NOT empty")
                     //print("Mask VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM)) Maskbits: \(IPSubnetCalc.digitize(ipAddress: ~IPSubnetCalc.numerize(maskbits: maskbits)))")
-                    if (globalMaskVLSM > ~IPSubnetCalc.numerize(maskbits: maskbits)) {
-                        globalMaskVLSM = globalMaskVLSM - (~IPSubnetCalc.numerize(maskbits: maskbits) + 1)
+                    if (globalMaskVLSM > ~IPSubnetCalc.digitize(maskbits: maskbits)) {
+                        globalMaskVLSM = globalMaskVLSM - (~IPSubnetCalc.digitize(maskbits: maskbits) + 1)
                         //print("Mask AFTER VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM))")
                         if let index = subnetsVLSM.firstIndex(where: { $0.0 > maskbits }) {
                             subnetsVLSM.insert((maskbits, subnetNameVLSM.stringValue, "\(requiredHostsVLSM.stringValue)/\(hosts) (\(used)%)"), at: index)
@@ -966,10 +966,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 }
                 else {
                     //print("VLSM subnets empty")
-                    globalMaskVLSM = ~IPSubnetCalc.numerize(maskbits: ipsc!.maskBits) + 1
+                    globalMaskVLSM = ~IPSubnetCalc.digitize(maskbits: ipsc!.maskBits) + 1
                     //print("Mask VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM)) Maskbits: \(IPSubnetCalc.digitize(ipAddress: ~IPSubnetCalc.numerize(maskbits: maskbits)))")
-                    if (globalMaskVLSM > ~IPSubnetCalc.numerize(maskbits: maskbits)) {
-                        globalMaskVLSM = globalMaskVLSM - (~IPSubnetCalc.numerize(maskbits: maskbits) + 1)
+                    if (globalMaskVLSM > ~IPSubnetCalc.digitize(maskbits: maskbits)) {
+                        globalMaskVLSM = globalMaskVLSM - (~IPSubnetCalc.digitize(maskbits: maskbits) + 1)
                         //print("Mask AFTER VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM))")
                         subnetsVLSM.append((maskbits, subnetNameVLSM.stringValue, "\(requiredHostsVLSM.stringValue)/\(hosts) (\(used)%)"))
                     }
@@ -1022,7 +1022,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         subnetMaskCombo.removeAllItems()
         if (wildcard.state == NSControl.StateValue.on) {
             for index in (0...24).reversed() {
-                subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: ~(IPSubnetCalc.Constants.addr32Full << index)))
+                subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.dottedDecimal(ipAddress: ~(IPSubnetCalc.Constants.addr32Full << index)))
             }
             if (ipsc != nil) {
                 subnetMaskCombo.selectItem(withObjectValue: ipsc!.wildcardMask())
@@ -1030,7 +1030,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         else {
             for index in (0...24).reversed() {
-                subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.digitize(ipAddress: (IPSubnetCalc.Constants.addr32Full << index)))
+                subnetMaskCombo.addItem(withObjectValue: IPSubnetCalc.dottedDecimal(ipAddress: (IPSubnetCalc.Constants.addr32Full << index)))
             }
             if (ipsc != nil) {
                 subnetMaskCombo.selectItem(withObjectValue: ipsc!.subnetMask())
@@ -1131,8 +1131,8 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                         var cvsStr = "#;Subnet ID;Range;Broadcast\n"
                         for index in (0...(self.ipsc!.maxSubnets() - 1)) {
                             let mask: UInt32 = UInt32(index) << (32 - self.ipsc!.maskBits)
-                            let ipaddr = (IPSubnetCalc.numerize(ipAddress: self.ipsc!.subnetId())) | mask
-                            let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: ipaddr), maskbits: self.ipsc!.maskBits)
+                            let ipaddr = (IPSubnetCalc.digitize(ipAddress: self.ipsc!.subnetId())) | mask
+                            let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.dottedDecimal(ipAddress: ipaddr), maskbits: self.ipsc!.maskBits)
                             if (ipsc_tmp != nil) {
                                 cvsStr.append("\(index + 1);\(ipsc_tmp!.subnetId());\(ipsc_tmp!.subnetRange());\(ipsc_tmp!.subnetBroadcast())\n")
                             }
@@ -1169,10 +1169,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                         let cvsFile = FileHandle(forWritingAtPath: panel.url!.path)
                         if (cvsFile != nil) {
                             var cvsStr = "#;Subnet ID;Mask bits;Range;Broadcast\n"
-                            let subnetid: UInt32 = ((IPSubnetCalc.numerize(ipAddress: self.ipsc!.ipv4Address) & IPSubnetCalc.numerize(maskbits: self.ipsc!.maskBits)) >> (32 - self.ipsc!.maskBits)) << (32 - self.ipsc!.maskBits)
+                            let subnetid: UInt32 = ((IPSubnetCalc.digitize(ipAddress: self.ipsc!.ipv4Address) & IPSubnetCalc.digitize(maskbits: self.ipsc!.maskBits)) >> (32 - self.ipsc!.maskBits)) << (32 - self.ipsc!.maskBits)
                             for index in (0...(Int(truncating: NSDecimalNumber(decimal: pow(2, self.slideFLSM.integerValue))) - 1)) {
                                 let ipaddr = (subnetid   >> (32 - (self.ipsc!.maskBits + self.slideFLSM.integerValue)) + UInt32(index)) << (32 - (self.ipsc!.maskBits + self.slideFLSM.integerValue))
-                                let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: ipaddr), maskbits: (self.ipsc!.maskBits + self.slideFLSM.integerValue))
+                                let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.dottedDecimal(ipAddress: ipaddr), maskbits: (self.ipsc!.maskBits + self.slideFLSM.integerValue))
                                 if (ipsc_tmp != nil) {
                                     cvsStr.append("\(index + 1);\(ipsc_tmp!.subnetId());\(self.ipsc!.maskBits + self.slideFLSM.integerValue);\(ipsc_tmp!.subnetRange());\(ipsc_tmp!.subnetBroadcast())\n")
                                 }
@@ -1213,15 +1213,15 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                         let cvsFile = FileHandle(forWritingAtPath: panel.url!.path)
                         if (cvsFile != nil) {
                             var cvsStr = "#;Subnet Name;Subnet ID;Mask bits;Hosts Range;Broadcast;Used\n"
-                            let subnetid = IPSubnetCalc.numerize(ipAddress: self.ipsc!.subnetId())
+                            let subnetid = IPSubnetCalc.digitize(ipAddress: self.ipsc!.subnetId())
                             for index in (0...(self.subnetsVLSM.count - 1)) {
                                 var subnet = subnetid
                                 if (index > 0) {
                                     for index2 in (0...(index - 1)) {
-                                        subnet = subnet + ~IPSubnetCalc.numerize(maskbits: self.subnetsVLSM[index2].0) + 1
+                                        subnet = subnet + ~IPSubnetCalc.digitize(maskbits: self.subnetsVLSM[index2].0) + 1
                                     }
                                 }
-                                let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.digitize(ipAddress: subnet), maskbits: self.subnetsVLSM[index].0)!
+                                let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.dottedDecimal(ipAddress: subnet), maskbits: self.subnetsVLSM[index].0)!
                                 //print("VLSM: \(index + 1);\(IPSubnetCalc.digitize(ipAddress: subnet));\(self.subnetsVLSM[index].0);\(self.subnetsVLSM[index].1);\(self.subnetsVLSM[index].2)\n")
                                 cvsStr.append("\(index + 1);\(self.subnetsVLSM[index].1);\(ipsc_tmp.subnetId());\(self.subnetsVLSM[index].0);\(ipsc_tmp.subnetRange());\(ipsc_tmp.subnetBroadcast());\(self.subnetsVLSM[index].2)\n")
                             }
