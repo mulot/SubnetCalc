@@ -578,6 +578,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     //***************
     //IPv4 UI actions
     //***************
+    /**
+     Triggered when the user has changed the Network Class type in the IPv4 tab
+     
+     - Parameter sender: Class type selected by the user
+     
+     */
     @IBAction func changeAddrClassType(_ sender: AnyObject)
     {
         if (sender.indexOfSelectedItem() == 0)
@@ -612,6 +618,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Triggered when the user has changed the Max Hosts / Subnet item in the IPv4 tab
+     
+     - Parameter sender: selected item of the Max Hosts / Subnet list
+     
+     */
     @IBAction func changeMaxHosts(_ sender: AnyObject)
     {
         if (ipsc == nil)
@@ -628,6 +640,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Triggered when the user has changed the Max Subnets item in the IPv4 tab
+     
+     - Parameter sender: selected item of the Max Subnets list
+     
+     */
     @IBAction func changeMaxSubnets(_ sender: AnyObject)
     {
         if (ipsc == nil)
@@ -644,6 +662,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Triggered when the user has changed the Subnets Bits item in the IPv4 tab
+     
+     - Parameter sender: selected item of the Subnets Bits list
+     
+     */
     @IBAction func changeSubnetBits(_ sender: AnyObject)
     {
         if (ipsc == nil)
@@ -660,6 +684,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Triggered when the user has changed the Subnet Mask item in the IPv4 tab
+     
+     - Parameter sender: selected item of the Subnet Mask list
+     
+     */
     @IBAction func changeSubnetMask(_ sender: AnyObject)
     {
         if (ipsc == nil)
@@ -684,6 +714,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Triggered when the user has changed the Mask Bits item in the IPv4 tab
+     
+     - Parameter sender: selected item of the Mask Bits list
+     
+     */
     @IBAction func changeMaskBits(_ sender: AnyObject)
     {
         if (ipsc == nil)
@@ -700,6 +736,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Triggered when the user has changed the Mask Bits item in the CIDR tab
+     
+     - Parameter sender: selected item of the Mask Bits list
+     
+     */
     @IBAction func changeSupernetMaskBits(_ sender: AnyObject)
     {
         if (ipsc == nil)
@@ -733,6 +775,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Triggered when the user has changed the Mask item in the CIDR tab
+     
+     - Parameter sender: selected item of the Mask list
+     
+     */
     @IBAction func changeSupernetMask(_ sender: AnyObject)
     {
         if (ipsc == nil)
@@ -768,6 +816,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Triggered when the user has changed the Max Supernets item in the CIDR tab
+     
+     - Parameter sender: selected item of the Max Supernets list
+     
+     */
     @IBAction func changeSupernetMax(_ sender: AnyObject)
     {
         if (ipsc == nil)
@@ -801,6 +855,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Triggered when the user has changed the Max Addresses item in the CIDR tab
+     
+     - Parameter sender: selected item of the Max Addresses list
+     
+     */
     @IBAction func changeSupernetMaxAddr(_ sender: AnyObject)
     {
         if (ipsc == nil)
@@ -822,6 +882,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Triggered when the user has changed the Max Subnets item in the CIDR tab
+     
+     - Parameter sender: selected item of the Max Subnets list
+     
+     */
     @IBAction func changeSupernetMaxSubnets(_ sender: AnyObject)
     {
         if (ipsc == nil)
@@ -843,6 +909,15 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Returns the number of rows for the NSTableView to display
+     
+     - Parameter tableView: NSTableView to display
+     
+     - Returns:
+     Number of rows to display in the given NSTableView
+     
+     */
     func numberOfRows(in tableView: NSTableView) -> Int
     {
         if (ipsc != nil) {
@@ -868,7 +943,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     }
     
     /**
-     Invoked when editing a value from a TabView
+     Auto invoked when editing a value from a TabView
      
      Used only for VLSM Subnet Name
      
@@ -1002,7 +1077,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         return (nil)
     }
-        
+    
+    /**
+     Triggered when the user has changed the Mask bits slide of the Subnets/Hosts tab
+     
+     - Parameter sender: current slide position
+     
+     */
     @IBAction func subnetBitsSlide(_ sender: AnyObject)
     {
         if (ipsc == nil)
@@ -1028,6 +1109,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Triggered when the user has changed the slide of the FLSM tab
+     
+     - Parameter sender: current slide position
+     
+     */
     @IBAction func changeSlideFLSM(_ sender: AnyObject)
     {
         if (ipsc == nil)
@@ -1041,6 +1128,14 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Triggered when the user has added a new hosts requirement in the VLSM tab
+     
+     Add a new number of hosts and an optionnal subnet name in the VLSM requirements list
+     
+     - Parameter sender: non used
+     
+     */
     @IBAction func addSubnetVLSM(_ sender: AnyObject)
     {
         var maskbits: Int
@@ -1099,6 +1194,14 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         subnetNameVLSM.stringValue = ""
     }
     
+    /**
+     Triggered when the user has deleted an existing subnet in the VLSM tab
+     
+     Remove the selected subnet in the VLSM requirements list
+     
+     - Parameter sender: non used
+     
+     */
     @IBAction func deleteSubnetVLSM(_ sender: AnyObject)
     {
         if (subnetsVLSM.count != 0) {
@@ -1110,11 +1213,27 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Triggered when the user has clicked on the clear button of the VLSM tab
+     
+     Remove all subnets in the VLSM requirements list
+     
+     - Parameter sender: non used
+     
+     */
     @IBAction func clearSubnetsVLSM(_ sender: AnyObject) {
         subnetsVLSM.removeAll()
         doVLSM()
     }
     
+    /**
+     Triggered when the user has clicked on the CIDR option of the Subnets/Hosts tab
+     
+     Enable or disable the classless state. Allow or disallow the mask bits to be lower to the Network class bits.
+     
+     - Parameter sender: non used
+     
+     */
     @IBAction func changeTableViewClass(_ sender: AnyObject)
     {
         if (tabViewClassLess.state == NSControl.StateValue.off) {
@@ -1128,6 +1247,14 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         self.doSubnetHost()
     }
     
+    /**
+     Triggered when the user has clicked on the Wildcard option of the IPv4 tab
+     
+     Change the mask to the reverse notation (Cisco mask) in the Subnet Mask combo list
+     
+     - Parameter sender: non used
+     
+     */
     @IBAction func changeWildcard(_ sender: AnyObject)
     {
         subnetMaskCombo.removeAllItems()
@@ -1149,6 +1276,14 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Triggered when the user has clicked on the Dotted option of the IPv4 tab
+     
+     Add a dot at each IP address decimal in the Bit Map, Binary Map and Hexa Map
+     
+     - Parameter sender: non used
+     
+     */
     @IBAction func changeDotted(_ sender: AnyObject)
     {
         self.doAddressMap()
@@ -1157,11 +1292,26 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     //***************
     //IPv6 UI actions
     //***************
+    /**
+     Triggered when the user has clicked on the Short option of the IPv6 tab
+     
+     Display short/compact or long/full IPv6 address format
+     
+     - Parameter sender: non used
+     
+     */
     @IBAction func changeIPv6Format(_ sender: AnyObject)
     {
         self.doIPv6()
     }
     
+    /**
+     Triggered when the user has changed the Mask bits of the IPv6 tab
+     
+     
+     - Parameter sender: selected item of the Mask bits list
+     
+     */
     @IBAction func changeIPv6MaskBits(_ sender: AnyObject)
     {
         //print("changeIPv6MaskBits")
@@ -1179,6 +1329,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Triggered when the user has changed the Available Subnets of the IPv6 tab
+     
+     
+     - Parameter sender: selected item of the Available Subnets list
+     
+     */
     @IBAction func changeIPv6Subnets(_ sender: AnyObject)
     {
         if (ipsc == nil ) {
@@ -1188,6 +1345,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         self.doIPv6SubnetCalc()
     }
     
+    /**
+     Triggered when the user has changed the Max Hosts / Subnet of the IPv6 tab
+     
+     
+     - Parameter sender: selected item of the  Max Hosts / Subnet list
+     
+     */
     @IBAction func changeIPv6MaxHosts(_ sender: AnyObject)
     {
         if (ipsc == nil)
@@ -1207,6 +1371,14 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     //******************
     //General UI actions
     //******************
+    /**
+     Perform IPv4/IPv6 calculation
+     
+     Triggered when the user has clicked on the Calc button
+     
+     - Parameter sender: non used
+     
+     */
     @IBAction func calc(_ sender: AnyObject)
     {
         if (addrField.stringValue.contains(":")) {
@@ -1219,11 +1391,26 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Triggered when the user hit Enter key in the IP address field
+     
+     
+     - Parameter sender: sender of the action
+     
+     */
     @IBAction func ipAddrEdit(_ sender: AnyObject)
     {
         self.calc(sender)
     }
     
+    /**
+     Export Subnet/Hosts tab infos to a CSV file
+     
+     Triggered when the user selects Export Subnets/Hosts
+     
+     - Parameter sender: non used
+     
+     */
     @IBAction func exportSubnetsHosts(_ sender: AnyObject)
     {
         if (ipsc != nil) {
@@ -1263,6 +1450,14 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Export FLSM tab infos to a CSV file
+     
+     Triggered when the user selects Export FLSM
+     
+     - Parameter sender: non used
+     
+     */
     @IBAction func exportFLSM(_ sender: AnyObject)
     {
         if (ipsc != nil) {
@@ -1307,6 +1502,14 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Export VLSM tab infos to a CSV file
+     
+     Triggered when the user selects Export VLSM
+     
+     - Parameter sender: non used
+     
+     */
     @IBAction func exportVLSM(_ sender: AnyObject)
     {
         if (ipsc != nil) {
@@ -1355,6 +1558,14 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Export IPv4 infos to the macOS clipboard
+     
+     Triggered when the user selects Export Clipboard
+     
+     - Parameter sender: non used
+     
+     */
     @IBAction func exportClipboard(_ sender: AnyObject)
     {
         if (ipsc != nil) {
@@ -1366,6 +1577,16 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Enable or disable macOS Dark mode
+     
+     Triggered when the user selects Dark mode in the window menu.
+     
+     Auto triggered by macOS system based on the time of the day
+     
+     - Parameter sender: non used
+     
+     */
     @IBAction func darkMode(_ sender: AnyObject)
     {
         if #available(OSX 10.14, *) {
@@ -1380,16 +1601,25 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Auto invoked when the Main Windows has been resized
+     */
     func windowDidResize(_ notification: Notification)
     {
         bitsOnSlidePos()
     }
     
+    /**
+     Auto invoked when the Main Windows will be closed
+     */
     func windowWillClose(_ notification: Notification)
     {
         NSApp.terminate(self)
     }
     
+    /**
+     Auto invoked when the application has finished launching
+     */
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
         initSubnetsTab()
@@ -1399,6 +1629,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         initVLSMTab()
     }
     
+    /**
+     Auto invoked when the application will be terminated
+     */
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
