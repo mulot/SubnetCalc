@@ -10,6 +10,9 @@ import Cocoa
 
 @main
 class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableViewDataSource {
+    //*******************
+    //Private Constants
+    //*******************
     private enum Constants {
         static let defaultIP: String = "10.0.0.0"
         static let defaultIPv6Mask: String = "64"
@@ -95,6 +98,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     //**********************
     //Private IPv4 functions
     //**********************
+    /**
+     Init IPv4 CIDR Tab combo lists
+     */
     private func initCIDRTab() {
         for bits in (1...32) {
             supernetMaskBitsCombo.addItem(withObjectValue: String(bits))
@@ -114,6 +120,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Init IPv4 Tab combo lists
+     */
     private func initSubnetsTab() {
         for index in (0...24).reversed() {
             if (wildcard.state == NSControl.StateValue.on) {
@@ -140,6 +149,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         classHexaMap.stringValue = "01.00.00.00"
     }
     
+    /**
+     Init FLSM Tab
+     */
     private func initFLSMTab() {
         for bits in (8...32) {
             maskBitsFLSMCombo.addItem(withObjectValue: String(bits))
@@ -147,12 +159,18 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         slideFLSM.integerValue = 1
     }
     
+    /**
+     Init VLSM Tab
+     */
     private func initVLSMTab() {
         for bits in (8...32) {
             maskBitsVLSMCombo.addItem(withObjectValue: String(bits))
         }
     }
     
+    /**
+     Init mask bits number of the Mask Bits slide on Subnets/Hosts Tab
+     */
     private func bitsOnSlidePos()
     {
         var coordLabel = bitsOnSlide.frame
@@ -162,6 +180,11 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         bitsOnSlide.frame = coordLabel
     }
     
+    /**
+     Select Address Class Type on IPv4 Tab
+     
+     - Parameter c: Class type of the IPv4 address: A, B, C, D or E
+     */
     private func initClassInfos(_ c: String)
     {
         if (c == "A")
@@ -186,6 +209,15 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Split the given Address to its IP and mask
+     
+     - Parameters address: IP Address with or without its mask as /XX notation
+  
+     - Returns:
+    First String: IP Address. Second String: mask bits number
+     
+     */
     private func splitAddrMask(address: String) -> (String, String?) {
         let ipInfo = address.split(separator: "/")
         if ipInfo.count == 2 {
@@ -198,6 +230,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         return (address, nil)
     }
     
+    /**
+     Generate the Binary Map, Bits Maps and Hexa Map of the current IP
+     */
     private func doAddressMap() {
         if (ipsc != nil) {
             self.initClassInfos(ipsc!.netClass())
@@ -214,6 +249,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Generate infos of the IPv4 Tab for the current IP and mask
+     */
     private func doSubnet()
     {
         if (ipsc != nil) {
@@ -233,6 +271,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Generate infos of the Subnets/Hosts Tab for the current IP and mask
+     */
     private func doSubnetHost()
     {
         if (ipsc != nil) {
@@ -243,6 +284,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Generate infos of the FLSM Tab for the current IP and mask
+     */
     private func doFLSM()
     {
         if (ipsc != nil) {
@@ -263,6 +307,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Generate infos of the VLSM Tab for the current IP and mask if there are some Hosts requirements
+     */
     private func doVLSM()
     {
         if (ipsc != nil) {
@@ -296,6 +343,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Generate infos of the CIDR Tab
+     
+     - Parameter maskbits: mask bits number
+ 
+     */
     private func doCIDR(maskbits: Int? = nil)
     {
         if (ipsc != nil) {
@@ -323,6 +376,14 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Display an alert window pop-up with customs message and info
+     
+     - Parameters:
+        - message: Main displayed message
+        - info:  message info
+     
+     */
     private func myAlert(message: String, info: String)
     {
         let alert = NSAlert()
@@ -333,6 +394,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         alert.runModal()
     }
     
+    /**
+     Generate infos for all IPv4 tabs.
+     
+     Check if there is are current IP address and mask otherwise take the default IP and mask.
+     
+     Check if the IP address and mask are valid.
+     */
     private func doIPSubnetCalc()
     {
         var ipaddr: String
@@ -398,6 +466,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     //**********************
     //Private IPv6 functions
     //**********************
+    /**
+     Init IPv6 Tab combo lists
+     */
     private func initIPv6Tab() {
         var total = Decimal()
         var number: Decimal = 2
@@ -411,6 +482,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Generate info for IPv6 tab
+     */
     private func doIPv6()
     {
         if (ipsc != nil) {
@@ -449,6 +523,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Generate infos for IPv6 tab
+     
+     Genrate infos also for all IPv4 tabs based on the converted IPv4 address
+     
+     Check if the IPv6 address and mask are valid.
+     */
     private func doIPv6SubnetCalc()
     {
         var ipaddr: String
