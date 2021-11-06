@@ -1196,7 +1196,7 @@ class IPSubnetCalc: NSObject {
         var netID = [UInt16]()
         var netID2 = [UInt16]()
         let numMask = IPSubnetCalc.digitizeMaskIPv6(maskbits: self.ipv6MaskBits)
-        let numIP = IPSubnetCalc.digitizeIPv6(ipAddress: self.ipv6Address)
+        let numIP = IPSubnetCalc.digitizeIPv6(ipAddress: fullAddressIPv6(ipAddress: self.ipv6Address))
         
         for index in 0...7 {
             //print("Index: \(index) IP: \(numIP[index]) Mask : \(numMask[index]) Result : \(numIP[index] & (numMask[index])) ")
