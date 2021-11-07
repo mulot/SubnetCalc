@@ -1,8 +1,8 @@
 # SubnetCalc
 Subnet Calculator for MacOS 
 
-What's New in version 2.3:
-- FLSM subnet ID bug fix
+What's New in version 2.4:
+- IPv6 address range bug fix
 
 
 
