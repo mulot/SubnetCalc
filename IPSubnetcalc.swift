@@ -927,7 +927,7 @@ class IPSubnetCalc: NSObject {
     /**
      Convert an IPv6 address in hexadecimal format to its digital format
      
-     - Parameter ipAddress: an IPv6 address in hexadecimal format
+     - Parameter ipAddress: an IPv6 address in hexadecimal format. Must be in full format.
      
      - Returns:
      UInt16 array of each digitized IPv6 address hexa segments
@@ -937,7 +937,7 @@ class IPSubnetCalc: NSObject {
         var ipAddressNum: [UInt16] = Array(repeating: 0, count: 8)
         var ip4Hex = [String]()
         
-        ip4Hex = ipAddress.components(separatedBy: ":")
+        ip4Hex = IPSubnetCalc.fullAddressIPv6(ipAddress: ipAddress).components(separatedBy: ":")
         for index in 0...(ip4Hex.count - 1) {
             if (ip4Hex[index] == "") {
                 ip4Hex[index] = "0"
@@ -1044,7 +1044,7 @@ class IPSubnetCalc: NSObject {
      
      */
     func hexaIDIPv6() -> String {
-        var hexID: String = fullAddressIPv6(ipAddress: self.ipv6Address)
+        var hexID: String = IPSubnetCalc.fullAddressIPv6(ipAddress: self.ipv6Address)
         let delimiter: Set<Character> = [":"]
         hexID.removeAll(where: { delimiter.contains($0) })
         return("0x\(hexID)")
@@ -1070,7 +1070,7 @@ class IPSubnetCalc: NSObject {
      the long notation (non compact) of the given IPv6 address
      
      */
-    func fullAddressIPv6(ipAddress: String) -> String {
+    static func fullAddressIPv6(ipAddress: String) -> String {
         var fullAddr = String()
         var ip4Hex = [String]()
         var prevIsZero = false
@@ -1109,7 +1109,7 @@ class IPSubnetCalc: NSObject {
      the compact notation of the given IPv6 address
      
      */
-    func compactAddressIPv6(ipAddress: String) -> String {
+    static func compactAddressIPv6(ipAddress: String) -> String {
         var shortAddr = String()
         var ip4Hex = [String]()
         var prevIsZero = false
@@ -1118,7 +1118,7 @@ class IPSubnetCalc: NSObject {
         var prevNonZero = false
         
         //print("IP Address: \(ipAddress)")
-        ip4Hex = self.fullAddressIPv6(ipAddress: ipAddress).components(separatedBy: ":")
+        ip4Hex = IPSubnetCalc.fullAddressIPv6(ipAddress: ipAddress).components(separatedBy: ":")
         for index in 0...(ip4Hex.count - 1) {
             if (UInt16(ip4Hex[index], radix: 16)! == 0) {
                 if (!prevIsZero || prevCompactZero) {
@@ -1176,7 +1176,7 @@ class IPSubnetCalc: NSObject {
     func networkIPv6() -> String {
         var netID = [UInt16]()
         let numMask = IPSubnetCalc.digitizeMaskIPv6(maskbits: self.ipv6MaskBits)
-        let numIP = IPSubnetCalc.digitizeIPv6(ipAddress: fullAddressIPv6(ipAddress: self.ipv6Address))
+        let numIP = IPSubnetCalc.digitizeIPv6(ipAddress: self.ipv6Address)
         
         for index in 0...7 {
             //print("Index: \(index) IP: \(numIP[index]) Mask : \(numMask[index]) Result : \(numIP[index] & (numMask[index])) ")
@@ -1196,7 +1196,7 @@ class IPSubnetCalc: NSObject {
         var netID = [UInt16]()
         var netID2 = [UInt16]()
         let numMask = IPSubnetCalc.digitizeMaskIPv6(maskbits: self.ipv6MaskBits)
-        let numIP = IPSubnetCalc.digitizeIPv6(ipAddress: fullAddressIPv6(ipAddress: self.ipv6Address))
+        let numIP = IPSubnetCalc.digitizeIPv6(ipAddress: self.ipv6Address)
         
         for index in 0...7 {
             //print("Index: \(index) IP: \(numIP[index]) Mask : \(numMask[index]) Result : \(numIP[index] & (numMask[index])) ")
@@ -1236,7 +1236,7 @@ class IPSubnetCalc: NSObject {
     func dottedDecimalIPv6() -> String {
         var ipv4str = String()
         
-        let ip4Hex = fullAddressIPv6(ipAddress: self.ipv6Address).components(separatedBy: ":")
+        let ip4Hex = IPSubnetCalc.fullAddressIPv6(ipAddress: self.ipv6Address).components(separatedBy: ":")
         for index in (0...(ip4Hex.count - 1)) {
             if (index != 0) {
                 ipv4str.append(".")
@@ -1261,7 +1261,7 @@ class IPSubnetCalc: NSObject {
      
      */
     func ip6ARPA () -> String {
-        var ipARPA = fullAddressIPv6(ipAddress: self.ipv6Address)
+        var ipARPA = IPSubnetCalc.fullAddressIPv6(ipAddress: self.ipv6Address)
         let delimiter: Set<Character> = [":"]
         
         ipARPA.removeAll(where: { delimiter.contains($0) })
@@ -1286,9 +1286,9 @@ class IPSubnetCalc: NSObject {
     func resBlockIPv6() -> String? {
         var netID = networkIPv6()
         
-        netID = fullAddressIPv6(ipAddress: netID)
+        netID = IPSubnetCalc.fullAddressIPv6(ipAddress: netID)
         //print("NetID BEFORE compact : \(netID)")
-        netID = compactAddressIPv6(ipAddress: netID)
+        netID = IPSubnetCalc.compactAddressIPv6(ipAddress: netID)
         //print("NetID AFTER compact : \(netID)")
         netID.append("/\(self.ipv6MaskBits)")
         
