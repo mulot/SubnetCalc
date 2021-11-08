@@ -85,6 +85,18 @@ class IPSubnetCalc: NSObject {
     //*************
     //IPv4 SECTION
     //*************
+    /**
+     Convert an IP address in its binary representation
+     
+     - Parameters:
+        - ipAddress: IP address in dotted decimal format like 192.168.1.42
+        - space:  add a space to each decimal
+        - dotted: add a dot to each decimal
+     
+     - Returns:
+     the binary representation of the given IP address
+     
+     */
     static func binarize(ipAddress: String, space: Bool = false, dotted: Bool = true) -> String {
         var ipAddressBin = [String]()
         var binStr = String()
@@ -117,10 +129,30 @@ class IPSubnetCalc: NSObject {
         return (binStr)
     }
     
+    /**
+     Convert the current IPv4 address to its binary representation
+     
+     - Parameter dotted: add dot to each decimal
+     
+     - Returns:
+     the binary representation of the current IP address
+     
+     */
     func binaryMap(dotted: Bool = true) -> String {
         return (IPSubnetCalc.binarize(ipAddress: ipv4Address, space: false, dotted: dotted))
     }
     
+    /**
+     Convert an IP address in its hexadecimal representation
+     
+     - Parameters:
+        - ipAddress: IP address in dotted decimal format like 192.168.1.42
+        - dotted: add a dot to each decimal
+     
+     - Returns:
+     the hexadecimal representation of the given IP address
+     
+     */
     static func hexarize(ipAddress: String, dotted: Bool = true) -> String {
         var ipDigits = [String]()
         var hexIP = String()
@@ -142,11 +174,29 @@ class IPSubnetCalc: NSObject {
         return (hexIP)
     }
     
+    /**
+     Convert the current IPv4 address to its hexadecimal representation
+     
+     - Parameter dotted: add dot to each decimal
+     
+     - Returns:
+     the hexadecimal representation of the current IP address
+     
+     */
     func hexaMap(dotted: Bool = true) -> String {
         return (IPSubnetCalc.hexarize(ipAddress: ipv4Address, dotted: dotted))
     }
     
-    static func numerize(ipAddress: String) -> UInt32 {
+    /**
+     Convert an IP address in dotted decimal format to an UInt32 value
+     
+     - Parameter ipAddress: an IP address in dotted decimal format like 192.168.1.42
+     
+     - Returns:
+     a digital IP address in UInt32 format
+     
+     */
+    static func digitize(ipAddress: String) -> UInt32 {
         var ipAddressNum: UInt32 = 0
         var ipDigits = [String]()
         
@@ -170,12 +220,29 @@ class IPSubnetCalc: NSObject {
      }
      */
     
-    //numerize a Mask bits value to UInt32
-    static func numerize(maskbits: Int) -> UInt32 {
+    /**
+     Convert a mask value in bits to an UInt32 value
+     
+     - Parameter maskbits: subnet mask bits as in /XX notation
+     
+     - Returns:
+     a digital subnet mask in UInt32 format
+
+     */
+    static func digitize(maskbits: Int) -> UInt32 {
         return ((Constants.addr32Full << (32 - maskbits)) & Constants.addr32Full)
     }
     
-    static func digitize(ipAddress: UInt32) -> String {
+    /**
+     Convert an IP address in digital format to dotted decimal format
+     
+     - Parameter ipAddress: IP address in its digital format
+     
+     - Returns:
+     a String reprensenting the dotted decimal format of the given IP address
+     
+     */
+    static func dottedDecimal(ipAddress: UInt32) -> String {
         var ipDigits = String()
         
         ipDigits.append(String(((ipAddress & Constants.addr32Digit1) >> Constants.classCbits)) + ".")
@@ -185,6 +252,18 @@ class IPSubnetCalc: NSObject {
         return (ipDigits)
     }
     
+    /**
+     Check if the IP address is a valid IPv4 address
+     
+     - Parameters:
+        - ipAddress: IP address in dotted decimal format like 192.168.1.42
+        - mask: Optionnal subnet mask
+        - classless: enable class less checks of the given IP address/mask
+     
+     - Returns:
+     Boolean if the given IP address is valid or not
+     
+     */
     static func isValidIP(ipAddress: String, mask: String?, classless: Bool = false) -> Bool {
         var ip4Digits = [String]()
         
@@ -231,38 +310,73 @@ class IPSubnetCalc: NSObject {
         return true
     }
     
+    /**
+     Returns current Subnet ID address
+     
+     - Returns:
+     the dotted decimal representation of the Subnet ID of the current IP address/mask
+     
+     */
     func subnetId() -> String {
         var subnetId: UInt32 = 0
-        let ipBits = IPSubnetCalc.numerize(ipAddress: self.ipv4Address)
-        let maskBits = IPSubnetCalc.numerize(maskbits: self.maskBits)
+        let ipBits = IPSubnetCalc.digitize(ipAddress: self.ipv4Address)
+        let maskBits = IPSubnetCalc.digitize(maskbits: self.maskBits)
         
         subnetId = ipBits & maskBits
-        return (IPSubnetCalc.digitize(ipAddress: subnetId))
+        return (IPSubnetCalc.dottedDecimal(ipAddress: subnetId))
     }
     
+    /**
+     Returns current broadcast address
+     
+     - Returns:
+     the dotted decimal representation of the broadcast address of the current IP address/mask
+     
+     */
     func subnetBroadcast() -> String {
         var broadcast: UInt32 = 0
-        let ipBits = IPSubnetCalc.numerize(ipAddress: self.ipv4Address)
-        let maskBits = IPSubnetCalc.numerize(maskbits: self.maskBits)
+        let ipBits = IPSubnetCalc.digitize(ipAddress: self.ipv4Address)
+        let maskBits = IPSubnetCalc.digitize(maskbits: self.maskBits)
         
         broadcast = ipBits & maskBits | (Constants.addr32Full >> self.maskBits)
-        return (IPSubnetCalc.digitize(ipAddress: broadcast))
+        return (IPSubnetCalc.dottedDecimal(ipAddress: broadcast))
     }
     
+    /**
+     Returns current Subnet Mask
+     
+     - Returns:
+    String of the current subnet mask as in /XX notation
+     
+     */
     func subnetMask() -> String {
         var subnetMask: UInt32 = 0
         
         subnetMask = Constants.addr32Full << (32 - self.maskBits)
-        return (IPSubnetCalc.digitize(ipAddress: subnetMask))
+        return (IPSubnetCalc.dottedDecimal(ipAddress: subnetMask))
     }
     
+    /**
+     Returns current Wildcard Subnet Mask
+     
+     - Returns:
+     the dotted decimal representation of the wildcard subnet mask of the current IP address/mask
+     
+     */
     func wildcardMask() -> String {
         var wildcardMask: UInt32 = 0
         
         wildcardMask = ~(Constants.addr32Full << (32 - self.maskBits))
-        return (IPSubnetCalc.digitize(ipAddress: wildcardMask))
+        return (IPSubnetCalc.dottedDecimal(ipAddress: wildcardMask))
     }
     
+    /**
+     Returns the maximum hosts in the current subnet
+     
+     - Returns:
+     maximum hosts for the current mask
+     
+     */
     func maxHosts() -> Int {
         var maxHosts: UInt32 = 0
         
@@ -273,6 +387,13 @@ class IPSubnetCalc: NSObject {
         return (Int(maxHosts))
     }
     
+    /**
+     Returns the maximum CIDR subnets
+     
+     - Returns:
+     maximum CIDR subnets for the current mask
+     
+     */
     func maxCIDRSubnets() -> Int {
         var max: Int = 0
         
@@ -281,6 +402,13 @@ class IPSubnetCalc: NSObject {
         return (max)
     }
     
+    /**
+     Returns the maximum CIDR Supernets
+     
+     - Returns:
+     maximum CIDR Supernets for the current mask
+     
+     */
     func maxCIDRSupernet() -> Int {
         let classType = self.netClass()
         var result: Decimal
@@ -306,36 +434,59 @@ class IPSubnetCalc: NSObject {
         return (1)
     }
     
+    /**
+     Returns the current subnet IP Range
+     
+     - Returns:
+     First IP address - Last IP address of the current IP address/mask
+     
+     */
     func subnetRange() -> String {
         var range = String()
         var firstIP: UInt32 = 0
         var lastIP: UInt32 = 0
         
         if (maskBits == 31 || maskBits == 32) {
-            firstIP = IPSubnetCalc.numerize(ipAddress: subnetId())
-            lastIP = IPSubnetCalc.numerize(ipAddress: subnetBroadcast())
+            firstIP = IPSubnetCalc.digitize(ipAddress: subnetId())
+            lastIP = IPSubnetCalc.digitize(ipAddress: subnetBroadcast())
         }
         else {
-            firstIP = IPSubnetCalc.numerize(ipAddress: subnetId()) + 1
-            lastIP = IPSubnetCalc.numerize(ipAddress: subnetBroadcast()) - 1
+            firstIP = IPSubnetCalc.digitize(ipAddress: subnetId()) + 1
+            lastIP = IPSubnetCalc.digitize(ipAddress: subnetBroadcast()) - 1
         }
-        range = IPSubnetCalc.digitize(ipAddress: firstIP) + " - " + IPSubnetCalc.digitize(ipAddress: lastIP)
+        range = IPSubnetCalc.dottedDecimal(ipAddress: firstIP) + " - " + IPSubnetCalc.dottedDecimal(ipAddress: lastIP)
         return (range)
     }
     
+    /**
+     Returns the current CIDR subnet IP Range
+     
+     - Returns:
+     First IP address - Last IP address of the current CIDR IP address/mask
+     
+     */
     func subnetCIDRRange() -> String {
         var range = String()
         var firstIP: UInt32 = 0
         var lastIP: UInt32 = 0
         
-        firstIP = IPSubnetCalc.numerize(ipAddress: subnetId())
-        lastIP = IPSubnetCalc.numerize(ipAddress: subnetBroadcast())
-        range = IPSubnetCalc.digitize(ipAddress: firstIP) + " - " + IPSubnetCalc.digitize(ipAddress: lastIP)
+        firstIP = IPSubnetCalc.digitize(ipAddress: subnetId())
+        lastIP = IPSubnetCalc.digitize(ipAddress: subnetBroadcast())
+        range = IPSubnetCalc.dottedDecimal(ipAddress: firstIP) + " - " + IPSubnetCalc.dottedDecimal(ipAddress: lastIP)
         return (range)
     }
     
+    /**
+     Returns the Network Class of an IP address
+     
+     - Parameter ipAddress: IPv4 address in dotted decimal format
+     
+     - Returns:
+     Network Class conforming to RFC 790
+     
+     */
     static func netClass(ipAddress: String) -> String {
-        let ipNum = IPSubnetCalc.numerize(ipAddress: ipAddress)
+        let ipNum = IPSubnetCalc.digitize(ipAddress: ipAddress)
         let addr1stByte = (ipNum & Constants.maskClassA) >> 24
         
         if (addr1stByte < 127) {
@@ -353,10 +504,24 @@ class IPSubnetCalc: NSObject {
         return ("E")
     }
     
+    /**
+     Returns the Network Class of the current IP address
+     
+     - Returns:
+     Network Class of the current IP address conforming to RFC 790
+     
+     */
     func netClass() -> String {
         return (IPSubnetCalc.netClass(ipAddress: ipv4Address))
     }
     
+    /**
+     Returns the bits dedicated to the Subnet part of the IP Address
+     
+     - Returns:
+     bits dedicated to the Subnet part of the current IP Address
+     
+     */
     func subnetBits() -> Int {
         let classType = self.netClass()
         var bits: Int = 0
@@ -379,6 +544,13 @@ class IPSubnetCalc: NSObject {
         return (bits)
     }
     
+    /**
+     Returns the bits dedicated to Network Class
+     
+     - Returns:
+     bits dedicated to the Network Class of the current IP address
+     
+     */
     func classBits() -> Int {
         let classType = self.netClass()
         
@@ -394,6 +566,13 @@ class IPSubnetCalc: NSObject {
         return (32)
     }
     
+    /**
+     Returns the mask bits for the Network Class
+     
+     - Returns:
+     mask bits dedicated for the Network Class of the current IP address
+     
+     */
     func classMask() -> UInt32 {
         let classType = self.netClass()
         
@@ -415,10 +594,19 @@ class IPSubnetCalc: NSObject {
         return (Constants.maskClassE)
     }
     
+    /**
+     Returns the number of bits of the mask
+     
+     - Parameter maskAddr: mask in dotted decimal format
+     
+     - Returns:
+     the number of bits for the given mask
+     
+     */
     static func maskBits(maskAddr: String) -> Int {
         var bits: Int = 0
         
-        var mask:UInt32 = IPSubnetCalc.numerize(ipAddress: maskAddr)
+        var mask:UInt32 = IPSubnetCalc.digitize(ipAddress: maskAddr)
         while (mask != 0) {
             bits += 1
             mask <<= 1
@@ -427,6 +615,15 @@ class IPSubnetCalc: NSObject {
         return (bits)
     }
     
+    /**
+     Returns the number of bits of the mask
+     
+     - Parameter mask: mask in digitize format
+     
+     - Returns:
+     the number of bits for the given mask
+     
+     */
     static func maskBits(mask: UInt32) -> Int {
         var bits: Int = 0
         var tmpmask = mask
@@ -439,6 +636,13 @@ class IPSubnetCalc: NSObject {
         return (bits)
     }
     
+    /**
+     Returns the number of bits dedicated to Network
+     
+     - Returns:
+     number of bits dedicated to the Network of the current IP address
+     
+     */
     func netBits() -> Int {
         let classType = self.netClass()
         var bits: Int = 0
@@ -470,6 +674,13 @@ class IPSubnetCalc: NSObject {
         return (bits)
     }
     
+    /**
+     Returns the maximum number of subnets
+     
+     - Returns:
+     maximum number of subnets for the current Subnet bits
+     
+     */
     func maxSubnets() -> Int {
         var maxSubnets: Int = 0
         
@@ -478,6 +689,15 @@ class IPSubnetCalc: NSObject {
         return (maxSubnets)
     }
     
+    /**
+     Returns the Bit Map representation
+     
+     - Parameter dotted: add dot at each decimal
+     
+     - Returns:
+     Bit Map reprensenation of the current ip address/mask
+     
+     */
     func bitMap(dotted: Bool = true) -> String {
         let netBits = self.netBits()
         let subnetBits = self.subnetBits()
@@ -502,7 +722,14 @@ class IPSubnetCalc: NSObject {
         return (bitMap)
     }
     
-    // return maskbits and number of max hosts for this mask
+    /**
+     Returns maskbits and number of max hosts for a requested number of hosts
+     
+     - Parameter hosts: number of requested hosts
+     
+     - Returns: maskbits and number of max hosts for the requested number of hosts
+        
+     */
     static func fittingSubnet(hosts: UInt) -> (Int, UInt) {
         var maxHosts: UInt
         
@@ -515,6 +742,9 @@ class IPSubnetCalc: NSObject {
         return (0, 0)
     }
     
+    /**
+     Display IP informations of the current IP address/mask
+     */
     func displayIPInfo() {
         print("IP Host : " + self.ipv4Address)
         print("Mask bits : \(self.maskBits)")
@@ -536,8 +766,8 @@ class IPSubnetCalc: NSObject {
         print("CIDR Network (Route) : " + self.subnetId())
         print("CIDR Net Notation : " + self.subnetId() + "/" + String(self.maskBits))
         print("CIDR Address Range : " + self.subnetCIDRRange())
-        print("IP number in binary : " + String(IPSubnetCalc.numerize(ipAddress: self.ipv4Address), radix: 2))
-        print("Mask bin : " + String(IPSubnetCalc.numerize(maskbits: self.maskBits), radix: 2))
+        print("IP number in binary : " + String(IPSubnetCalc.digitize(ipAddress: self.ipv4Address), radix: 2))
+        print("Mask bin : " + String(IPSubnetCalc.digitize(maskbits: self.maskBits), radix: 2))
         //print("Subnet ID bin : " + String(self.subnetId(), radix: 2))
         //print("Broadcast bin : " + String(self.subnetBroadcast(), radix: 2))
     }
@@ -545,6 +775,17 @@ class IPSubnetCalc: NSObject {
     //*************
     //IPv6 SECTION
     //*************
+    /**
+     Check if the IP address is a valid IPv6 address
+     
+     - Parameters:
+        - ipAddress: IPv6 address in hexadecimal format
+        - mask: Optionnal subnet mask
+     
+     - Returns:
+     Boolean if the given IPv6 address is valid or not
+     
+     */
     static func isValidIPv6(ipAddress: String, mask: Int?) -> Bool {
         var ip4Hex: [String]?
         var hex: UInt16?
@@ -601,10 +842,21 @@ class IPSubnetCalc: NSObject {
         return true
     }
     
+    /**
+     Convert an IPv4 address to its IPv6 address
+     
+     - Parameters:
+        - ipAddress: IPv4 address in dotted decimal format
+        - _6to4: Use 6to4 representation
+     
+     - Returns:
+     translated IPv6 address
+     
+     */
     static func convertIPv4toIPv6(ipAddress: String, _6to4: Bool = false) -> String {
         var ipv6str = String()
         
-        let addr = numerize(ipAddress: ipAddress)
+        let addr = digitize(ipAddress: ipAddress)
         ipv6str.append(String((((Constants.addr32Digit1 | Constants.addr32Digit2) & addr) >> 16), radix: 16))
         ipv6str.append(":")
         ipv6str.append(String(((Constants.addr32Digit3 | Constants.addr32Digit4) & addr), radix: 16))
@@ -615,6 +867,15 @@ class IPSubnetCalc: NSObject {
         return ("0:0:0:0:0:ffff:" + ipv6str)
     }
     
+    /**
+     Convert an IPv6 address to its IPv4 address
+     
+     - Parameter ipAddress: IPv6 address in hexadecimal format
+     
+     - Returns:
+     translated IPv4 address and detected translation method (6to4 or IPv4-Mapped)
+     
+     */
     static func convertIPv6toIPv4(ipAddress: String) -> (String, String) {
         var ipv4str = String()
         //let ip4Hex = fullAddressIPv6(ipAddress: ipAddress).components(separatedBy: ":")
@@ -663,11 +924,20 @@ class IPSubnetCalc: NSObject {
         }
     }
     
-    static func numerizeIPv6(ipAddress: String) -> [UInt16] {
+    /**
+     Convert an IPv6 address in hexadecimal format to its digital format
+     
+     - Parameter ipAddress: an IPv6 address in hexadecimal format. Must be in full format.
+     
+     - Returns:
+     UInt16 array of each digitized IPv6 address hexa segments
+     
+     */
+    static func digitizeIPv6(ipAddress: String) -> [UInt16] {
         var ipAddressNum: [UInt16] = Array(repeating: 0, count: 8)
         var ip4Hex = [String]()
         
-        ip4Hex = ipAddress.components(separatedBy: ":")
+        ip4Hex = IPSubnetCalc.fullAddressIPv6(ipAddress: ipAddress).components(separatedBy: ":")
         for index in 0...(ip4Hex.count - 1) {
             if (ip4Hex[index] == "") {
                 ip4Hex[index] = "0"
@@ -678,6 +948,16 @@ class IPSubnetCalc: NSObject {
         return (ipAddressNum)
     }
     
+    /**
+     Convert an IPv6 address in its binary representation
+     
+     - Parameters:
+        - ipAddress: IPv6 address in hexadecimal format
+        - delimiter: add ':' to each hexa segment
+     
+     - Returns:
+     the binary representation of the given IPv6 address
+     */
     static func binarizeIPv6(ipAddress: String, delimiter: Bool = false) -> String {
         var ip4Hex: [String]
         var binary: String
@@ -698,7 +978,16 @@ class IPSubnetCalc: NSObject {
         return (binStr)
     }
     
-    static func numerizeMaskIPv6(maskbits: Int) -> [UInt16] {
+    /**
+     Convert an IPv6 mask value in bits to its digitized UInt16 array value
+     
+     - Parameter maskbits: subnet mask bits as in /XX notation
+     
+     - Returns:
+     a digital subnet mask in [UInt16] format
+     
+     */
+    static func digitizeMaskIPv6(maskbits: Int) -> [UInt16] {
         var maskNum: [UInt16] = Array(repeating: 0, count: 8)
         
         for i in 0...7 {
@@ -718,6 +1007,18 @@ class IPSubnetCalc: NSObject {
         return (maskNum)
     }
     
+    /**
+     Convert a digitized IPv6 address in its hexadecimal representation
+     
+     - Parameters:
+        - num: IPv6 address in its digitized format
+        - full: return a full representation (non compact) of the IPv6 address
+        - column: add ':' at each hexa segment
+     
+     - Returns:
+     the hexadecimal representation of the given IPv6 address
+     
+     */
     static func hexarizeIPv6(num: [UInt16], full: Bool = true, column: Bool = false) -> String {
         var hex: String
         var hexStr = String()
@@ -735,33 +1036,41 @@ class IPSubnetCalc: NSObject {
         return (hexStr)
     }
     
+    /**
+     Returns the Hexadecimal ID of IPv6 address
+     
+     - Returns:
+     the hexadecimal ID of the current IPv6 address
+     
+     */
     func hexaIDIPv6() -> String {
-        var hexID: String = fullAddressIPv6(ipAddress: self.ipv6Address)
+        var hexID: String = IPSubnetCalc.fullAddressIPv6(ipAddress: self.ipv6Address)
         let delimiter: Set<Character> = [":"]
         hexID.removeAll(where: { delimiter.contains($0) })
         return("0x\(hexID)")
     }
     
+    /**
+     Returns the binary representation of IPv6 address
+     
+     - Returns:
+     the binary representation of the current IPv6 address
+     
+     */
     func binaryIDIPv6() -> String {
         return (IPSubnetCalc.binarizeIPv6(ipAddress: self.ipv6Address))
     }
     
-    func digitizeIPv6() -> String {
-        var digitStr = String()
-        let numIP = IPSubnetCalc.numerizeIPv6(ipAddress: self.ipv6Address)
-        
-        for index in 0...7  {
-            if (index != 7) {
-                digitStr.append("\(numIP[index]):")
-            }
-            else {
-                digitStr.append("\(numIP[index])")
-            }
-        }
-        return (digitStr)
-    }
-    
-    func fullAddressIPv6(ipAddress: String) -> String {
+    /**
+     Convert a IPv6 address to its long notation
+     
+     - Parameter ipAddress: IPv6 address in hexadecimal format
+
+     - Returns:
+     the long notation (non compact) of the given IPv6 address
+     
+     */
+    static func fullAddressIPv6(ipAddress: String) -> String {
         var fullAddr = String()
         var ip4Hex = [String]()
         var prevIsZero = false
@@ -791,7 +1100,16 @@ class IPSubnetCalc: NSObject {
         return (fullAddr)
     }
     
-    func compactAddressIPv6(ipAddress: String) -> String {
+    /**
+     Convert a IPv6 address to its compact/short notation
+     
+     - Parameter ipAddress: IPv6 address in hexadecimal format
+     
+     - Returns:
+     the compact notation of the given IPv6 address
+     
+     */
+    static func compactAddressIPv6(ipAddress: String) -> String {
         var shortAddr = String()
         var ip4Hex = [String]()
         var prevIsZero = false
@@ -800,7 +1118,7 @@ class IPSubnetCalc: NSObject {
         var prevNonZero = false
         
         //print("IP Address: \(ipAddress)")
-        ip4Hex = self.fullAddressIPv6(ipAddress: ipAddress).components(separatedBy: ":")
+        ip4Hex = IPSubnetCalc.fullAddressIPv6(ipAddress: ipAddress).components(separatedBy: ":")
         for index in 0...(ip4Hex.count - 1) {
             if (UInt16(ip4Hex[index], radix: 16)! == 0) {
                 if (!prevIsZero || prevCompactZero) {
@@ -848,10 +1166,17 @@ class IPSubnetCalc: NSObject {
         return (shortAddr)
     }
     
+    /**
+     Returns IPv6 Network address
+     
+     - Returns:
+     the Network address in hexadecimal format of the current IPv6 address
+     
+     */
     func networkIPv6() -> String {
         var netID = [UInt16]()
-        let numMask = IPSubnetCalc.numerizeMaskIPv6(maskbits: self.ipv6MaskBits)
-        let numIP = IPSubnetCalc.numerizeIPv6(ipAddress: fullAddressIPv6(ipAddress: self.ipv6Address))
+        let numMask = IPSubnetCalc.digitizeMaskIPv6(maskbits: self.ipv6MaskBits)
+        let numIP = IPSubnetCalc.digitizeIPv6(ipAddress: self.ipv6Address)
         
         for index in 0...7 {
             //print("Index: \(index) IP: \(numIP[index]) Mask : \(numMask[index]) Result : \(numIP[index] & (numMask[index])) ")
@@ -860,11 +1185,18 @@ class IPSubnetCalc: NSObject {
         return (IPSubnetCalc.hexarizeIPv6(num: netID, full: false, column: true))
     }
     
+    /**
+     Returns IPv6 Network Range
+     
+     - Returns:
+     First IPv6 address - Last IPv6 address of the current IPv6 address/mask
+     
+     */
     func networkRangeIPv6() -> String {
         var netID = [UInt16]()
         var netID2 = [UInt16]()
-        let numMask = IPSubnetCalc.numerizeMaskIPv6(maskbits: self.ipv6MaskBits)
-        let numIP = IPSubnetCalc.numerizeIPv6(ipAddress: self.ipv6Address)
+        let numMask = IPSubnetCalc.digitizeMaskIPv6(maskbits: self.ipv6MaskBits)
+        let numIP = IPSubnetCalc.digitizeIPv6(ipAddress: self.ipv6Address)
         
         for index in 0...7 {
             //print("Index: \(index) IP: \(numIP[index]) Mask : \(numMask[index]) Result : \(numIP[index] & (numMask[index])) ")
@@ -879,6 +1211,13 @@ class IPSubnetCalc: NSObject {
         return (netIDStr)
     }
     
+    /**
+     Returns Total IP addresses for IPv6
+     
+     - Returns:
+     Total IP addresses for the current IPv6 mask
+     
+     */
     func totalIPAddrIPv6() -> Decimal {
         var total = Decimal()
         var number: Decimal = 2
@@ -887,10 +1226,17 @@ class IPSubnetCalc: NSObject {
         return (total)
     }
     
+    /**
+     Returns IPv6 address in dotted decimal format
+     
+     - Returns:
+     IPv6 address in dotted decimal format of the current IPv6 address
+     
+     */
     func dottedDecimalIPv6() -> String {
         var ipv4str = String()
         
-        let ip4Hex = fullAddressIPv6(ipAddress: self.ipv6Address).components(separatedBy: ":")
+        let ip4Hex = IPSubnetCalc.fullAddressIPv6(ipAddress: self.ipv6Address).components(separatedBy: ":")
         for index in (0...(ip4Hex.count - 1)) {
             if (index != 0) {
                 ipv4str.append(".")
@@ -907,8 +1253,15 @@ class IPSubnetCalc: NSObject {
         return ipv4str
     }
     
+    /**
+     Returns IPv6 address in IP6 ARPA notation
+     
+     - Returns:
+     IPv6 address in IP6 ARPA notation of the current IPv6 address
+     
+     */
     func ip6ARPA () -> String {
-        var ipARPA = fullAddressIPv6(ipAddress: self.ipv6Address)
+        var ipARPA = IPSubnetCalc.fullAddressIPv6(ipAddress: self.ipv6Address)
         let delimiter: Set<Character> = [":"]
         
         ipARPA.removeAll(where: { delimiter.contains($0) })
@@ -923,12 +1276,19 @@ class IPSubnetCalc: NSObject {
         return (ipARPA)
     }
     
+    /**
+     Returns the reserved IPv6 block name if it exists
+     
+     - Returns:
+      reserved IPv6 block name or nil if it does not exist
+     
+     */
     func resBlockIPv6() -> String? {
         var netID = networkIPv6()
         
-        netID = fullAddressIPv6(ipAddress: netID)
+        netID = IPSubnetCalc.fullAddressIPv6(ipAddress: netID)
         //print("NetID BEFORE compact : \(netID)")
-        netID = compactAddressIPv6(ipAddress: netID)
+        netID = IPSubnetCalc.compactAddressIPv6(ipAddress: netID)
         //print("NetID AFTER compact : \(netID)")
         netID.append("/\(self.ipv6MaskBits)")
         
@@ -940,6 +1300,17 @@ class IPSubnetCalc: NSObject {
         return nil
     }
     
+    /**
+     Initialize an IPv4 object
+     
+     - Parameters:
+        - ipAddress: IPv4 address in its dotted decimal format
+        - maskbits: number of mask bits as in /XX notation
+     
+     - Returns:
+     nil if the IPv4 address or mask is not valid
+     
+     */
     init?(ipAddress: String, maskbits: Int) {
         if (IPSubnetCalc.isValidIP(ipAddress: ipAddress, mask: String(maskbits), classless: true)) {
             self.ipv4Address = ipAddress
@@ -952,6 +1323,16 @@ class IPSubnetCalc: NSObject {
         }
     }
     
+    /**
+     Initialize an IPv4 object with the default mask of its network class
+     
+     - Parameters:
+        - ipAddress: IPv4 address in its dotted decimal format
+     
+     - Returns:
+     nil if the IPv4 address is not valid
+     
+     */
     convenience init?(_ ipAddress: String) {
         var classbit: Int
         
@@ -973,6 +1354,17 @@ class IPSubnetCalc: NSObject {
         }
     }
     
+    /**
+     Initialize an IPv6 object
+     
+     - Parameters:
+        - ipv6: IPv6 address in its hexadecimal format
+        - maskbits: number of mask bits as in /XX notation
+     
+     - Returns:
+     nil if the IPv6 address or mask is not valid
+     
+     */
     init?(ipv6: String, maskbits: Int) {
         if (IPSubnetCalc.isValidIPv6(ipAddress: ipv6, mask: maskbits)) {
             (self.ipv4Address, _) = IPSubnetCalc.convertIPv6toIPv4(ipAddress: ipv6)
