@@ -831,14 +831,14 @@ class IPSubnetCalc: NSObject {
      Boolean if the given IPv6 address is valid or not
      
      */
-    static func isValidIPv6(ipAddress: String, mask: Int?) -> Bool {
+    static func validateIPv6(ipAddress: String, mask: Int?) throws {
         var ip4Hex: [String]?
         var hex: UInt16?
         
         if mask != nil {
             if (mask! < 1 || mask! > 128) {
                 print("mask \(mask!) invalid")
-                return false
+                throw SubnetCalcError.invalidIPv6Mask("mask \(mask!) must be between 1 and 128")
             }
         }
         else {
@@ -848,7 +848,7 @@ class IPSubnetCalc: NSObject {
         ip4Hex = ipAddress.components(separatedBy: ":")
         if (ip4Hex == nil) {
             //print("\(ipAddress) invalid")
-            return false
+            throw SubnetCalcError.invalidIPv6("IPv6 address must contain :")
         }
         if (ip4Hex!.count != 8) {
             //print("no 8 hex")
@@ -856,35 +856,35 @@ class IPSubnetCalc: NSObject {
             {
                 if (ipAddress.components(separatedBy: "::").count > 2) {
                     //print("too many '::'")
-                    return false
+                    throw SubnetCalcError.invalidIPv6("too many ::")
                 }
             }
             else {
                 //print("IPv6 \(ipAddress) bad format")
-                return false
+                throw SubnetCalcError.invalidIPv6("short IPv6 address must contain ::")
             }
         }
         for index in 0...(ip4Hex!.count - 1) {
             //print("Index : \(index) IPHex : \(ip4Hex[index]) Dec : \(String(UInt16(ip4Hex[index], radix: 16)!, radix: 16))")
             if (ip4Hex![index].count > 4 && ip4Hex![index].count != 0) {
                 //print("\(ip4Hex![index]) too large")
-                return false
+                throw SubnetCalcError.invalidIPv6("\(ip4Hex![index]) segment is too large")
             }
             hex = UInt16(ip4Hex![index], radix: 16)
             if hex != nil {
                 if (hex! < 0 || hex! > 0xFFFF) {
                     //print("\(hex!) is invalid")
-                    return false
+                    throw SubnetCalcError.invalidIPv6("\(hex!) segment must be between 0 and 0xFFFF")
                 }
             }
             else {
                 if (ip4Hex![index] != "") {
                     //print("\(ip4Hex![index]) not an integer")
-                    return false
+                    throw SubnetCalcError.invalidIPv6("\(ip4Hex![index]) segment is not an integer")
                 }
             }
         }
-        return true
+        //return true
     }
     
     /**
@@ -1419,7 +1419,8 @@ class IPSubnetCalc: NSObject {
      
      */
     init?(ipv6: String, maskbits: Int) {
-        if (IPSubnetCalc.isValidIPv6(ipAddress: ipv6, mask: maskbits)) {
+        do {
+        try IPSubnetCalc.validateIPv6(ipAddress: ipv6, mask: maskbits)
             (self.ipv4Address, _) = IPSubnetCalc.convertIPv6toIPv4(ipAddress: ipv6)
             if (maskbits >= (Constants.defaultIPv6to4Mask + Constants.classAbits)) {
                 self.maskBits = maskbits - Constants.defaultIPv6to4Mask
@@ -1433,7 +1434,8 @@ class IPSubnetCalc: NSObject {
             self.ipv6MaskBits = maskbits
             //print("init IPv6 ipv6 addr: \(self.ipv6Address) ipv4 addr: \(self.ipv4Address)")
         }
-        else {
+        catch {
+            print("Init error: \(error)")
             return nil
         }
     }
