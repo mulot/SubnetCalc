@@ -142,6 +142,12 @@
                                     <action selector="darkMode:" target="b7w-M5-ti7" id="Nhc-rM-HhP"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Clear history" id="s1d-Yz-qSq">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="clearHistory:" target="b7w-M5-ti7" id="H57-v0-WWN"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>

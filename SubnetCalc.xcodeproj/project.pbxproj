@@ -16,6 +16,9 @@
 		94AC2613256AF7C900811156 /* SubnetCalcAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94AC2612256AF7C900811156 /* SubnetCalcAppDelegate.swift */; };
 		94B1C507256ABC1B00F992A3 /* IPSubnetcalc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B1C506256ABC1B00F992A3 /* IPSubnetcalc.swift */; };
 		94B6031212F74DC7005AA5EB /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94B6031112F74DC7005AA5EB /* CoreFoundation.framework */; };
+		94DBA15627DBD0BF00F61918 /* SubnetCalc.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 94DBA15427DBD0BF00F61918 /* SubnetCalc.xcdatamodeld */; };
+		94DBA15E27DBDAC000F61918 /* AddrHistory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DBA15C27DBDAC000F61918 /* AddrHistory+CoreDataClass.swift */; };
+		94DBA15F27DBDAC000F61918 /* AddrHistory+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DBA15D27DBDAC000F61918 /* AddrHistory+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +50,9 @@
 		94B6031112F74DC7005AA5EB /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		94CDB5F6255EE11D0010F1E4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		94D8C5731520F99500B27A3A /* SubnetCalc.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SubnetCalc.entitlements; sourceTree = "<group>"; };
+		94DBA15527DBD0BF00F61918 /* SubnetCalc.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SubnetCalc.xcdatamodel; sourceTree = "<group>"; };
+		94DBA15C27DBDAC000F61918 /* AddrHistory+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddrHistory+CoreDataClass.swift"; sourceTree = "<group>"; };
+		94DBA15D27DBDAC000F61918 /* AddrHistory+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddrHistory+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +78,10 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				94DBA15C27DBDAC000F61918 /* AddrHistory+CoreDataClass.swift */,
+				94DBA15D27DBDAC000F61918 /* AddrHistory+CoreDataProperties.swift */,
 				94B1C506256ABC1B00F992A3 /* IPSubnetcalc.swift */,
+				94DBA15427DBD0BF00F61918 /* SubnetCalc.xcdatamodeld */,
 				94AC2612256AF7C900811156 /* SubnetCalcAppDelegate.swift */,
 			);
 			name = Classes;
@@ -267,7 +276,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				94B1C507256ABC1B00F992A3 /* IPSubnetcalc.swift in Sources */,
+				94DBA15627DBD0BF00F61918 /* SubnetCalc.xcdatamodeld in Sources */,
 				94AC2613256AF7C900811156 /* SubnetCalcAppDelegate.swift in Sources */,
+				94DBA15E27DBDAC000F61918 /* AddrHistory+CoreDataClass.swift in Sources */,
+				94DBA15F27DBDAC000F61918 /* AddrHistory+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -573,6 +585,19 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		94DBA15427DBD0BF00F61918 /* SubnetCalc.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				94DBA15527DBD0BF00F61918 /* SubnetCalc.xcdatamodel */,
+			);
+			currentVersion = 94DBA15527DBD0BF00F61918 /* SubnetCalc.xcdatamodel */;
+			path = SubnetCalc.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
 }

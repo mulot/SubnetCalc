@@ -7,6 +7,7 @@
 
 import Foundation
 import Cocoa
+import CoreData
 
 @main
 class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableViewDataSource {
@@ -95,6 +96,8 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     private var ipsc: IPSubnetCalc?
     private var subnetsVLSM = [(Int, String, String)]()
     private var globalMaskVLSM: UInt32!
+    private var container: NSPersistentContainer!
+    private var history = [AddrHistory]()
     
     //**********************
     //Private IPv4 functions
@@ -1427,7 +1430,6 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     /**
      Triggered when the user hit Enter key in the IP address field
      
-     
      - Parameter sender: sender of the action
      
      */
@@ -1437,15 +1439,23 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         if ((sender as? NSTextField)?.stringValue) != nil {
             if (sender.stringValue != "") {
                 if (addrField.indexOfItem(withObjectValue: sender.stringValue!) == NSNotFound) {
-                    if (addrField.numberOfItems == Constants.maxAddrHistory) {
+                    if (addrField.numberOfItems >= Constants.maxAddrHistory) {
                         addrField.removeItem(at: 0)
+                        if (history.count > 0) {
+                            container.viewContext.delete(history[0])
+                            history.remove(at: 0)
+                            saveHistory()
+                        }
                     }
                     addrField.addItem(withObjectValue: sender.stringValue!)
+                    let historyItem = AddrHistory(context: container.viewContext)
+                    historyItem.address = sender.stringValue!
+                    history.append(historyItem)
+                    saveHistory()
                 }
                 self.calc(sender)
             }
         }
-        
     }
     
     /**
@@ -1647,6 +1657,61 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     }
     
     /**
+     Clear address IP field history
+     
+     Triggered when the user select Clear history in the window menu.
+     
+     - Parameter sender: non used
+     
+     */
+    @IBAction func clearHistory(_ sender: AnyObject)
+    {
+        for _ in (0...addrField.numberOfItems-1) {
+            addrField.removeItem(at: 0)
+        }
+        for _ in (0...history.count-1) {
+            container.viewContext.delete(history[0])
+            history.remove(at: 0)
+            saveHistory()
+        }
+    }
+    
+    /**
+     Save the address IP field history for future App sessions
+     */
+    private func saveHistory() {
+        if container.viewContext.hasChanges {
+            do {
+                try container.viewContext.save()
+            } catch {
+                print("An error occurred while saving: \(error)")
+            }
+        }
+    }
+    
+    /**
+     Load in the address IP field the history of previous App sessions
+     */
+    private func loadHistory() {
+        container = NSPersistentContainer(name: "SubnetCalc")
+        container.loadPersistentStores { storeDescription, error in
+            if let error = error {
+                print("Unresolved error \(error)")
+            }
+        }
+        do {
+            history = try container.viewContext.fetch(AddrHistory.fetchRequest())
+            //print("Got \(history.count) items")
+            for item in history {
+                //print(item.address)
+                addrField.addItem(withObjectValue: item.address)
+            }
+        } catch {
+            print("Fetch history failed")
+        }
+    }
+    
+    /**
      Auto invoked when the Main Windows has been resized
      */
     func windowDidResize(_ notification: Notification)
@@ -1667,6 +1732,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
      */
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
+        loadHistory()
         initSubnetsTab()
         initCIDRTab()
         initIPv6Tab()
