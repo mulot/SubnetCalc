@@ -17,6 +17,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         static let defaultIP: String = "10.0.0.0"
         static let defaultIPv6Mask: String = "64"
         static let defaultIPv6to4Mask: Int = 96
+        static let maxAddrHistory: Int = 30
         static let BUFFER_LINES:Int = 200000000
         static let NETWORK_BITS_MIN_CLASSLESS:Int = 1
         static let NETWORK_BITS_MIN:Int = 8
@@ -1436,6 +1437,9 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         if ((sender as? NSTextField)?.stringValue) != nil {
             if (sender.stringValue != "") {
                 if (addrField.indexOfItem(withObjectValue: sender.stringValue!) == NSNotFound) {
+                    if (addrField.numberOfItems == Constants.maxAddrHistory) {
+                        addrField.removeItem(at: 0)
+                    }
                     addrField.addItem(withObjectValue: sender.stringValue!)
                 }
                 self.calc(sender)
