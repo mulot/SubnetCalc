@@ -26,7 +26,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     //General UI elements
     //*******************
     @IBOutlet var window: NSWindow!
-    @IBOutlet var addrField: NSTextField!
+    @IBOutlet var addrField: NSComboBox!
     @IBOutlet var exportButton: NSPopUpButton!
     @IBOutlet var tabView: NSTabView!
     @IBOutlet var darkModeMenu: NSMenuItem!
@@ -1432,7 +1432,16 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
      */
     @IBAction func ipAddrEdit(_ sender: AnyObject)
     {
-        self.calc(sender)
+        //print("ipAddrEdit action")
+        if ((sender as? NSTextField)?.stringValue) != nil {
+            if (sender.stringValue != "") {
+                if (addrField.indexOfItem(withObjectValue: sender.stringValue!) == NSNotFound) {
+                    addrField.addItem(withObjectValue: sender.stringValue!)
+                }
+                self.calc(sender)
+            }
+        }
+        
     }
     
     /**
