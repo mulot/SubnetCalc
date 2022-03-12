@@ -404,8 +404,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
      Check if there is are current IP address and mask otherwise take the default IP and mask.
      
      Check if the IP address and mask are valid.
+     
+     - Throws: an invalid IP or invalid mask error with a message explaining the reason
      */
-    private func doIPSubnetCalc()
+    private func doIPSubnetCalc() throws
     {
         var ipaddr: String
         var ipmask: String?
@@ -440,7 +442,8 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                     }
                 }
             }
-            catch {}
+            catch {
+            }
             if (ipmask == nil && ipsc != nil) {
                 ipmask = String(ipsc!.maskBits)
             }
@@ -466,15 +469,42 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         catch SubnetCalcError.invalidIPv4(let info) {
             myAlert(message: "Invalid IPv4 Address", info: info)
-            return
+            throw SubnetCalcError.invalidIPv4(info)
         }
         catch SubnetCalcError.invalidIPv4Mask(let info) {
             myAlert(message: "Invalid IPv4 Mask", info: info)
-            return
+            throw SubnetCalcError.invalidIPv4Mask(info)
         }
         catch {
             myAlert(message: "Unknown invalid error", info: "\(ipaddr)/\(ipmask ?? "") Error: \(error)")
-            return
+            throw error
+        }
+    }
+    
+    /**
+     Compute IPv4 or IPv6 infos depending of IP address format in IP address field
+     
+     - Throws: an invalid IP or invalid mask error with a message explaining the reason
+     */
+    private func doCalc() throws
+    {
+        if (addrField.stringValue.contains(":")) {
+            do {
+                try self.doIPv6SubnetCalc()
+                tabView.selectTabViewItem(at: 5)
+            }
+            catch {
+                throw error
+            }
+        }
+        else {
+            do {
+                try self.doIPSubnetCalc()
+                tabView.selectTabViewItem(at: 0)
+            }
+            catch {
+                throw error
+            }
         }
     }
     
@@ -544,8 +574,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
      Genrate infos also for all IPv4 tabs based on the converted IPv4 address
      
      Check if the IPv6 address and mask are valid.
+     
+     - Throws: an invalid IP or invalid mask error with a message explaining the reason
      */
-    private func doIPv6SubnetCalc()
+    private func doIPv6SubnetCalc() throws
     {
         var ipaddr: String
         var ipmask: String?
@@ -589,15 +621,15 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         catch SubnetCalcError.invalidIPv6(let info) {
             myAlert(message: "Invalid IPv6 Address", info: info)
-            return
+            throw SubnetCalcError.invalidIPv6(info)
         }
         catch SubnetCalcError.invalidIPv6Mask(let info) {
             myAlert(message: "Invalid IPv6 Mask", info: info)
-            return
+            throw SubnetCalcError.invalidIPv6Mask(info)
         }
         catch {
             myAlert(message: "Unknown invalid IPv6 error", info: "\(ipaddr)/\(ipmask ?? "") Error: \(error)")
-            return
+            throw error
         }
     }
     
@@ -658,7 +690,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         if (sender.indexOfSelectedItem != -1) {
             ipsc!.maskBits = 31 - sender.indexOfSelectedItem()
-            self.doIPSubnetCalc()
+            do {
+                try self.doIPSubnetCalc()
+            }
+            catch {}
         }
         else {
             myAlert(message: "Invalid Max Hosts", info: "Bad selection")
@@ -680,7 +715,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         if (sender.indexOfSelectedItem != -1) {
             ipsc!.maskBits = 8 + sender.indexOfSelectedItem()
-            self.doIPSubnetCalc()
+            do {
+                try self.doIPSubnetCalc()
+            }
+            catch {}
         }
         else {
             myAlert(message: "Invalid Max Subnets", info: "Bad selection")
@@ -702,7 +740,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         if (sender.objectValueOfSelectedItem as? String) != nil {
             ipsc!.maskBits = sender.intValue + ipsc!.netBits()
-            self.doIPSubnetCalc()
+            do {
+                try self.doIPSubnetCalc()
+            }
+            catch {}
         }
         else {
             myAlert(message: "Invalid Subnet Bits", info: "Bad selection")
@@ -732,7 +773,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 ipsc!.maskBits = IPSubnetCalc.maskBits(mask: mask)
                 //print("changeSubnetMask object value : \(str)")
             }
-            self.doIPSubnetCalc()
+            do {
+                try self.doIPSubnetCalc()
+            }
+            catch {}
         }
             else {
                 myAlert(message: "Invalid Subnet Mask", info: "Bad format \(maskStr)")
@@ -759,7 +803,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         if (sender.objectValueOfSelectedItem as? String) != nil {
             ipsc!.maskBits = sender.intValue
-            self.doIPSubnetCalc()
+            do {
+                try self.doIPSubnetCalc()
+            }
+            catch {}
         }
         else {
             myAlert(message: "Invalid Mask Bits", info: "Bad selection")
@@ -794,7 +841,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
             if (result >= 0) {
                 ipsc!.maskBits = sender.intValue
-                self.doIPSubnetCalc()
+                do {
+                    try self.doIPSubnetCalc()
+                }
+                catch {}
             }
             else {
                 doCIDR(maskbits: sender.intValue)
@@ -835,7 +885,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
             if (result >= 0) {
                 ipsc!.maskBits = maskbits
-                self.doIPSubnetCalc()
+                do {
+                    try self.doIPSubnetCalc()
+                }
+                catch {}
             }
             else {
                 doCIDR(maskbits: maskbits)
@@ -1129,13 +1182,19 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         if (sender.intValue as Int >= Constants.NETWORK_BITS_MIN)
         {
             ipsc!.maskBits = sender.intValue as Int
-            self.doIPSubnetCalc()
+            do {
+                try self.doIPSubnetCalc()
+            }
+            catch {}
             //subnetsHostsView.reloadData()
         }
         else {
             let maskbits = sender.intValue as Int
             ipsc!.maskBits = Constants.NETWORK_BITS_MIN
-            self.doIPSubnetCalc()
+            do {
+                try self.doIPSubnetCalc()
+            }
+            catch {}
             if (tabViewClassLess.state == NSControl.StateValue.on) {
                 ipsc!.maskBits = maskbits
                 self.doSubnetHost()
@@ -1276,7 +1335,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             if (ipsc != nil) {
                 if (ipsc!.maskBits < Constants.NETWORK_BITS_MIN) {
                     ipsc!.maskBits = Constants.NETWORK_BITS_MIN
-                    self.doIPSubnetCalc()
+                    do {
+                        try self.doIPSubnetCalc()
+                    }
+                    catch {}
                 }
             }
         }
@@ -1357,7 +1419,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         if (sender.objectValueOfSelectedItem as? String) != nil {
             ipsc!.ipv6MaskBits = sender.intValue
-            self.doIPv6SubnetCalc()
+            do {
+                try self.doIPv6SubnetCalc()
+            }
+            catch {}
         }
         else {
             myAlert(message: "Invalid IPv6 Mask Bits", info: "Bad selection")
@@ -1378,7 +1443,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             ipsc = IPSubnetCalc(Constants.defaultIP)
         }
         ipsc!.ipv6MaskBits -= sender.indexOfSelectedItem()
-        self.doIPv6SubnetCalc()
+        do {
+            try self.doIPv6SubnetCalc()
+        }
+        catch {}
     }
     
     /**
@@ -1396,7 +1464,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         if (sender.indexOfSelectedItem != -1) {
             ipsc!.ipv6MaskBits = 128 - sender.indexOfSelectedItem()
-            self.doIPv6SubnetCalc()
+            do {
+                try self.doIPv6SubnetCalc()
+            }
+            catch {}
         }
         else {
             myAlert(message: "Invalid Max Hosts", info: "Bad selection")
@@ -1417,20 +1488,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
      */
     @IBAction func calc(_ sender: AnyObject)
     {
-        if (addrField.stringValue.contains(":")) {
-            self.doIPv6SubnetCalc()
-            tabView.selectTabViewItem(at: 5)
-        }
-        else {
-            self.doIPSubnetCalc()
-            tabView.selectTabViewItem(at: 0)
-        }
+        self.ipAddrEdit(addrField)
     }
-    
+        
     /**
      Triggered when the user hit Enter key in the IP address field
      
-     - Parameter sender: sender of the action
+     - Parameter sender: selected item of the IP address field
      
      */
     @IBAction func ipAddrEdit(_ sender: AnyObject)
@@ -1438,22 +1502,26 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         //print("ipAddrEdit action")
         if ((sender as? NSTextField)?.stringValue) != nil {
             if (sender.stringValue != "") {
-                if (addrField.indexOfItem(withObjectValue: sender.stringValue!) == NSNotFound) {
-                    if (addrField.numberOfItems >= Constants.maxAddrHistory) {
-                        addrField.removeItem(at: 0)
-                        if (history.count > 0) {
-                            container.viewContext.delete(history[0])
-                            history.remove(at: 0)
-                            saveHistory()
+                do {
+                    let addr = sender.stringValue!
+                    try self.doCalc()
+                    if (addrField.indexOfItem(withObjectValue: addr) == NSNotFound) {
+                        if (addrField.numberOfItems >= Constants.maxAddrHistory) {
+                            addrField.removeItem(at: 0)
+                            if (history.count > 0) {
+                                container.viewContext.delete(history[0])
+                                history.remove(at: 0)
+                                saveHistory()
+                            }
                         }
+                        addrField.addItem(withObjectValue: addr)
+                        let historyItem = AddrHistory(context: container.viewContext)
+                        historyItem.address = addr
+                        history.append(historyItem)
+                        saveHistory()
                     }
-                    addrField.addItem(withObjectValue: sender.stringValue!)
-                    let historyItem = AddrHistory(context: container.viewContext)
-                    historyItem.address = sender.stringValue!
-                    history.append(historyItem)
-                    saveHistory()
                 }
-                self.calc(sender)
+                catch {}
             }
         }
     }

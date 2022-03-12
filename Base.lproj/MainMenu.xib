@@ -1514,7 +1514,7 @@ CA
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="calc:" target="b7w-M5-ti7" id="gsi-fk-GkQ"/>
+                            <action selector="calc:" target="b7w-M5-ti7" id="H7m-mU-2rm"/>
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="615">
