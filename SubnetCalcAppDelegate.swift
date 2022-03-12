@@ -508,6 +508,41 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
     }
     
+    /**
+     Save the address IP field history for future App sessions
+     */
+    private func saveHistory() {
+        if container.viewContext.hasChanges {
+            do {
+                try container.viewContext.save()
+            } catch {
+                print("An error occurred while saving: \(error)")
+            }
+        }
+    }
+    
+    /**
+     Load in the address IP field the history of previous App sessions
+     */
+    private func loadHistory() {
+        container = NSPersistentContainer(name: "SubnetCalc")
+        container.loadPersistentStores { storeDescription, error in
+            if let error = error {
+                print("Unresolved error \(error)")
+            }
+        }
+        do {
+            history = try container.viewContext.fetch(AddrHistory.fetchRequest())
+            //print("Got \(history.count) items")
+            for item in history {
+                //print(item.address)
+                addrField.addItem(withObjectValue: item.address)
+            }
+        } catch {
+            print("Fetch history failed")
+        }
+    }
+    
     //**********************
     //Private IPv6 functions
     //**********************
@@ -1743,42 +1778,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             saveHistory()
         }
     }
-    
-    /**
-     Save the address IP field history for future App sessions
-     */
-    private func saveHistory() {
-        if container.viewContext.hasChanges {
-            do {
-                try container.viewContext.save()
-            } catch {
-                print("An error occurred while saving: \(error)")
-            }
-        }
-    }
-    
-    /**
-     Load in the address IP field the history of previous App sessions
-     */
-    private func loadHistory() {
-        container = NSPersistentContainer(name: "SubnetCalc")
-        container.loadPersistentStores { storeDescription, error in
-            if let error = error {
-                print("Unresolved error \(error)")
-            }
-        }
-        do {
-            history = try container.viewContext.fetch(AddrHistory.fetchRequest())
-            //print("Got \(history.count) items")
-            for item in history {
-                //print(item.address)
-                addrField.addItem(withObjectValue: item.address)
-            }
-        } catch {
-            print("Fetch history failed")
-        }
-    }
-    
+        
     /**
      Auto invoked when the Main Windows has been resized
      */
