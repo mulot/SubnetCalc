@@ -7,6 +7,7 @@
 
 import Foundation
 import Cocoa
+import CoreData
 
 @main
 class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableViewDataSource {
@@ -17,6 +18,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         static let defaultIP: String = "10.0.0.0"
         static let defaultIPv6Mask: String = "64"
         static let defaultIPv6to4Mask: Int = 96
+        static let maxAddrHistory: Int = 30
         static let BUFFER_LINES:Int = 200000000
         static let NETWORK_BITS_MIN_CLASSLESS:Int = 1
         static let NETWORK_BITS_MIN:Int = 8
@@ -26,7 +28,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     //General UI elements
     //*******************
     @IBOutlet var window: NSWindow!
-    @IBOutlet var addrField: NSTextField!
+    @IBOutlet var addrField: NSComboBox!
     @IBOutlet var exportButton: NSPopUpButton!
     @IBOutlet var tabView: NSTabView!
     @IBOutlet var darkModeMenu: NSMenuItem!
@@ -94,6 +96,8 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     private var ipsc: IPSubnetCalc?
     private var subnetsVLSM = [(Int, String, String)]()
     private var globalMaskVLSM: UInt32!
+    private var container: NSPersistentContainer!
+    private var history = [AddrHistory]()
     
     //**********************
     //Private IPv4 functions
@@ -224,7 +228,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             return (String(ipInfo[0]), String(ipInfo[1]))
         }
         else if ipInfo.count > 2 {
-            print("Bad IP format: \(ipInfo)")
+            print("Invalid IP format: \(ipInfo)")
             return ("", nil)
         }
         return (address, nil)
@@ -315,14 +319,14 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         if (ipsc != nil) {
             //print("doVLSM")
             maskBitsVLSMCombo.selectItem(withObjectValue: String(ipsc!.maskBits))
-            var maskVLSM = ~IPSubnetCalc.digitize(maskbits: ipsc!.maskBits) + 1
+            var maskVLSM = ~IPSubnetCalc.digitize(maskbits: ipsc!.maskBits)! + 1
             if (subnetsVLSM.count != 0) {
                 var fitsRequirements = true
                 for index in (0...(subnetsVLSM.count - 1)) {
                     let maskbits = subnetsVLSM[index].0
                     //print("Mask VLSM: \(IPSubnetCalc.digitize(ipAddress: maskVLSM)) Maskbits: \(IPSubnetCalc.digitize(ipAddress: ~IPSubnetCalc.numerize(maskbits: maskbits)))")
-                    if (maskVLSM > ~IPSubnetCalc.digitize(maskbits: maskbits)) {
-                        maskVLSM = maskVLSM - (~IPSubnetCalc.digitize(maskbits: maskbits) + 1)
+                    if (maskVLSM > ~IPSubnetCalc.digitize(maskbits: maskbits)!) {
+                        maskVLSM = maskVLSM - (~IPSubnetCalc.digitize(maskbits: maskbits)! + 1)
                         //print("Mask AFTER VLSM: \(IPSubnetCalc.digitize(ipAddress: maskVLSM))")
                     }
                     else {
@@ -400,8 +404,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
      Check if there is are current IP address and mask otherwise take the default IP and mask.
      
      Check if the IP address and mask are valid.
+     
+     - Throws: an invalid IP or invalid mask error with a message explaining the reason
      */
-    private func doIPSubnetCalc()
+    private func doIPSubnetCalc() throws
     {
         var ipaddr: String
         var ipmask: String?
@@ -422,7 +428,8 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         else {
             (ipaddr, ipmask) = splitAddrMask(address: addrField.stringValue)
             addrField.stringValue = ipaddr
-            if (IPSubnetCalc.isValidIPv6(ipAddress: ipaddr, mask: Int(ipmask ?? Constants.defaultIPv6Mask)) == true) {
+            do {
+                try IPSubnetCalc.validateIPv6(ipAddress: ipaddr, mask: Int(ipmask ?? Constants.defaultIPv6Mask))
                 if (ipsc != nil) {
                     ipaddr = ipsc!.ipv4Address
                 }
@@ -435,11 +442,14 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                     }
                 }
             }
+            catch {
+            }
             if (ipmask == nil && ipsc != nil) {
                 ipmask = String(ipsc!.maskBits)
             }
         }
-        if (IPSubnetCalc.isValidIP(ipAddress: ipaddr, mask: ipmask) == true) {
+        do {
+            try IPSubnetCalc.validateIPv4(ipAddress: ipaddr, mask: ipmask)
             //print("IP Address: \(ipaddr) mask: \(ipmask)")
             if (ipmask == nil) {
                 ipsc = IPSubnetCalc(ipaddr)
@@ -457,9 +467,79 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 self.doVLSM()
             }
         }
+        catch SubnetCalcError.invalidIPv4(let info) {
+            myAlert(message: "Invalid IPv4 Address", info: info)
+            throw SubnetCalcError.invalidIPv4(info)
+        }
+        catch SubnetCalcError.invalidIPv4Mask(let info) {
+            myAlert(message: "Invalid IPv4 Mask", info: info)
+            throw SubnetCalcError.invalidIPv4Mask(info)
+        }
+        catch {
+            myAlert(message: "Unknown invalid error", info: "\(ipaddr)/\(ipmask ?? "") Error: \(error)")
+            throw error
+        }
+    }
+    
+    /**
+     Compute IPv4 or IPv6 infos depending of IP address format in IP address field
+     
+     - Throws: an invalid IP or invalid mask error with a message explaining the reason
+     */
+    private func doCalc() throws
+    {
+        if (addrField.stringValue.contains(":")) {
+            do {
+                try self.doIPv6SubnetCalc()
+                tabView.selectTabViewItem(at: 5)
+            }
+            catch {
+                throw error
+            }
+        }
         else {
-            myAlert(message: "Bad IPv4 Address", info: "Bad format: \(ipaddr)/\(ipmask ?? "")")
-            return
+            do {
+                try self.doIPSubnetCalc()
+                tabView.selectTabViewItem(at: 0)
+            }
+            catch {
+                throw error
+            }
+        }
+    }
+    
+    /**
+     Save the address IP field history for future App sessions
+     */
+    private func saveHistory() {
+        if container.viewContext.hasChanges {
+            do {
+                try container.viewContext.save()
+            } catch {
+                print("An error occurred while saving: \(error)")
+            }
+        }
+    }
+    
+    /**
+     Load in the address IP field the history of previous App sessions
+     */
+    private func loadHistory() {
+        container = NSPersistentContainer(name: "SubnetCalc")
+        container.loadPersistentStores { storeDescription, error in
+            if let error = error {
+                print("Unresolved error \(error)")
+            }
+        }
+        do {
+            history = try container.viewContext.fetch(AddrHistory.fetchRequest())
+            //print("Got \(history.count) items")
+            for item in history {
+                //print(item.address)
+                addrField.addItem(withObjectValue: item.address)
+            }
+        } catch {
+            print("Fetch history failed")
         }
     }
     
@@ -529,20 +609,24 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
      Genrate infos also for all IPv4 tabs based on the converted IPv4 address
      
      Check if the IPv6 address and mask are valid.
+     
+     - Throws: an invalid IP or invalid mask error with a message explaining the reason
      */
-    private func doIPv6SubnetCalc()
+    private func doIPv6SubnetCalc() throws
     {
         var ipaddr: String
         var ipmask: String?
         
         (ipaddr, ipmask) = splitAddrMask(address: addrField.stringValue)
         addrField.stringValue = ipaddr
-        if (IPSubnetCalc.isValidIP(ipAddress: ipaddr, mask: ipmask) == true) {
+        do {
+            try IPSubnetCalc.validateIPv4(ipAddress: ipaddr, mask: ipmask)
             if (ipsc != nil) {
                 ipaddr = ipsc!.ipv6Address
                 //print("doIPv6SubnetCalc ipaddr to ipv6 : \(ipsc!.ipv6Address)")
             }
         }
+        catch { }
         if (ipmask == nil) {
             if (ipsc != nil) {
                 ipmask = String(ipsc!.ipv6MaskBits)
@@ -553,10 +637,11 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
         }
         else if (Int(ipmask!) == nil) {
-            myAlert(message: "Bad IPv6 mask", info: "Bad format: \(ipmask!)")
+            myAlert(message: "Invalid IPv6 mask", info: "\(ipmask!) is not an integer")
             return
         }
-        if (IPSubnetCalc.isValidIPv6(ipAddress: ipaddr, mask: Int(ipmask!)) == true) {
+        do {
+            try IPSubnetCalc.validateIPv6(ipAddress: ipaddr, mask: Int(ipmask!))
             //print("IP Address: \(ipaddr) mask: \(ipmask)")
             ipsc = IPSubnetCalc(ipv6: ipaddr, maskbits: Int(ipmask!)!)
             if (ipsc != nil) {
@@ -569,9 +654,17 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 self.doIPv6()
             }
         }
-        else {
-            myAlert(message: "Bad IPv6 Address", info: "Bad format: \(ipaddr)/\(ipmask ?? "")")
-            return
+        catch SubnetCalcError.invalidIPv6(let info) {
+            myAlert(message: "Invalid IPv6 Address", info: info)
+            throw SubnetCalcError.invalidIPv6(info)
+        }
+        catch SubnetCalcError.invalidIPv6Mask(let info) {
+            myAlert(message: "Invalid IPv6 Mask", info: info)
+            throw SubnetCalcError.invalidIPv6Mask(info)
+        }
+        catch {
+            myAlert(message: "Unknown invalid IPv6 error", info: "\(ipaddr)/\(ipmask ?? "") Error: \(error)")
+            throw error
         }
     }
     
@@ -632,10 +725,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         if (sender.indexOfSelectedItem != -1) {
             ipsc!.maskBits = 31 - sender.indexOfSelectedItem()
-            self.doIPSubnetCalc()
+            do {
+                try self.doIPSubnetCalc()
+            }
+            catch {}
         }
         else {
-            myAlert(message: "Bad Max Hosts", info: "Bad selection")
+            myAlert(message: "Invalid Max Hosts", info: "Bad selection")
             return
         }
     }
@@ -654,10 +750,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         if (sender.indexOfSelectedItem != -1) {
             ipsc!.maskBits = 8 + sender.indexOfSelectedItem()
-            self.doIPSubnetCalc()
+            do {
+                try self.doIPSubnetCalc()
+            }
+            catch {}
         }
         else {
-            myAlert(message: "Bad Max Subnets", info: "Bad selection")
+            myAlert(message: "Invalid Max Subnets", info: "Bad selection")
             return
         }
     }
@@ -676,10 +775,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         if (sender.objectValueOfSelectedItem as? String) != nil {
             ipsc!.maskBits = sender.intValue + ipsc!.netBits()
-            self.doIPSubnetCalc()
+            do {
+                try self.doIPSubnetCalc()
+            }
+            catch {}
         }
         else {
-            myAlert(message: "Bad Subnet Bits", info: "Bad selection")
+            myAlert(message: "Invalid Subnet Bits", info: "Bad selection")
             return
         }
     }
@@ -698,7 +800,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         // Check cast as String needed ?
         if let maskStr = sender.objectValueOfSelectedItem as? String {
-            let mask:UInt32 = IPSubnetCalc.digitize(ipAddress: maskStr)
+            if let mask:UInt32 = IPSubnetCalc.digitize(ipAddress: maskStr) {
             if (wildcard.state == NSControl.StateValue.on) {
                 ipsc!.maskBits = IPSubnetCalc.maskBits(mask: ~mask)
             }
@@ -706,10 +808,18 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 ipsc!.maskBits = IPSubnetCalc.maskBits(mask: mask)
                 //print("changeSubnetMask object value : \(str)")
             }
-            self.doIPSubnetCalc()
+            do {
+                try self.doIPSubnetCalc()
+            }
+            catch {}
+        }
+            else {
+                myAlert(message: "Invalid Subnet Mask", info: "Bad format \(maskStr)")
+                return
+            }
         }
         else {
-            myAlert(message: "Bad Subnet Mask", info: "Bad selection")
+            myAlert(message: "Invalid Subnet Mask", info: "Bad selection")
             return
         }
     }
@@ -728,10 +838,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         if (sender.objectValueOfSelectedItem as? String) != nil {
             ipsc!.maskBits = sender.intValue
-            self.doIPSubnetCalc()
+            do {
+                try self.doIPSubnetCalc()
+            }
+            catch {}
         }
         else {
-            myAlert(message: "Bad Mask Bits", info: "Bad selection")
+            myAlert(message: "Invalid Mask Bits", info: "Bad selection")
             return
         }
     }
@@ -763,14 +876,17 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
             if (result >= 0) {
                 ipsc!.maskBits = sender.intValue
-                self.doIPSubnetCalc()
+                do {
+                    try self.doIPSubnetCalc()
+                }
+                catch {}
             }
             else {
                 doCIDR(maskbits: sender.intValue)
             }
         }
         else {
-            myAlert(message: "Bad CIDR Mask Bits", info: "Bad selection")
+            myAlert(message: "Invalid CIDR Mask Bits", info: "Bad selection")
             return
         }
     }
@@ -788,7 +904,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             ipsc = IPSubnetCalc(Constants.defaultIP)
         }
         if let maskStr = sender.objectValueOfSelectedItem as? String {
-            let mask:UInt32 = IPSubnetCalc.digitize(ipAddress: maskStr)
+            if let mask:UInt32 = IPSubnetCalc.digitize(ipAddress: maskStr) {
             let maskbits:Int = IPSubnetCalc.maskBits(mask: mask)
             let classType = ipsc!.netClass()
             var result: Int = -1
@@ -804,14 +920,22 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
             if (result >= 0) {
                 ipsc!.maskBits = maskbits
-                self.doIPSubnetCalc()
+                do {
+                    try self.doIPSubnetCalc()
+                }
+                catch {}
             }
             else {
                 doCIDR(maskbits: maskbits)
             }
+            }
+            else {
+                myAlert(message: "Invalid CIDR Mask", info: "Bad format \(maskStr)")
+                return
+            }
         }
         else {
-            myAlert(message: "Bad CIDR Mask", info: "Bad selection")
+            myAlert(message: "Invalid CIDR Mask", info: "Bad selection")
             return
         }
     }
@@ -845,12 +969,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 doCIDR(maskbits: result)
             }
             else {
-                myAlert(message: "Bad Max Supernets", info: "Value too high")
+                myAlert(message: "Invalid Max Supernets", info: "Value too high")
                 return
             }
         }
         else {
-            myAlert(message: "Bad Max Supernets", info: "Bad selection")
+            myAlert(message: "Invalid Max Supernets", info: "Bad selection")
             return
         }
     }
@@ -872,12 +996,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 doCIDR(maskbits: (32 - sender.indexOfSelectedItem - 1))
             }
             else {
-                myAlert(message: "Bad Max Adresses", info: "Bad value")
+                myAlert(message: "Invalid Max Adresses", info: "Bad value")
                 return
             }
         }
         else {
-            myAlert(message: "Bad Max Adresses", info: "Bad selection")
+            myAlert(message: "Invalid Max Adresses", info: "Bad selection")
             return
         }
     }
@@ -899,12 +1023,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 doCIDR(maskbits: (32 - sender.indexOfSelectedItem))
             }
             else {
-                myAlert(message: "Bad Max Subnets", info: "Bad value")
+                myAlert(message: "Invalid Max Subnets", info: "Bad value")
                 return
             }
         }
         else {
-            myAlert(message: "Bad Max Subnets", info: "Bad selection")
+            myAlert(message: "Invalid Max Subnets", info: "Bad selection")
             return
         }
     }
@@ -981,7 +1105,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         if (ipsc != nil) {
             //print("Refresh TableView: \(String(describing: tableView.identifier))")
             if (tableView == subnetsHostsView) {
-                let ipaddr: UInt32 = (((IPSubnetCalc.digitize(ipAddress: ipsc!.ipv4Address) & ipsc!.classMask()) >> (32 - ipsc!.maskBits)) + UInt32(row)) << (32 - ipsc!.maskBits)
+                let ipaddr: UInt32 = (((IPSubnetCalc.digitize(ipAddress: ipsc!.ipv4Address)! & ipsc!.classMask()) >> (32 - ipsc!.maskBits)) + UInt32(row)) << (32 - ipsc!.maskBits)
                 let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.dottedDecimal(ipAddress: ipaddr), maskbits: ipsc!.maskBits)
                 //print("tableView Row: \(row) IP num : \(ipaddr) IP: \(IPSubnetCalc.digitize(ipAddress: ipaddr)) IP Subnet: \(ipsc_tmp!.subnetId())")
                 if (tableColumn != nil && ipsc_tmp != nil) {
@@ -1001,7 +1125,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
             else if (tableView == viewFLSM) {
                 //print("refresh View FLSM")
-                var ipaddr: UInt32 = ((IPSubnetCalc.digitize(ipAddress: ipsc!.ipv4Address) & IPSubnetCalc.digitize(maskbits: ipsc!.maskBits)) >> (32 - ipsc!.maskBits)) << (32 - ipsc!.maskBits)
+                var ipaddr: UInt32 = ((IPSubnetCalc.digitize(ipAddress: ipsc!.ipv4Address)! & IPSubnetCalc.digitize(maskbits: ipsc!.maskBits)!) >> (32 - ipsc!.maskBits)) << (32 - ipsc!.maskBits)
                 ipaddr = (ipaddr >> (32 - (ipsc!.maskBits + slideFLSM.integerValue)) + UInt32(row)) << (32 - (ipsc!.maskBits + slideFLSM.integerValue))
                 let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.dottedDecimal(ipAddress: ipaddr), maskbits: (ipsc!.maskBits + slideFLSM.integerValue))
                 if (tableColumn != nil && ipsc_tmp != nil) {
@@ -1029,10 +1153,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                         return (row + 1)
                     }
                     else if (tableColumn!.identifier.rawValue == "subnetVLSMCol") {
-                        var subnet = IPSubnetCalc.digitize(ipAddress: ipsc!.subnetId())
+                        var subnet = IPSubnetCalc.digitize(ipAddress: ipsc!.subnetId())!
                         if (row > 0) {
                             for index in (0...(row - 1)) {
-                                subnet = subnet + ~IPSubnetCalc.digitize(maskbits: subnetsVLSM[index].0) + 1
+                                subnet = subnet + ~IPSubnetCalc.digitize(maskbits: subnetsVLSM[index].0)! + 1
                             }
                         }
                         return (IPSubnetCalc.dottedDecimal(ipAddress: subnet))
@@ -1047,10 +1171,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                         return (subnetsVLSM[row].2)
                     }
                     else if (tableColumn!.identifier.rawValue == "rangeVLSMCol") {
-                        var subnet = IPSubnetCalc.digitize(ipAddress: ipsc!.subnetId())
+                        var subnet = IPSubnetCalc.digitize(ipAddress: ipsc!.subnetId())!
                         if (row > 0) {
                             for index in (0...(row - 1)) {
-                                subnet = subnet + ~IPSubnetCalc.digitize(maskbits: subnetsVLSM[index].0) + 1
+                                subnet = subnet + ~IPSubnetCalc.digitize(maskbits: subnetsVLSM[index].0)! + 1
                             }
                         }
                         let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.dottedDecimal(ipAddress: subnet), maskbits: (subnetsVLSM[row].0))
@@ -1060,10 +1184,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                         }
                     }
                     else if (tableColumn!.identifier.rawValue == "broadcastVLSMCol") {
-                        var subnet = IPSubnetCalc.digitize(ipAddress: ipsc!.subnetId())
+                        var subnet = IPSubnetCalc.digitize(ipAddress: ipsc!.subnetId())!
                         if (row > 0) {
                             for index in (0...(row - 1)) {
-                                subnet = subnet + ~IPSubnetCalc.digitize(maskbits: subnetsVLSM[index].0) + 1
+                                subnet = subnet + ~IPSubnetCalc.digitize(maskbits: subnetsVLSM[index].0)! + 1
                             }
                         }
                         let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.dottedDecimal(ipAddress: subnet), maskbits: (subnetsVLSM[row].0))
@@ -1093,13 +1217,19 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         if (sender.intValue as Int >= Constants.NETWORK_BITS_MIN)
         {
             ipsc!.maskBits = sender.intValue as Int
-            self.doIPSubnetCalc()
+            do {
+                try self.doIPSubnetCalc()
+            }
+            catch {}
             //subnetsHostsView.reloadData()
         }
         else {
             let maskbits = sender.intValue as Int
             ipsc!.maskBits = Constants.NETWORK_BITS_MIN
-            self.doIPSubnetCalc()
+            do {
+                try self.doIPSubnetCalc()
+            }
+            catch {}
             if (tabViewClassLess.state == NSControl.StateValue.on) {
                 ipsc!.maskBits = maskbits
                 self.doSubnetHost()
@@ -1155,8 +1285,8 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 if (subnetsVLSM.count != 0) {
                     //print("VLSM subnets NOT empty")
                     //print("Mask VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM)) Maskbits: \(IPSubnetCalc.digitize(ipAddress: ~IPSubnetCalc.numerize(maskbits: maskbits)))")
-                    if (globalMaskVLSM > ~IPSubnetCalc.digitize(maskbits: maskbits)) {
-                        globalMaskVLSM = globalMaskVLSM - (~IPSubnetCalc.digitize(maskbits: maskbits) + 1)
+                    if (globalMaskVLSM > ~IPSubnetCalc.digitize(maskbits: maskbits)!) {
+                        globalMaskVLSM = globalMaskVLSM - (~IPSubnetCalc.digitize(maskbits: maskbits)! + 1)
                         //print("Mask AFTER VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM))")
                         if let index = subnetsVLSM.firstIndex(where: { $0.0 > maskbits }) {
                             subnetsVLSM.insert((maskbits, subnetNameVLSM.stringValue, "\(requiredHostsVLSM.stringValue)/\(hosts) (\(used)%)"), at: index)
@@ -1172,10 +1302,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                 }
                 else {
                     //print("VLSM subnets empty")
-                    globalMaskVLSM = ~IPSubnetCalc.digitize(maskbits: ipsc!.maskBits) + 1
+                    globalMaskVLSM = ~IPSubnetCalc.digitize(maskbits: ipsc!.maskBits)! + 1
                     //print("Mask VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM)) Maskbits: \(IPSubnetCalc.digitize(ipAddress: ~IPSubnetCalc.numerize(maskbits: maskbits)))")
-                    if (globalMaskVLSM > ~IPSubnetCalc.digitize(maskbits: maskbits)) {
-                        globalMaskVLSM = globalMaskVLSM - (~IPSubnetCalc.digitize(maskbits: maskbits) + 1)
+                    if (globalMaskVLSM > ~IPSubnetCalc.digitize(maskbits: maskbits)!) {
+                        globalMaskVLSM = globalMaskVLSM - (~IPSubnetCalc.digitize(maskbits: maskbits)! + 1)
                         //print("Mask AFTER VLSM: \(IPSubnetCalc.digitize(ipAddress: globalMaskVLSM))")
                         subnetsVLSM.append((maskbits, subnetNameVLSM.stringValue, "\(requiredHostsVLSM.stringValue)/\(hosts) (\(used)%)"))
                     }
@@ -1188,7 +1318,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             }
         }
         else {
-            myAlert(message: "Bad VLSM required Hosts number", info: "\(requiredHostsVLSM.integerValue) is not a number")
+            myAlert(message: "Invalid VLSM required Hosts number", info: "\(requiredHostsVLSM.integerValue) is not a number")
         }
         requiredHostsVLSM.stringValue = ""
         subnetNameVLSM.stringValue = ""
@@ -1240,7 +1370,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             if (ipsc != nil) {
                 if (ipsc!.maskBits < Constants.NETWORK_BITS_MIN) {
                     ipsc!.maskBits = Constants.NETWORK_BITS_MIN
-                    self.doIPSubnetCalc()
+                    do {
+                        try self.doIPSubnetCalc()
+                    }
+                    catch {}
                 }
             }
         }
@@ -1321,10 +1454,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         if (sender.objectValueOfSelectedItem as? String) != nil {
             ipsc!.ipv6MaskBits = sender.intValue
-            self.doIPv6SubnetCalc()
+            do {
+                try self.doIPv6SubnetCalc()
+            }
+            catch {}
         }
         else {
-            myAlert(message: "Bad IPv6 Mask Bits", info: "Bad selection")
+            myAlert(message: "Invalid IPv6 Mask Bits", info: "Bad selection")
             return
         }
     }
@@ -1342,7 +1478,10 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
             ipsc = IPSubnetCalc(Constants.defaultIP)
         }
         ipsc!.ipv6MaskBits -= sender.indexOfSelectedItem()
-        self.doIPv6SubnetCalc()
+        do {
+            try self.doIPv6SubnetCalc()
+        }
+        catch {}
     }
     
     /**
@@ -1360,10 +1499,13 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
         }
         if (sender.indexOfSelectedItem != -1) {
             ipsc!.ipv6MaskBits = 128 - sender.indexOfSelectedItem()
-            self.doIPv6SubnetCalc()
+            do {
+                try self.doIPv6SubnetCalc()
+            }
+            catch {}
         }
         else {
-            myAlert(message: "Bad Max Hosts", info: "Bad selection")
+            myAlert(message: "Invalid Max Hosts", info: "Bad selection")
             return
         }
     }
@@ -1381,26 +1523,42 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
      */
     @IBAction func calc(_ sender: AnyObject)
     {
-        if (addrField.stringValue.contains(":")) {
-            self.doIPv6SubnetCalc()
-            tabView.selectTabViewItem(at: 5)
-        }
-        else {
-            self.doIPSubnetCalc()
-            tabView.selectTabViewItem(at: 0)
-        }
+        self.ipAddrEdit(addrField)
     }
-    
+        
     /**
      Triggered when the user hit Enter key in the IP address field
      
-     
-     - Parameter sender: sender of the action
+     - Parameter sender: selected item of the IP address field
      
      */
     @IBAction func ipAddrEdit(_ sender: AnyObject)
     {
-        self.calc(sender)
+        //print("ipAddrEdit action")
+        if ((sender as? NSTextField)?.stringValue) != nil {
+            if (sender.stringValue != "") {
+                do {
+                    let addr = sender.stringValue!
+                    try self.doCalc()
+                    if (addrField.indexOfItem(withObjectValue: addr) == NSNotFound) {
+                        if (addrField.numberOfItems >= Constants.maxAddrHistory) {
+                            addrField.removeItem(at: 0)
+                            if (history.count > 0) {
+                                container.viewContext.delete(history[0])
+                                history.remove(at: 0)
+                                saveHistory()
+                            }
+                        }
+                        addrField.addItem(withObjectValue: addr)
+                        let historyItem = AddrHistory(context: container.viewContext)
+                        historyItem.address = addr
+                        history.append(historyItem)
+                        saveHistory()
+                    }
+                }
+                catch {}
+            }
+        }
     }
     
     /**
@@ -1433,7 +1591,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                         var cvsStr = "#;Subnet ID;Range;Broadcast\n"
                         for index in (0...(self.ipsc!.maxSubnets() - 1)) {
                             let mask: UInt32 = UInt32(index) << (32 - self.ipsc!.maskBits)
-                            let ipaddr = (IPSubnetCalc.digitize(ipAddress: self.ipsc!.subnetId())) | mask
+                            let ipaddr = (IPSubnetCalc.digitize(ipAddress: self.ipsc!.subnetId())!) | mask
                             let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.dottedDecimal(ipAddress: ipaddr), maskbits: self.ipsc!.maskBits)
                             if (ipsc_tmp != nil) {
                                 cvsStr.append("\(index + 1);\(ipsc_tmp!.subnetId());\(ipsc_tmp!.subnetRange());\(ipsc_tmp!.subnetBroadcast())\n")
@@ -1479,7 +1637,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                         let cvsFile = FileHandle(forWritingAtPath: panel.url!.path)
                         if (cvsFile != nil) {
                             var cvsStr = "#;Subnet ID;Mask bits;Range;Broadcast\n"
-                            let subnetid: UInt32 = ((IPSubnetCalc.digitize(ipAddress: self.ipsc!.ipv4Address) & IPSubnetCalc.digitize(maskbits: self.ipsc!.maskBits)) >> (32 - self.ipsc!.maskBits)) << (32 - self.ipsc!.maskBits)
+                            let subnetid: UInt32 = ((IPSubnetCalc.digitize(ipAddress: self.ipsc!.ipv4Address)! & IPSubnetCalc.digitize(maskbits: self.ipsc!.maskBits)!) >> (32 - self.ipsc!.maskBits)) << (32 - self.ipsc!.maskBits)
                             for index in (0...(Int(truncating: NSDecimalNumber(decimal: pow(2, self.slideFLSM.integerValue))) - 1)) {
                                 let ipaddr = (subnetid   >> (32 - (self.ipsc!.maskBits + self.slideFLSM.integerValue)) + UInt32(index)) << (32 - (self.ipsc!.maskBits + self.slideFLSM.integerValue))
                                 let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.dottedDecimal(ipAddress: ipaddr), maskbits: (self.ipsc!.maskBits + self.slideFLSM.integerValue))
@@ -1531,12 +1689,12 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
                         let cvsFile = FileHandle(forWritingAtPath: panel.url!.path)
                         if (cvsFile != nil) {
                             var cvsStr = "#;Subnet Name;Subnet ID;Mask bits;Hosts Range;Broadcast;Used\n"
-                            let subnetid = IPSubnetCalc.digitize(ipAddress: self.ipsc!.subnetId())
+                            let subnetid = IPSubnetCalc.digitize(ipAddress: self.ipsc!.subnetId())!
                             for index in (0...(self.subnetsVLSM.count - 1)) {
                                 var subnet = subnetid
                                 if (index > 0) {
                                     for index2 in (0...(index - 1)) {
-                                        subnet = subnet + ~IPSubnetCalc.digitize(maskbits: self.subnetsVLSM[index2].0) + 1
+                                        subnet = subnet + ~IPSubnetCalc.digitize(maskbits: self.subnetsVLSM[index2].0)! + 1
                                     }
                                 }
                                 let ipsc_tmp = IPSubnetCalc(ipAddress: IPSubnetCalc.dottedDecimal(ipAddress: subnet), maskbits: self.subnetsVLSM[index].0)!
@@ -1602,6 +1760,26 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
     }
     
     /**
+     Clear address IP field history
+     
+     Triggered when the user select Clear history in the window menu.
+     
+     - Parameter sender: non used
+     
+     */
+    @IBAction func clearHistory(_ sender: AnyObject)
+    {
+        for _ in (0...addrField.numberOfItems-1) {
+            addrField.removeItem(at: 0)
+        }
+        for _ in (0...history.count-1) {
+            container.viewContext.delete(history[0])
+            history.remove(at: 0)
+            saveHistory()
+        }
+    }
+        
+    /**
      Auto invoked when the Main Windows has been resized
      */
     func windowDidResize(_ notification: Notification)
@@ -1622,6 +1800,7 @@ class SubnetCalcAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, 
      */
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
+        loadHistory()
         initSubnetsTab()
         initCIDRTab()
         initIPv6Tab()

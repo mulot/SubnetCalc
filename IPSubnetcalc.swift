@@ -8,6 +8,15 @@
 import Foundation
 import Cocoa
 
+//*********************
+//Errors for IP format
+//*********************
+enum SubnetCalcError: Error {
+    case invalidIPv4(_ info: String)
+    case invalidIPv4Mask(_ info: String)
+    case invalidIPv6(_ info: String)
+    case invalidIPv6Mask(_ info: String)
+}
 
 class IPSubnetCalc: NSObject {
     //*********
@@ -97,15 +106,23 @@ class IPSubnetCalc: NSObject {
      the binary representation of the given IP address
      
      */
-    static func binarize(ipAddress: String, space: Bool = false, dotted: Bool = true) -> String {
+    static func binarize(ipAddress: String, space: Bool = false, dotted: Bool = true) -> String? {
         var ipAddressBin = [String]()
         var binStr = String()
         var ipDigits = [String]()
         
         ipDigits = ipAddress.components(separatedBy: ".")
         
+        if ipDigits.count != 4 {
+            return nil
+        }
         for index in 0...3 {
-            ipAddressBin.append(String(Int(ipDigits[index])!, radix: 2))
+            if let ipDigit = Int(ipDigits[index]) {
+                ipAddressBin.append(String(ipDigit, radix: 2))
+            }
+            else {
+                return nil
+            }
             while (ipAddressBin[index].count < 8) {
                 ipAddressBin[index].insert("0", at: ipAddressBin[index].startIndex)
             }
@@ -139,7 +156,7 @@ class IPSubnetCalc: NSObject {
      
      */
     func binaryMap(dotted: Bool = true) -> String {
-        return (IPSubnetCalc.binarize(ipAddress: ipv4Address, space: false, dotted: dotted))
+        return (IPSubnetCalc.binarize(ipAddress: ipv4Address, space: false, dotted: dotted)!)
     }
     
     /**
@@ -153,14 +170,22 @@ class IPSubnetCalc: NSObject {
      the hexadecimal representation of the given IP address
      
      */
-    static func hexarize(ipAddress: String, dotted: Bool = true) -> String {
+    static func hexarize(ipAddress: String, dotted: Bool = true) -> String? {
         var ipDigits = [String]()
         var hexIP = String()
         var hex4: String
         
         ipDigits = ipAddress.components(separatedBy: ".")
+        if ipDigits.count != 4 {
+            return nil
+        }
         for index in 0...3 {
-            hex4 = String(format: "%X", Int(ipDigits[index])!)
+            if let ipDigit = Int(ipDigits[index]) {
+            hex4 = String(format: "%X", ipDigit)
+            }
+            else {
+                return nil
+            }
             if (hex4.count == 1) {
                 hex4 = "0" + hex4
             }
@@ -184,7 +209,7 @@ class IPSubnetCalc: NSObject {
      
      */
     func hexaMap(dotted: Bool = true) -> String {
-        return (IPSubnetCalc.hexarize(ipAddress: ipv4Address, dotted: dotted))
+        return (IPSubnetCalc.hexarize(ipAddress: ipv4Address, dotted: dotted)!)
     }
     
     /**
@@ -196,14 +221,22 @@ class IPSubnetCalc: NSObject {
      a digital IP address in UInt32 format
      
      */
-    static func digitize(ipAddress: String) -> UInt32 {
+    static func digitize(ipAddress: String) -> UInt32? {
         var ipAddressNum: UInt32 = 0
         var ipDigits = [String]()
+        //var ipDigit: Unit32
         
         ipDigits = ipAddress.components(separatedBy: ".")
-        
+        if ipDigits.count != 4 {
+            return nil
+        }
         for index in 0...3 {
-            ipAddressNum += UInt32(ipDigits[index])! << (32 - 8 * (index + 1))
+            if let ipDigit = UInt32(ipDigits[index]) {
+                ipAddressNum += ipDigit << (32 - 8 * (index + 1))
+            }
+            else {
+                return nil
+            }
         }
         return (ipAddressNum & Constants.addr32Full)
     }
@@ -229,8 +262,11 @@ class IPSubnetCalc: NSObject {
      a digital subnet mask in UInt32 format
 
      */
-    static func digitize(maskbits: Int) -> UInt32 {
-        return ((Constants.addr32Full << (32 - maskbits)) & Constants.addr32Full)
+    static func digitize(maskbits: Int) -> UInt32? {
+        if (maskbits <= Constants.NETWORK_BITS_MAX && maskbits >= Constants.NETWORK_BITS_MIN_CLASSLESS) {
+            return ((Constants.addr32Full << (32 - maskbits)) & Constants.addr32Full)
+        }
+        return nil
     }
     
     /**
@@ -260,11 +296,10 @@ class IPSubnetCalc: NSObject {
         - mask: Optionnal subnet mask
         - classless: enable class less checks of the given IP address/mask
      
-     - Returns:
-     Boolean if the given IP address is valid or not
+     - Throws: an invalid IP or invalid mask error with a message explaining the reason
      
      */
-    static func isValidIP(ipAddress: String, mask: String?, classless: Bool = false) -> Bool {
+    static func validateIPv4(ipAddress: String, mask: String?, classless: Bool = false) throws {
         var ip4Digits = [String]()
         
         ip4Digits = ipAddress.components(separatedBy: ".")
@@ -273,41 +308,47 @@ class IPSubnetCalc: NSObject {
                 if let digit = Int(item, radix: 10) {
                     if (digit > 255) {
                         print("bad IPv4 digit \(digit)")
-                        return false
+                        throw SubnetCalcError.invalidIPv4("IPv4 digit \(digit) is greater than 255")
+                        //return false
                     }
                 }
                 else {
                     print("not digit: \(item)")
-                    return false
+                    throw SubnetCalcError.invalidIPv4("not digit: \(item)")
+                    //return false
                 }
             }
         }
         else {
             print("bad IPv4 format \(ip4Digits)")
-            return false
+            throw SubnetCalcError.invalidIPv4("\(ipAddress) too short or too long")
+            //return false
         }
         if mask != nil {
             if let maskNum = Int(mask!) {
                 if (classless == true) {
                     if (maskNum < Constants.NETWORK_BITS_MIN_CLASSLESS || maskNum > Constants.NETWORK_BITS_MAX) {
                         print("IPv4 classless mask \(maskNum) invalid")
-                        return false
+                        throw SubnetCalcError.invalidIPv4Mask("IPv4 classless mask \(maskNum) should be between \(Constants.NETWORK_BITS_MIN_CLASSLESS) and \(Constants.NETWORK_BITS_MAX)")
+                        //return false
                     }
                 }
                 else if (maskNum < Constants.NETWORK_BITS_MIN || maskNum > Constants.NETWORK_BITS_MAX) {
                     print("IPv4 mask \(maskNum) invalid")
-                    return false
+                    throw SubnetCalcError.invalidIPv4Mask("IPv4 mask \(maskNum) should be between \(Constants.NETWORK_BITS_MIN) and \(Constants.NETWORK_BITS_MAX)")
+                    //return false
                 }
             }
             else {
                 print("IPv4 mask \(mask!) is not digit")
-                return false
+                throw SubnetCalcError.invalidIPv4Mask("IPv4 mask \(mask!) is not a digit")
+                //return false
             }
         }
         else {
             //print("null mask")
         }
-        return true
+        //return true
     }
     
     /**
@@ -319,8 +360,8 @@ class IPSubnetCalc: NSObject {
      */
     func subnetId() -> String {
         var subnetId: UInt32 = 0
-        let ipBits = IPSubnetCalc.digitize(ipAddress: self.ipv4Address)
-        let maskBits = IPSubnetCalc.digitize(maskbits: self.maskBits)
+        let ipBits = IPSubnetCalc.digitize(ipAddress: self.ipv4Address)!
+        let maskBits = IPSubnetCalc.digitize(maskbits: self.maskBits)!
         
         subnetId = ipBits & maskBits
         return (IPSubnetCalc.dottedDecimal(ipAddress: subnetId))
@@ -335,8 +376,8 @@ class IPSubnetCalc: NSObject {
      */
     func subnetBroadcast() -> String {
         var broadcast: UInt32 = 0
-        let ipBits = IPSubnetCalc.digitize(ipAddress: self.ipv4Address)
-        let maskBits = IPSubnetCalc.digitize(maskbits: self.maskBits)
+        let ipBits = IPSubnetCalc.digitize(ipAddress: self.ipv4Address)!
+        let maskBits = IPSubnetCalc.digitize(maskbits: self.maskBits)!
         
         broadcast = ipBits & maskBits | (Constants.addr32Full >> self.maskBits)
         return (IPSubnetCalc.dottedDecimal(ipAddress: broadcast))
@@ -447,12 +488,12 @@ class IPSubnetCalc: NSObject {
         var lastIP: UInt32 = 0
         
         if (maskBits == 31 || maskBits == 32) {
-            firstIP = IPSubnetCalc.digitize(ipAddress: subnetId())
-            lastIP = IPSubnetCalc.digitize(ipAddress: subnetBroadcast())
+            firstIP = IPSubnetCalc.digitize(ipAddress: subnetId())!
+            lastIP = IPSubnetCalc.digitize(ipAddress: subnetBroadcast())!
         }
         else {
-            firstIP = IPSubnetCalc.digitize(ipAddress: subnetId()) + 1
-            lastIP = IPSubnetCalc.digitize(ipAddress: subnetBroadcast()) - 1
+            firstIP = IPSubnetCalc.digitize(ipAddress: subnetId())! + 1
+            lastIP = IPSubnetCalc.digitize(ipAddress: subnetBroadcast())! - 1
         }
         range = IPSubnetCalc.dottedDecimal(ipAddress: firstIP) + " - " + IPSubnetCalc.dottedDecimal(ipAddress: lastIP)
         return (range)
@@ -470,8 +511,8 @@ class IPSubnetCalc: NSObject {
         var firstIP: UInt32 = 0
         var lastIP: UInt32 = 0
         
-        firstIP = IPSubnetCalc.digitize(ipAddress: subnetId())
-        lastIP = IPSubnetCalc.digitize(ipAddress: subnetBroadcast())
+        firstIP = IPSubnetCalc.digitize(ipAddress: subnetId())!
+        lastIP = IPSubnetCalc.digitize(ipAddress: subnetBroadcast())!
         range = IPSubnetCalc.dottedDecimal(ipAddress: firstIP) + " - " + IPSubnetCalc.dottedDecimal(ipAddress: lastIP)
         return (range)
     }
@@ -485,8 +526,8 @@ class IPSubnetCalc: NSObject {
      Network Class conforming to RFC 790
      
      */
-    static func netClass(ipAddress: String) -> String {
-        let ipNum = IPSubnetCalc.digitize(ipAddress: ipAddress)
+    static func netClass(ipAddress: String) -> String? {
+        if let ipNum = IPSubnetCalc.digitize(ipAddress: ipAddress) {
         let addr1stByte = (ipNum & Constants.maskClassA) >> 24
         
         if (addr1stByte < 127) {
@@ -502,6 +543,8 @@ class IPSubnetCalc: NSObject {
             return ("D")
         }
         return ("E")
+        }
+        return nil
     }
     
     /**
@@ -512,7 +555,7 @@ class IPSubnetCalc: NSObject {
      
      */
     func netClass() -> String {
-        return (IPSubnetCalc.netClass(ipAddress: ipv4Address))
+        return (IPSubnetCalc.netClass(ipAddress: ipv4Address)!)
     }
     
     /**
@@ -603,16 +646,18 @@ class IPSubnetCalc: NSObject {
      the number of bits for the given mask
      
      */
-    static func maskBits(maskAddr: String) -> Int {
+    static func maskBits(maskAddr: String) -> Int? {
         var bits: Int = 0
         
-        var mask:UInt32 = IPSubnetCalc.digitize(ipAddress: maskAddr)
+        if var mask:UInt32 = IPSubnetCalc.digitize(ipAddress: maskAddr) {
         while (mask != 0) {
             bits += 1
             mask <<= 1
         }
         //print("maskBits \(maskAddr) bits: \(bits)")
         return (bits)
+        }
+        return nil
     }
     
     /**
@@ -766,8 +811,8 @@ class IPSubnetCalc: NSObject {
         print("CIDR Network (Route) : " + self.subnetId())
         print("CIDR Net Notation : " + self.subnetId() + "/" + String(self.maskBits))
         print("CIDR Address Range : " + self.subnetCIDRRange())
-        print("IP number in binary : " + String(IPSubnetCalc.digitize(ipAddress: self.ipv4Address), radix: 2))
-        print("Mask bin : " + String(IPSubnetCalc.digitize(maskbits: self.maskBits), radix: 2))
+        print("IP number in binary : " + String(IPSubnetCalc.digitize(ipAddress: self.ipv4Address)!, radix: 2))
+        print("Mask bin : " + String(IPSubnetCalc.digitize(maskbits: self.maskBits)!, radix: 2))
         //print("Subnet ID bin : " + String(self.subnetId(), radix: 2))
         //print("Broadcast bin : " + String(self.subnetBroadcast(), radix: 2))
     }
@@ -786,14 +831,14 @@ class IPSubnetCalc: NSObject {
      Boolean if the given IPv6 address is valid or not
      
      */
-    static func isValidIPv6(ipAddress: String, mask: Int?) -> Bool {
+    static func validateIPv6(ipAddress: String, mask: Int?) throws {
         var ip4Hex: [String]?
         var hex: UInt16?
         
         if mask != nil {
             if (mask! < 1 || mask! > 128) {
                 print("mask \(mask!) invalid")
-                return false
+                throw SubnetCalcError.invalidIPv6Mask("mask \(mask!) must be between 1 and 128")
             }
         }
         else {
@@ -803,7 +848,7 @@ class IPSubnetCalc: NSObject {
         ip4Hex = ipAddress.components(separatedBy: ":")
         if (ip4Hex == nil) {
             //print("\(ipAddress) invalid")
-            return false
+            throw SubnetCalcError.invalidIPv6("IPv6 address must contain :")
         }
         if (ip4Hex!.count != 8) {
             //print("no 8 hex")
@@ -811,35 +856,35 @@ class IPSubnetCalc: NSObject {
             {
                 if (ipAddress.components(separatedBy: "::").count > 2) {
                     //print("too many '::'")
-                    return false
+                    throw SubnetCalcError.invalidIPv6("too many ::")
                 }
             }
             else {
                 //print("IPv6 \(ipAddress) bad format")
-                return false
+                throw SubnetCalcError.invalidIPv6("short IPv6 address must contain ::")
             }
         }
         for index in 0...(ip4Hex!.count - 1) {
             //print("Index : \(index) IPHex : \(ip4Hex[index]) Dec : \(String(UInt16(ip4Hex[index], radix: 16)!, radix: 16))")
             if (ip4Hex![index].count > 4 && ip4Hex![index].count != 0) {
                 //print("\(ip4Hex![index]) too large")
-                return false
+                throw SubnetCalcError.invalidIPv6("\(ip4Hex![index]) segment is too large")
             }
             hex = UInt16(ip4Hex![index], radix: 16)
             if hex != nil {
                 if (hex! < 0 || hex! > 0xFFFF) {
                     //print("\(hex!) is invalid")
-                    return false
+                    throw SubnetCalcError.invalidIPv6("\(hex!) segment must be between 0 and 0xFFFF")
                 }
             }
             else {
                 if (ip4Hex![index] != "") {
                     //print("\(ip4Hex![index]) not an integer")
-                    return false
+                    throw SubnetCalcError.invalidIPv6("\(ip4Hex![index]) segment is not an integer")
                 }
             }
         }
-        return true
+        //return true
     }
     
     /**
@@ -856,7 +901,7 @@ class IPSubnetCalc: NSObject {
     static func convertIPv4toIPv6(ipAddress: String, _6to4: Bool = false) -> String {
         var ipv6str = String()
         
-        let addr = digitize(ipAddress: ipAddress)
+        if let addr = digitize(ipAddress: ipAddress) {
         ipv6str.append(String((((Constants.addr32Digit1 | Constants.addr32Digit2) & addr) >> 16), radix: 16))
         ipv6str.append(":")
         ipv6str.append(String(((Constants.addr32Digit3 | Constants.addr32Digit4) & addr), radix: 16))
@@ -865,6 +910,10 @@ class IPSubnetCalc: NSObject {
             return ("2002:" + ipv6str + ":0:0:0:0:0")
         }
         return ("0:0:0:0:0:ffff:" + ipv6str)
+        }
+        else {
+            return ""
+        }
     }
     
     /**
@@ -1312,13 +1361,15 @@ class IPSubnetCalc: NSObject {
      
      */
     init?(ipAddress: String, maskbits: Int) {
-        if (IPSubnetCalc.isValidIP(ipAddress: ipAddress, mask: String(maskbits), classless: true)) {
+        do {
+        try IPSubnetCalc.validateIPv4(ipAddress: ipAddress, mask: String(maskbits), classless: true)
             self.ipv4Address = ipAddress
             self.maskBits = maskbits
             self.ipv6Address = IPSubnetCalc.convertIPv4toIPv6(ipAddress: ipAddress)
             self.ipv6MaskBits = maskbits + Constants.defaultIPv6to4Mask
         }
-        else {
+        catch {
+            print("Init error: \(error)")
             return nil
         }
     }
@@ -1336,7 +1387,8 @@ class IPSubnetCalc: NSObject {
     convenience init?(_ ipAddress: String) {
         var classbit: Int
         
-        if (IPSubnetCalc.isValidIP(ipAddress: ipAddress, mask: nil)) {
+        do {
+            try IPSubnetCalc.validateIPv4(ipAddress: ipAddress, mask: nil)
             switch (IPSubnetCalc.netClass(ipAddress: ipAddress)) {
             case "A":
                 classbit = Constants.classAbits
@@ -1349,7 +1401,8 @@ class IPSubnetCalc: NSObject {
             }
             self.init(ipAddress: ipAddress, maskbits: classbit)
         }
-        else {
+        catch {
+            print("Init error: \(error)")
             return nil
         }
     }
@@ -1366,7 +1419,8 @@ class IPSubnetCalc: NSObject {
      
      */
     init?(ipv6: String, maskbits: Int) {
-        if (IPSubnetCalc.isValidIPv6(ipAddress: ipv6, mask: maskbits)) {
+        do {
+        try IPSubnetCalc.validateIPv6(ipAddress: ipv6, mask: maskbits)
             (self.ipv4Address, _) = IPSubnetCalc.convertIPv6toIPv4(ipAddress: ipv6)
             if (maskbits >= (Constants.defaultIPv6to4Mask + Constants.classAbits)) {
                 self.maskBits = maskbits - Constants.defaultIPv6to4Mask
@@ -1380,7 +1434,8 @@ class IPSubnetCalc: NSObject {
             self.ipv6MaskBits = maskbits
             //print("init IPv6 ipv6 addr: \(self.ipv6Address) ipv4 addr: \(self.ipv4Address)")
         }
-        else {
+        catch {
+            print("Init error: \(error)")
             return nil
         }
     }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19529"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -142,6 +142,12 @@
                                     <action selector="darkMode:" target="b7w-M5-ti7" id="Nhc-rM-HhP"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Clear history" id="s1d-Yz-qSq">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="clearHistory:" target="b7w-M5-ti7" id="H57-v0-WWN"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
@@ -164,7 +170,7 @@
         <customObject id="b7w-M5-ti7" userLabel="SubnetCalcAppDelegate" customClass="SubnetCalcAppDelegate" customModule="SubnetCalc" customModuleProvider="target">
             <connections>
                 <outlet property="NSApp" destination="-2" id="wQ1-cQ-1kg"/>
-                <outlet property="addrField" destination="614" id="TxW-DB-fIi"/>
+                <outlet property="addrField" destination="Sgp-Di-Z4I" id="ayV-n5-gTg"/>
                 <outlet property="bitsOnSlide" destination="710" id="N5K-tl-7ZU"/>
                 <outlet property="classBinaryMap" destination="cg2-6d-5fs" id="KmO-au-Z39"/>
                 <outlet property="classBitMap" destination="Okj-gg-NHb" id="pzE-Be-9mI"/>
@@ -222,7 +228,7 @@
         <window title="SubnetCalc" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="371">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="0.0" y="0.0" width="670" height="694"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1512" height="950"/>
             <value key="minSize" type="size" width="670" height="694"/>
             <view key="contentView" id="372">
                 <rect key="frame" x="0.0" y="0.0" width="670" height="694"/>
@@ -1018,10 +1024,10 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <clipView key="contentView" id="Ay9-o5-UH1">
                                                 <rect key="frame" x="1" y="1" width="567" height="485"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <autoresizingMask key="autoresizingMask"/>
                                                 <subviews>
                                                     <tableView identifier="tabViewVLSM" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="SoM-fw-J5F" id="Xp5-Sj-frC">
-                                                        <rect key="frame" x="0.0" y="0.0" width="884" height="457"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="883.5" height="457"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1127,7 +1133,7 @@
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                             <tableHeaderView key="headerView" wantsLayer="YES" id="SoM-fw-J5F">
-                                                <rect key="frame" x="0.0" y="0.0" width="884" height="28"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="883.5" height="28"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </tableHeaderView>
                                         </scrollView>
@@ -1467,18 +1473,6 @@ CA
                             </tabViewItem>
                         </tabViewItems>
                     </tabView>
-                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="614">
-                        <rect key="frame" x="171" y="654" width="329" height="22"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" alignment="left" identifier="ipaddrfield" drawsBackground="YES" id="619">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                        <connections>
-                            <action selector="ipAddrEdit:" target="b7w-M5-ti7" id="FFd-Op-005"/>
-                        </connections>
-                    </textField>
                     <popUpButton identifier="exportbutton" fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="737">
                         <rect key="frame" x="604" y="652" width="46" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
@@ -1520,7 +1514,7 @@ CA
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="calc:" target="b7w-M5-ti7" id="gsi-fk-GkQ"/>
+                            <action selector="calc:" target="b7w-M5-ti7" id="H7m-mU-2rm"/>
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="615">
@@ -1532,11 +1526,23 @@ CA
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <comboBox identifier="ipaddrfield" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sgp-Di-Z4I">
+                        <rect key="frame" x="171" y="651" width="332" height="25"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" numberOfVisibleItems="10" id="Xfl-Op-pqt">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </comboBoxCell>
+                        <connections>
+                            <action selector="ipAddrEdit:" target="b7w-M5-ti7" id="xbF-0k-hpj"/>
+                        </connections>
+                    </comboBox>
                 </subviews>
             </view>
             <connections>
                 <outlet property="delegate" destination="b7w-M5-ti7" id="Y5C-zg-Ze5"/>
-                <outlet property="initialFirstResponder" destination="614" id="620"/>
+                <outlet property="initialFirstResponder" destination="Sgp-Di-Z4I" id="Dbp-Au-IpS"/>
             </connections>
             <point key="canvasLocation" x="84" y="281"/>
         </window>

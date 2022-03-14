@@ -1,11 +1,10 @@
 # SubnetCalc
 Subnet Calculator for MacOS 
 
-What's New in version 2.4:
-- IPv6 address range bug fix
-
-
-
+What's New in version 2.5:
+- Add history in IP address text field (limited to 30 entries)
+- Persisting history between App launches with Core Data
+- Better error handling and more explicit alert messages
 
 For more information: http://subnetcalc.mulot.org
 
