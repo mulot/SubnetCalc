@@ -1,10 +1,8 @@
 # SubnetCalc
 Subnet Calculator for MacOS 
 
-What's New in version 2.5:
-- Add history in IP address text field (limited to 30 entries)
-- Persisting history between App launches with Core Data
-- Better error handling and more explicit alert messages
+What's New in version 2.6:
+- Fix a crash with macOS Sequoia when changing subnet mask.
 
 For more information: http://subnetcalc.mulot.org
 
