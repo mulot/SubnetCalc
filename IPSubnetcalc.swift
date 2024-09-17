@@ -455,20 +455,20 @@ class IPSubnetCalc: NSObject {
         var result: Decimal
         
         if (classType == "A") {
-            result = pow(2, Constants.classAbits - self.maskBits)
-            if (result > 0) {
+            if (Constants.classAbits - self.maskBits > 0) {
+                result = pow(2, Constants.classAbits - self.maskBits)
                 return (Int(truncating: NSDecimalNumber(decimal: result)))
             }
         }
         else if (classType == "B") {
-            result = pow(2, Constants.classBbits - self.maskBits)
-            if (result > 0) {
+            if (Constants.classBbits - self.maskBits > 0) {
+                result = pow(2, Constants.classBbits - self.maskBits)
                 return (Int(truncating: NSDecimalNumber(decimal: result)))
             }
         }
         else if (classType == "C") {
-            result = pow(2, Constants.classCbits - self.maskBits)
-            if (result > 0) {
+            if (Constants.classCbits - self.maskBits > 0) {
+                result = pow(2, Constants.classCbits - self.maskBits)
                 return (Int(truncating: NSDecimalNumber(decimal: result)))
             }
         }
